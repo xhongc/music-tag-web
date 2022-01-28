@@ -1,0 +1,9 @@
+Django==2.2.6
+bamboo-pipeline==3.14.0
+mysqlclient==1.4.4
+eventlet==0.33.0
+djangorestframework==3.8.1
+pyyaml==6.0
+django-cors-headers==3.2.1
+django-filter==2.0.0
+django-mysql==3.8.1

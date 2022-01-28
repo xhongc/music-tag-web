@@ -1,0 +1,465 @@
+//样式整合，勿动！！！
+
+//按钮样式
+.ivu-btn {
+    height: 32px !important;
+    font-size: 12px !important;
+}
+
+.ivu-btn-small {
+    height: 24px !important;
+    line-height: 19px;
+    font-size: 10px !important;
+    border-radius: 2px !important;
+    padding: 1px 7px 1px !important;
+}
+
+.ivu-btn-large {
+    height: 40px !important;
+    line-height: 26px;
+    font-size: 14px !important;
+    border-radius: 6px !important;
+}
+
+.ivu-btn-default {
+    line-height: 20px;
+}
+
+.ivu-btn:hover {
+    color: $base-color;
+    border-color: $base-color;
+}
+
+.ivu-btn-primary {
+    background-color: $base-color;
+    border-color: $base-color;
+}
+
+.ivu-btn-primary:hover {
+    color: $white-color;
+    background-color: $base-hover !important;
+    border-color: $base-hover !important;
+}
+
+.ivu-btn-info {
+    background-color: $primary-color;
+    border-color: $primary-color;
+}
+
+.ivu-btn-info:hover {
+    color: $white-color;
+    background-color: $primary-hover !important;
+    border-color: $primary-hover !important;
+}
+
+.ivu-btn-success {
+    background-color: $success-color;
+    border-color: $success-color;
+}
+
+.ivu-btn-success:hover {
+    color: $white-color;
+    background-color: $success-hover !important;
+    border-color: $success-hover !important;
+}
+
+.ivu-btn-warning {
+    background-color: $warn-color;
+    border-color: $warn-color;
+}
+
+.ivu-btn-warning:hover {
+    color: $white-color;
+    background-color: $warn-hover !important;
+    border-color: $warn-hover !important;
+}
+
+.ivu-btn-error {
+    background-color: $error-color;
+    border-color: $error-color;
+}
+
+.ivu-btn-error:hover {
+    color: $white-color;
+    background-color: $error-hover !important;
+    border-color: $error-hover !important;
+}
+
+.ivu-btn-ghost {
+    color: #fff;
+    background: 0 0;
+}
+
+.ivu-btn-ghost.ivu-btn-primary {
+    color: $base-color;
+}
+
+.ivu-btn-ghost.ivu-btn-primary:hover {
+    color: $base-color !important;
+    background: rgba(254, 245, 243, .5) !important;
+}
+
+.ivu-btn-ghost.ivu-btn-info {
+    color: $primary-color;
+}
+
+.ivu-btn-ghost.ivu-btn-info:hover {
+    color: $primary-color !important;
+    background: rgba(254, 245, 243, .5) !important;
+}
+
+.ivu-btn-ghost.ivu-btn-success {
+    color: $success-color;
+}
+
+.ivu-btn-ghost.ivu-btn-success:hover {
+    color: $success-color !important;
+    background: rgba(254, 245, 243, .5) !important;
+}
+
+.ivu-btn-ghost.ivu-btn-warning {
+    color: $warn-color;
+}
+
+.ivu-btn-ghost.ivu-btn-warning:hover {
+    color: $warn-color !important;
+    background: rgba(254, 245, 243, .5) !important;
+}
+
+.ivu-btn-ghost.ivu-btn-error {
+    color: $error-color;
+}
+
+.ivu-btn-ghost.ivu-btn-error:hover {
+    color: $error-color !important;
+    background: rgba(254, 245, 243, .5) !important;
+}
+
+.ivu-btn.disabled, .ivu-btn.disabled.active, .ivu-btn.disabled:active, .ivu-btn.disabled:focus, .ivu-btn.disabled:hover, .ivu-btn[disabled], .ivu-btn[disabled].active, .ivu-btn[disabled]:active, .ivu-btn[disabled]:focus, .ivu-btn[disabled]:hover, fieldset[disabled] .ivu-btn, fieldset[disabled] .ivu-btn.active, fieldset[disabled] .ivu-btn:active, fieldset[disabled] .ivu-btn:focus, fieldset[disabled] .ivu-btn:hover {
+    color: #ccc !important;
+    background-color: $dis-color !important;
+    border-color: $dis-color !important;
+}
+
+.ivu-btn-ghost.ivu-btn-dashed[disabled], .ivu-btn-ghost.ivu-btn-default[disabled], .ivu-btn-ghost.ivu-btn-error[disabled], .ivu-btn-ghost.ivu-btn-info[disabled], .ivu-btn-ghost.ivu-btn-primary[disabled], .ivu-btn-ghost.ivu-btn-success[disabled], .ivu-btn-ghost.ivu-btn-warning[disabled] {
+    color: #ccc !important;
+    background-color: $dis-color !important;
+    border-color: #ccc !important;
+}
+
+.ivu-btn-icon-only {
+    padding: 5px 10px !important;
+}
+
+.ivu-dropdown-item:hover {
+    background: $base-color;
+    color: $white-color;
+}
+
+.ivu-dropdown-item-disabled:hover {
+    color: #c5c8ce !important;
+    background-color: #fff !important;
+    cursor: not-allowed !important;
+}
+
+.primary-drop-down > .ivu-dropdown-item:hover {
+    background: $sup-color;
+    color: $base-color;
+}
+
+.drop-down-input {
+    padding: 0 10px !important;
+}
+
+.CW-group-buttons > .ivu-btn:not([disabled]):hover,
+.CW-group-buttons > .ivu-btn:not([disabled]):focus-within {
+    background-color: $primary-hover !important;
+    border-color: $primary-hover !important;
+}
+
+.CW-group-ghost {
+    .ivu-btn:not([disabled]):hover,
+    .ivu-btn:not([disabled]):focus-within {
+        background-color: $primary-color !important;
+        border-color: $primary-color !important;
+        color: $white-color !important;
+    }
+}
+
+//选项卡
+.ivu-tabs {
+    height: 100%;
+}
+
+.ivu-tabs-card {
+    border: 1px solid $cancel-color;
+}
+
+.ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
+    margin-right: 0 !important;
+    border: none;
+    border-right: 1px solid $cancel-color !important;
+    border-radius: 0;
+}
+
+.ivu-tabs-content {
+    padding: 0 10px 10px;
+    height: calc(100% - 36px);
+    overflow: auto;
+}
+
+//弹出层
+.ivu-modal-header {
+    height: 42px;
+    padding: 11px 20px;
+}
+
+.ivu-modal-close {
+    height: 20px;
+    width: 20px;
+    right: 20px;
+
+    .ivu-icon-ios-close {
+        font-size: 16px;
+    }
+}
+
+.ivu-modal-body {
+    padding: 16px 20px 20px;
+}
+
+.ivu-modal-footer {
+    border-top: none;
+}
+
+.cw-modal-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.cw-modal-content {
+    margin-top: 15px;
+}
+
+.cw-message-modal, .cw-message-modal1, .cw-message-modal2 {
+
+    .ivu-modal {
+        top: 60px;
+    }
+
+    .ivu-modal-close {
+        right: 8px;
+    }
+
+    .ivu-modal-footer {
+        display: none;
+    }
+}
+
+.cw-message-modal1, .cw-message-modal2 {
+    .ivu-icon {
+        vertical-align: sub;
+    }
+
+    .ivu-modal-header-inner {
+        font-weight: normal;
+    }
+}
+
+.cw-message-modal2 {
+    .ivu-modal-body {
+        display: none;
+    }
+
+    .ivu-modal-close {
+        right: 20px;
+        top: 11px;
+    }
+
+    .ivu-modal-header {
+        border: none;
+    }
+
+    .ivu-icon-ios-close {
+        font-size: 20px;
+    }
+}
+
+.cw-message-modal1 .ivu-modal-header-inner {
+    font-weight: bold;
+}
+
+//表单输入框
+.ivu-input {
+    height: 32px;
+}
+
+.ivu-select-item:hover {
+    background: $base-color!important;
+    color: $white-color;
+}
+
+.ivu-form-item {
+    height: 52px;
+    margin-bottom: 5px !important;
+}
+
+// 进度条
+.el-step__head.is-success, .el-step__head.is-process {
+    color: $base-color;
+    border-color: $base-color;
+}
+
+.el-step__head.is-success > .el-step__line > .el-step__line-inner {
+    border-width: 1px !important;
+    width: 100% !important;
+}
+
+.el-step__title.is-success, .el-step__title.is-process, .el-step__title.is-wait {
+    color: #000;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.el-step__description.is-success, .el-step__description.is-wait {
+    color: #000;
+}
+
+.el-steps--simple {
+    background: none;
+
+    .el-step.is-simple {
+        height: 32px;
+        padding: 0 10px 0 20px;
+        margin-right: 5px !important;
+        background-color: $base-color;
+
+        .el-step__head.is-wait {
+            color: $white-color;
+            border-color: $white-color;
+        }
+
+        .el-step__title.is-success, .el-step__title.is-wait, .el-step__title.is-process {
+            max-width: none !important;
+            color: $white-color;
+            font-size: 14px !important;
+        }
+
+        .el-step__head.is-success, .el-step__head.is-process {
+            color: $white-color !important;
+            border-color: $white-color !important;
+        }
+
+        .el-step__arrow {
+            display: none;
+        }
+    }
+
+    .el-step.is-simple:first-child {
+        border-radius: 10px 0 0 10px;
+    }
+
+    .el-step.is-simple:last-child {
+        max-width: none !important;
+        border-radius: 0 10px 10px 0;
+    }
+
+    .el-step.is-simple:after {
+        content: '';
+        display: block;
+        border-top: 16px solid transparent;
+        border-bottom: 16px solid transparent;
+        border-left: 15px solid $base-color;
+        position: absolute;
+        right: -15px;
+        top: 0;
+        z-index: 10;
+    }
+
+    .el-step.is-simple:before {
+        content: '';
+        display: block;
+        border-top: 16px solid $base-color;
+        border-bottom: 16px solid $base-color;
+        border-left: 15px solid $white-color;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .el-step.is-simple:first-child:before {
+        display: none;
+    }
+
+    .el-step.is-simple:last-child:after {
+        display: none;
+    }
+
+    .el-step__main {
+        transform: translateX(22%);
+    }
+
+    .el-step__head {
+        transform: translateX(20%);
+    }
+
+    .el-step__line-inner {
+        border: none !important;
+    }
+}
+
+.cw-step-pro:before {
+    border-top: 16px solid $cancel-color !important;
+    border-bottom: 16px solid $cancel-color !important;
+}
+
+.cw-step-pro:after {
+    border-left: 15px solid $cancel-color !important;
+}
+
+.cw-step-pro {
+    background-color: $cancel-color !important;
+}
+
+.cw-step-process {
+    background-color: $success-color !important;
+}
+
+.cw-step-process:before {
+    border-top: 16px solid $success-color !important;
+    border-bottom: 16px solid $success-color !important;
+}
+
+.cw-step-process:after {
+    border-left: 15px solid $success-color !important;
+}
+
+.el-icon-refresh-left {
+    font-weight: 700 !important;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 100% !important;
+}
+
+.left-second > .el-submenu {
+    .el-submenu__title {
+        padding-left: 70px !important;
+    }
+
+    .el-menu-item {
+        padding-left: 100px !important;
+    }
+}
+
+.left-second > .el-menu-item {
+    padding-left: 58px !important;
+    font-size: 14px;
+
+}
+
+//穿梭框
+.el-transfer-panel__item {
+    margin-right: 0;
+    padding-right: 10px;
+}

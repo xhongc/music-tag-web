@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title>调度平台</title>
+		<link href="{{ STATIC_URL }}dist/css/app.css" rel="stylesheet">
+		<link href="{{ STATIC_URL }}img/{{ APP_CODE }}.png" rel="shortcut icon" type="image/x-icon">
+	</head>
+	<body>
+		<script>
+			if ('{{ RUN_MODE }}' === 'DEVELOP') {
+				window.siteUrl = window.location.origin
+			} else {
+				window.siteUrl = '{{ BK_PLAT_HOST }}{{ SITE_URL }}'
+			}
+			window.APP_CODE = '{{ APP_CODE }}';
+			window.CSRF_COOKIE_NAME = '{{ CSRF_COOKIE_NAME }}';
+		</script>
+		<div id="app"></div>
+		<script type="text/javascript" src="{{ STATIC_URL }}dist/js/manifest.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}dist/js/vendor.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}dist/js/app.js"></script>
+	</body>
+</html>

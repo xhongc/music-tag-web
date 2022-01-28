@@ -1,0 +1,64 @@
+//顶部导航栏样式
+$head-menu-color: if($head-theme=='light', #fff, $base-color);
+$background-color: if($head-theme=='light', $base-color, $base-color-blue);
+$color: if($head-theme=='light', #fff, #fff);
+$focus-color: if($head-theme=='light', #909399, #fff);
+$background-color-hover: if($head-theme=='light', #fff, $base-color-blue);
+$color-hover: if($head-theme=='light', $base-color, #fff);
+
+.el-menu {
+    background-color: $head-menu-color;
+}
+
+.el-menu-item {
+    font-size: 16px;
+}
+
+.el-menu-demo li.el-submenu div.el-submenu__title {
+    font-size: 16px!important;
+}
+
+ul.el-menu--popup-bottom-start div li.el-menu-item {
+    font-size: 14px;
+}
+
+li.el-submenu div.el-submenu__title {
+    font-size: 14px;
+}
+
+.el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+    color: $focus-color;
+    background-color: $head-menu-color;
+}
+
+.el-menu--horizontal > .el-menu-item, .el-submenu__title i, .el-menu--horizontal > .el-submenu .el-submenu__title {
+    color: $focus-color;
+}
+
+.el-menu--horizontal > .el-menu-item.is-active, .el-menu--horizontal > .el-submenu.is-active .el-submenu__title {
+    border-bottom: 2px solid $color-hover;
+    color: $color-hover;
+}
+
+.el-menu--horizontal .el-menu .el-menu-item.is-active, .el-menu--horizontal .el-menu .el-submenu__title.is-active {
+    background-color: $background-color !important;
+    color: $color !important;
+}
+
+.el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+    color: $color-hover;
+    background-color: $background-color-hover;
+}
+
+.el-dropdown-menu__item--divided:before, .el-menu, .el-menu--horizontal > .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal > .el-menu-item:not(.is-disabled):hover, .el-menu--horizontal > .el-submenu .el-submenu__title:hover {
+    color: $color-hover;
+    background-color: $head-menu-color;
+}
+
+.el-menu--horizontal .el-menu .el-submenu__title:hover {
+    color: $color-hover;
+}
+
+.el-menu--horizontal .el-menu .el-menu-item.is-active, .el-menu--horizontal .el-menu .el-submenu.is-active > .el-submenu__title {
+    color: $color-hover;
+}

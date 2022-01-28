@@ -1,0 +1,225 @@
+// 组件默认样式的强制修改
+.demo-spin-icon-load {
+    animation: ani-demo-spin 1s linear infinite;
+}
+
+.v-modal {
+    z-index: 999 !important;
+}
+
+.ivu-message {
+    z-index: 9999999999999 !important;
+}
+
+.ivu-spin-fix {
+    background-color: hsla(0, 0%, 100%, 0.4) !important;
+}
+
+.table-info-row {
+    background-color: #2ecc71 !important;
+    color: #fff;
+}
+
+.table-error-row {
+    background-color: #ed4014 !important;
+    color: #fff;
+}
+
+.ivu-tooltip-popper {
+    word-wrap: break-word;
+}
+
+.table-run-row {
+    padding: 0 !important;
+}
+
+.is-dark {
+    color: #000 !important;
+    background-color: #fff !important;
+    border: 1px solid #f7f7f7 !important;
+}
+
+.el-tooltip__popper[x-placement^=right] .popper__arrow {
+    border-right-color: #f7f7f7;
+}
+
+.el-tooltip__popper[x-placement^=right] .popper__arrow:after {
+    border-right-color: #f7f7f7;
+}
+
+.ivu-tooltip-inner {
+    background-color: #707070 !important;
+}
+
+.el-tooltip__popper.is-dark {
+    color: #000 !important;
+    background-color: #f7f7f7 !important;
+    border: 1px solid #f7f7f7 !important;
+}
+
+.ivu-tooltip-content {
+    opacity: 0.93;
+}
+
+//th.ivu-table-column-center .ivu-checkbox-inner {
+//    display: none;
+//}
+
+.el-form-item .el-form-item {
+    margin-bottom: 10px !important;
+}
+
+.el-form-item {
+    margin-bottom: 18px !important;
+}
+
+.CodeMirror {
+    height: 360px !important;
+}
+
+//.ivu-card-head {
+//    background-color: #1facdd;
+//    padding: 8px 16px !important;
+//}
+
+.ivu-card-body {
+    padding: 10px !important;
+}
+
+.el-message {
+    top: 8% !important;
+    left: 50%;
+}
+
+
+.ivu-modal-wrap {
+    z-index: 3200 !important;
+}
+
+.ivu-modal-mask {
+    z-index: 3200 !important;
+}
+
+.ivu-input-search {
+    background-color: #217FC3 !important;
+}
+
+.ivu-input-search:hover {
+    background-color: #446DB3 !important;
+}
+
+.ivu-input:hover {
+    //
+}
+
+.radius4 {
+    border-radius: 4px;
+}
+
+.shadow1 {
+    box-shadow: 1px 1px 1px #ccc;
+}
+
+.be-center {
+    margin: 0 auto; /*水平居中*/
+    position: relative;
+    top: 50%; /*偏移*/
+    transform: translateY(-50%);
+}
+
+.be-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.be-dot {
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.edit-color {
+    color: $warn-color;
+
+    &:hover {
+        color: $warn-hover !important;
+        border: 1px solid $warn-hover !important;
+    }
+}
+
+.detail-color {
+    color: $primary-color;
+
+    &:hover {
+        color: $primary-hover !important;
+        border: 1px solid $primary-hover !important;
+    }
+}
+
+.delete-color {
+    color: $error-color;
+
+    &:hover {
+        color: $error-hover !important;
+        border: 1px solid $error-hover !important;
+    }
+}
+
+.save-color {
+    color: $success-color;
+
+    &:hover {
+        color: $success-hover !important;
+        border: 1px solid $success-hover !important;
+    }
+}
+
+.be-pointer {
+    cursor: pointer;
+}
+
+.el-message {
+    z-index: 4000 !important;
+}
+
+.el-tooltip__popper {
+    z-index: 4000 !important;
+}
+
+.tipsStyleRed {
+    margin-left: 5px;
+    color: red;
+}
+
+.ivu-input-group-append, .ivu-input-group-prepend {
+    background-color: #217fc3 !important;
+    color: #fff !important;
+    font-size: 16px !important;
+}
+
+.ivu-input-search:hover {
+    background-color: #446DB3 !important;
+}
+
+.ivu-input-group-append:hover {
+}
+
+.ivu-input-group-append .ivu-btn, .ivu-input-group-prepend .ivu-btn {
+    color: inherit;
+    margin: -5px -8px;
+}
+
+.SearchWid {
+    width: 100px;
+}
+
+.ivu-checkbox-inner {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.el-radio {
+    margin-right: 10px !important;
+}

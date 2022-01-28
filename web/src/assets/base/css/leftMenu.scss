@@ -1,0 +1,117 @@
+// 左侧导航默认样式修改，慎改！！！
+.homeSe {
+    color: #fff !important;
+    background-color: $base-color !important;
+}
+
+.ivu-menu-vertical .ivu-menu-item:hover, .ivu-menu-vertical .ivu-menu-submenu-title:hover {
+    color: $base-color;
+}
+
+.ivu-menu li > ul a {
+    font-size: 14px !important;
+    padding-left: 65px !important;
+}
+
+.ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
+    background: #fff;
+}
+
+.ivu-menu-submenu {
+    font-size: 12px !important;
+}
+
+.ivu-menu-item > i {
+    padding-right: 5px !important;
+    margin: 0 !important;
+}
+
+.ivu-menu-submenu-title span > i, .ivu-menu-submenu-title > i {
+    margin: 0 !important;
+    padding-right: 5px !important;
+}
+
+.second-menu {
+    font-size: 12px !important;
+    padding-left: 24px !important;
+}
+
+.second-selected > .ivu-menu-submenu-title {
+    color: $base-color !important;
+}
+
+.second-selected > .el-submenu__title {
+    color: $base-color !important;
+    background-color: $white-color !important;
+
+    .ivu-icon-ios-home-outline {
+        color: $base-color !important;
+    }
+    .ios-construct-outline {
+        color: $base-color !important;
+    }
+    .ios-git-merge {
+        color: $base-color !important;
+    }
+    .ivu-icon-ios-browsers-outline {
+        color: $base-color !important;
+    }
+    .el-icon-arrow-down {
+        color: $base-color !important;
+    }
+    .ios-document-outline {
+        color: $base-color !important;
+    }
+    .ivu-icon-ios-cog-outline {
+        color: $base-color !important;
+    }
+}
+
+.seOpen {
+    color: #fff !important;
+    background-color: #217FC3 !important;
+}
+
+.ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):after {
+    background: none !important;
+}
+
+.el-submenu__title:hover, .el-menu-item:hover {
+    color: $base-color;
+
+    i {
+        color: $base-color;
+    }
+}
+
+.el-submenu__title > span {
+    font-size: 16px;
+}
+
+.el-menu {
+    border-right: none;
+}
+
+#eleLeft {
+    border-right: solid 1px #e6e6e6;
+}
+
+.el-menu-item.is-active {
+    color: $white-color;
+    i {
+        color: $white-color;
+    }
+}
+
+.el-submenu__title.is-active, .el-menu-item.is-active {
+    color: $white-color;
+
+    i {
+        color: $white-color;
+    }
+}
+
+.el-menu-item, .el-submenu__title {
+    height: 42px;
+    line-height: 42px;
+}

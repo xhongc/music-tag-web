@@ -1,0 +1,8 @@
+/build/
+/config/
+/dist/
+/*.js
+/node_modules/
+/src/assets/
+/src/components/
+/src/common/validate.js

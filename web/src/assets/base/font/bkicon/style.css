@@ -1,0 +1,238 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('./fonts/icomoon.eot?ywmn1');
+  src:  url('./fonts/icomoon.eot?ywmn1#iefix') format('embedded-opentype'),
+    url('./fonts/icomoon.ttf?ywmn1') format('truetype'),
+    url('./fonts/icomoon.woff?ywmn1') format('woff'),
+    url('./fonts/icomoon.svg?ywmn1#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+/*  font-family: 'icomoon' !important; */
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-edit:before {
+  content: "\e900";
+  color: #2cb3e8;
+}
+.icon-edit-glay:before {
+  content: "\e901";
+  color: #999899;
+}
+.icon-delete:before {
+  content: "\e902";
+  color: #e60012;
+}
+.icon-switch:before {
+  content: "\e903";
+  color: #3eaede;
+}
+.icon-operate:before {
+  content: "\e904";
+  color: #1facdd;
+}
+.icon-see-blue:before {
+  content: "\e905";
+  color: #1791bd;
+}
+.icon-see-failure:before {
+  content: "\e906";
+  color: #de2a38;
+}
+.icon-see-glay:before {
+  content: "\e907";
+  color: #999899;
+}
+.icon-see-success:before {
+  content: "\e908";
+  color: #28a7e1;
+}
+.icon-init:before {
+  content: "\e909";
+  color: #fff;
+}
+.icon-plus:before {
+  content: "\e90a";
+  color: #fff;
+}
+.icon-yes:before {
+  content: "\e90b";
+  color: #52b16e;
+}
+.icon-yes-glay:before {
+  content: "\e90c";
+  color: #999899;
+}
+.icon-del-block:before {
+  content: "\e90d";
+  color: #e72536;
+}
+.icon-del-block-glay:before {
+  content: "\e90e";
+  color: #999899;
+}
+.icon-credentials:before {
+  content: "\e90f";
+  color: #1791bd;
+}
+.icon-credentials-glay:before {
+  content: "\e910";
+  color: #999899;
+}
+.icon-stop:before {
+  content: "\e911";
+  color: #f0a440;
+}
+.icon-stop-glay:before {
+  content: "\e912";
+  color: #999899;
+}
+.icon-logout:before {
+  content: "\e914";
+  color: #666;
+}
+.icon-edit-hollow:before {
+  content: "\e915";
+  color: #999899;
+}
+.icon-edit-hollow-hover:before {
+  content: "\e916";
+  color: #64bc84;
+}
+.icon-tool:before {
+  content: "\e917";
+  color: #666;
+}
+.icon-export:before {
+  content: "\e919";
+  color: #fff;
+}
+.icon-import:before {
+  content: "\e91a";
+  color: #fff;
+}
+.icon-department:before {
+  content: "\e91b";
+  color: #666;
+}
+.icon-department-hover:before {
+  content: "\e91c";
+  color: #fff;
+}
+.icon-rule:before {
+  content: "\e91d";
+  color: #666;
+}
+.icon-rule-hover:before {
+  content: "\e91e";
+  color: #666;
+}
+.icon-square:before {
+  content: "\e91f";
+  color: #666;
+}
+.icon-quit-department:before {
+  content: "\e920";
+  color: #666;
+}
+.icon-quit-companies:before {
+  content: "\e921";
+  color: #666;
+}
+.icon-quit-people:before {
+  content: "\e922";
+  color: #666;
+}
+.icon-icon-sort:before {
+  content: "\e926";
+  color: #5ec3d8;
+}
+.icon-set-paas:before {
+  content: "\e928";
+  color: #666;
+}
+.icon-set-paas-hover:before {
+  content: "\e929";
+  color: #fff;
+}
+.icon-set-auth:before {
+  content: "\e92a";
+  color: #666;
+}
+.icon-set-auth-hover:before {
+  content: "\e92b";
+  color: #fff;
+}
+.icon-del:before {
+  content: "\e92c";
+  color: #999899;
+}
+.icon-del-hover:before {
+  content: "\e92d";
+  color: #df403e;
+}
+.icon-set-quit:before {
+  content: "\e92e";
+  color: #999899;
+}
+.icon-set-quit-hover:before {
+  content: "\e92f";
+  color: #df403e;
+}
+.icon-maintenan:before {
+  content: "\e930";
+  color: #73be5f;
+}
+.icon-maintenan-hover:before {
+  content: "\e931";
+  color: #73be5f;
+}
+.icon-move:before {
+  content: "\e932";
+  color: #999899;
+}
+.icon-move-hover:before {
+  content: "\e933";
+  color: #1facdd;
+}
+.icon-group:before {
+  content: "\e934";
+  color: #666;
+}
+.icon-group-hover:before {
+  content: "\e935";
+  color: #fff;
+}
+.icon-round:before {
+  content: "\e936";
+  color: #666;
+}
+.icon-three-b:before {
+  content: "\e937";
+  color: #666;
+}
+.icon-three-r:before {
+  content: "\e938";
+  color: #666;
+}
+.icon-reset:before {
+  content: "\e939";
+  color: #999899;
+}
+.icon-reset-hover:before {
+  content: "\e93a";
+  color: #f49f1b;
+}
