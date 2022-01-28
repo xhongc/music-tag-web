@@ -4,7 +4,7 @@ from pipeline.core.flow.activity import Service, StaticIntervalGenerator
 from pipeline.component_framework.component import Component
 import json
 import eventlet
-
+import time
 requests = eventlet.import_patched('requests')
 
 
@@ -13,6 +13,7 @@ class HttpRequestService(Service):
 
     def execute(self, data, parent_data):
         print("执行了")
+        time.sleep(5)
         return True
 
 

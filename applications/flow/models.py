@@ -27,9 +27,7 @@ class Process(models.Model):
     update_by = models.CharField("修改人", max_length=64, null=True)
 
 
-class Node(models.Model):
-    process = models.ForeignKey(Process, on_delete=models.SET_NULL, null=True, db_constraint=False,
-                                related_name="nodes")
+class BaseNode(models.Model):
     name = models.CharField("节点名称", max_length=255, blank=False, null=False)
     uuid = models.CharField("UUID", max_length=255, unique=True)
     description = models.CharField("节点描述", max_length=255, blank=True, null=True)
@@ -50,3 +48,24 @@ class Node(models.Model):
 
     inputs = JSONField("输入参数", default=dict)
     outputs = JSONField("输出参数", default=dict)
+
+    class Meta:
+        abstract = True
+
+
+class Node(BaseNode):
+    process = models.ForeignKey(Process, on_delete=models.SET_NULL, null=True, db_constraint=False,
+                                related_name="nodes")
+
+
+class ProcessRun(Process):
+    # new
+    process = models.ForeignKey(Process, on_delete=models.SET_NULL, null=True, db_constraint=False,
+                                related_name="run")
+    state = models.CharField("工作流状态", max_length=32)
+    root_id = models.CharField("根节点uuid", max_length=255)
+
+
+class NodeRun(BaseNode):
+    process_run = models.ForeignKey(ProcessRun, on_delete=models.SET_NULL, null=True, db_constraint=False,
+                                    related_name="nodes_run")

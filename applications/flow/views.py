@@ -6,9 +6,10 @@ from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from applications.flow.models import Process, Node
+from applications.flow.models import Process, Node, ProcessRun
 from applications.flow.serializers import ProcessViewSetsSerializer, ListProcessViewSetsSerializer, \
-    RetrieveProcessViewSetsSerializer, ExecuteProcessSerializer
+    RetrieveProcessViewSetsSerializer, ExecuteProcessSerializer, ListProcessRunViewSetsSerializer, \
+    RetrieveProcessRunViewSetsSerializer
 from applications.utils.dag_helper import DAG
 from component.drf.viewsets import GenericViewSet
 
@@ -17,7 +18,6 @@ class ProcessViewSets(mixins.ListModelMixin,
                       mixins.CreateModelMixin,
                       mixins.RetrieveModelMixin,
                       GenericViewSet):
-    serializer_class = ProcessViewSetsSerializer
     queryset = Process.objects.order_by("-update_time")
 
     def get_serializer_class(self):
@@ -51,10 +51,23 @@ class ProcessViewSets(mixins.ListModelMixin,
 
         pipeline_data = Data()
         pipeline = builder.build_tree(start, data=pipeline_data)
-        print(pipeline)
         runtime = BambooDjangoRuntime()
         api.run_pipeline(runtime=runtime, pipeline=pipeline)
         return Response({})
+
+
+class ProcessRunViewSets(mixins.ListModelMixin,
+                         mixins.RetrieveModelMixin,
+                         GenericViewSet):
+    queryset = ProcessRun.objects.order_by("-update_time")
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return ListProcessRunViewSetsSerializer
+        elif self.action == "retrieve":
+            return RetrieveProcessRunViewSetsSerializer
+        elif self.action == "execute":
+            return ExecuteProcessSerializer
 
 
 # Create your views here.

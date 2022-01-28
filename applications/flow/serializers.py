@@ -1,7 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 
-from applications.flow.models import Process, Node
+from applications.flow.models import Process, Node, ProcessRun
 
 
 class ProcessViewSetsSerializer(serializers.Serializer):
@@ -53,6 +53,12 @@ class ListProcessViewSetsSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ListProcessRunViewSetsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProcessRun
+        fields = "__all__"
+
+
 class RetrieveProcessViewSetsSerializer(serializers.ModelSerializer):
     pipeline_tree = serializers.SerializerMethodField()
 
@@ -93,6 +99,49 @@ class RetrieveProcessViewSetsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Process
+        fields = ("id", "name", "description", "category", "run_type", "pipeline_tree")
+
+
+class RetrieveProcessRunViewSetsSerializer(serializers.ModelSerializer):
+    pipeline_tree = serializers.SerializerMethodField()
+
+    # category = serializers.SerializerMethodField()
+    #
+    # def get_category(self, obj):
+    #     return obj.category.all()
+
+    def get_pipeline_tree(self, obj):
+        lines = []
+        nodes = []
+        for _from, to_list in obj.dag.items():
+            for _to in to_list:
+                lines.append({
+                    "from": _from,
+                    "to": _to
+                })
+        node_list = Node.objects.filter(process_id=obj.id).values()
+        for node in node_list:
+            nodes.append({"show": node["show"],
+                          "top": node["top"],
+                          "left": node["left"],
+                          "ico": node["ico"],
+                          "type": node["node_type"],
+                          "name": node["name"],
+                          "node_data": {
+                              "inputs": node["inputs"],
+                              "run_mark": 0,
+                              "node_name": node["name"],
+                              "description": node["description"],
+                              "fail_retry_count": node["fail_retry_count"],
+                              "fail_offset": node["fail_offset"],
+                              "fail_offset_unit": node["fail_offset_unit"],
+                              "is_skip_fail": node["is_skip_fail"],
+                              "is_timeout_alarm": node["is_timeout_alarm"]},
+                          "uuid": node["uuid"]})
+        return {"lines": lines, "nodes": nodes}
+
+    class Meta:
+        model = ProcessRun
         fields = ("id", "name", "description", "category", "run_type", "pipeline_tree")
 
 
