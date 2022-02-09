@@ -12,3 +12,27 @@ node_type = (
     (4, "条件分支"),
     (5, "汇聚网关"),
 )
+
+
+class StateType(object):
+    CREATED = "CREATED"
+    READY = "READY"
+    RUNNING = "RUNNING"
+    SUSPENDED = "SUSPENDED"
+    BLOCKED = "BLOCKED"
+    FINISHED = "FINISHED"
+    FAILED = "FAILED"
+    REVOKED = "REVOKED"
+
+
+PIPELINE_STATE_TO_FLOW_STATE = {
+    StateType.READY: "wait",
+    StateType.RUNNING: "run",
+    StateType.FAILED: "fail",
+    StateType.FINISHED: "success",
+    StateType.SUSPENDED: "pause",
+    StateType.REVOKED: "cancel",
+    StateType.BLOCKED: "stop",
+    StateType.CREATED: "positive",
+
+}

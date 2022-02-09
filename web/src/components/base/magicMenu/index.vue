@@ -29,7 +29,7 @@
         },
         data() {
             return {
-                title: '调度平台',
+                title: '任务调度平台',
                 headerTitle: '',
                 imgSrc: '',
             }

@@ -87,7 +87,6 @@
 </template>
 
 <script>
-    import editor from '@/components/monacoEditor'
     import {
         deepClone, getUUID
     } from '../../../common/util.js'
@@ -95,6 +94,7 @@
     import G6 from '@antv/g6'
     import statusList from './job_flow_view_detail/statusList.vue'
     import nodeInfo from './job_flow_view_detail/nodeInfo.vue'
+    import editor from '@/components/monacoEditor'
     export default {
         components: {
             statusList,
@@ -216,7 +216,7 @@
             this.timer = setInterval(() => {
                 // 不需要清空画布，非首屏刷新
                 this.handleLoad(false, false)
-            }, 15000)
+            }, 3000)
             window.addEventListener('resize', this.handleChangeCavasSize, false)
         },
         beforeDestroy() {
@@ -595,6 +595,10 @@
                         }
                         // this.nodeDrawer.show = false
                         this.renderCanvas(true, first)
+                        const processState = res.data.pipeline_tree.process_state
+                        if (processState === 'success') {
+                            clearInterval(this.timer)
+                        }
                     } else {
                         this.$cwMessage(res.message, 'error')
                     }

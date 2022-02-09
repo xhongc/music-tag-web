@@ -66,6 +66,7 @@
             },
             initEditor() {
                 // 初始化编辑器，确保dom已经渲染
+                console.log(this.codes)
                 this.monacoEditor = monaco.editor.create(this.$refs.codeEditor, {
                     value: this.codes, //编辑器初始显示文字
                     language: this.language, //语言支持自行查阅demo

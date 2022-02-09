@@ -26,6 +26,17 @@ class Process(models.Model):
     update_time = models.DateTimeField("修改时间", auto_now=True)
     update_by = models.CharField("修改人", max_length=64, null=True)
 
+    @property
+    def clone_data(self):
+        return {
+            "name": self.name,
+            "description": self.description,
+            "run_type": self.run_type,
+            "gateways": self.gateways,
+            "constants": self.constants,
+            "dag": self.dag,
+        }
+
 
 class BaseNode(models.Model):
     name = models.CharField("节点名称", max_length=255, blank=False, null=False)
@@ -58,14 +69,30 @@ class Node(BaseNode):
                                 related_name="nodes")
 
 
-class ProcessRun(Process):
+class ProcessRun(models.Model):
     # new
     process = models.ForeignKey(Process, on_delete=models.SET_NULL, null=True, db_constraint=False,
                                 related_name="run")
-    state = models.CharField("工作流状态", max_length=32)
+
+    name = models.CharField("作业名称", max_length=255, blank=False, null=False)
+    description = models.CharField("作业描述", max_length=255, blank=True, null=True)
+    run_type = models.CharField("调度类型", max_length=32)
+    gateways = JSONField("网关信息", default=dict)
+    constants = JSONField("内部变量信息", default=dict)
+    dag = JSONField("DAG", default=dict)
+
+    create_by = models.CharField("创建者", max_length=64, null=True)
+    create_time = models.DateTimeField("创建时间", default=datetime.now)
+    update_time = models.DateTimeField("修改时间", auto_now=True)
+    update_by = models.CharField("修改人", max_length=64, null=True)
+
     root_id = models.CharField("根节点uuid", max_length=255)
 
 
 class NodeRun(BaseNode):
     process_run = models.ForeignKey(ProcessRun, on_delete=models.SET_NULL, null=True, db_constraint=False,
                                     related_name="nodes_run")
+
+    @staticmethod
+    def field_names():
+        return [field.name for field in NodeRun._meta.get_fields() if field.name not in ["id"]]

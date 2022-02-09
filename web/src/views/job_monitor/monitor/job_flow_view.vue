@@ -205,7 +205,7 @@
                 setting: {
                     size: 'small', // 表格大小
                     fields: fields, // 表格所有列
-                    selectedFields: fields.slice(0, 8) // 表格当前显示列
+                    selectedFields: fields.slice(0, 1) // 表格当前显示列
                 },
                 opreateFlag: false,
                 midSearchForm: {},

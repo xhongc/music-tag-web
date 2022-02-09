@@ -3,25 +3,25 @@ import {GET, POST, PUT, DELETE, reUrl} from '../../axiosconfig/axiosconfig'
 export default {
     // 作业台
     list: function(params) {
-        return GET(reUrl + '/process/', params)
+        return GET(reUrl + '/process/flow/', params)
     },
     create: function(params) {
-        return POST(reUrl + '/process/', params)
+        return POST(reUrl + '/process/flow/', params)
     },
     retrieve: function(id) {
-        return GET(reUrl + '/process/' + JSON.stringify(id) + '/')
+        return GET(reUrl + '/process/flow/' + JSON.stringify(id) + '/')
     },
     update: function(id, params) {
-        return PUT(reUrl + '/process/' + JSON.stringify(id) + '/', params)
+        return PUT(reUrl + '/process/flow/' + JSON.stringify(id) + '/', params)
     },
     clone: function(params) {
         return POST(reUrl + '/process/clone/', params)
     },
     delete: function(id) {
-        return DELETE(reUrl + '/process/' + JSON.stringify(id) + '/')
+        return DELETE(reUrl + '/process/flow/' + JSON.stringify(id) + '/')
     },
     execute: function(params) {
-        return POST(reUrl + '/process/execute/', params)
+        return POST(reUrl + '/process/flow/execute/', params)
     },
     get_process_node: function(params) {
         return GET(reUrl + '/process/get_process_node/', params)

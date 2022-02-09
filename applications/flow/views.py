@@ -6,17 +6,18 @@ from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from applications.flow.models import Process, Node, ProcessRun
+from applications.flow.models import Process, Node, ProcessRun, NodeRun
 from applications.flow.serializers import ProcessViewSetsSerializer, ListProcessViewSetsSerializer, \
     RetrieveProcessViewSetsSerializer, ExecuteProcessSerializer, ListProcessRunViewSetsSerializer, \
     RetrieveProcessRunViewSetsSerializer
-from applications.utils.dag_helper import DAG
+from applications.utils.dag_helper import DAG, instance_dag
 from component.drf.viewsets import GenericViewSet
 
 
 class ProcessViewSets(mixins.ListModelMixin,
                       mixins.CreateModelMixin,
                       mixins.RetrieveModelMixin,
+                      mixins.DestroyModelMixin,
                       GenericViewSet):
     queryset = Process.objects.order_by("-update_time")
 
@@ -38,8 +39,10 @@ class ProcessViewSets(mixins.ListModelMixin,
         dag_obj = DAG()
         dag_obj.from_dict(process.dag)
         topological_sort = dag_obj.topological_sort()
-        start = pipeline_tree = EmptyStartEvent()
 
+        start = pipeline_tree = EmptyStartEvent()
+        # 运行实例的uuid
+        process_run_uuid = {topological_sort[0]: start.id}
         for pipeline_id in topological_sort[1:]:
             if node_map[pipeline_id].node_type == 0:
                 act = EmptyStartEvent()
@@ -47,12 +50,24 @@ class ProcessViewSets(mixins.ListModelMixin,
                 act = EmptyEndEvent()
             else:
                 act = ServiceActivity(component_code="http_request")
+                act.component.inputs.inputs = Var(type=Var.PLAIN, value=node_map[pipeline_id].inputs)
+            process_run_uuid[pipeline_id] = act.id
             pipeline_tree = getattr(pipeline_tree, "extend")(act)
 
         pipeline_data = Data()
         pipeline = builder.build_tree(start, data=pipeline_data)
         runtime = BambooDjangoRuntime()
         api.run_pipeline(runtime=runtime, pipeline=pipeline)
+
+        process_run_data = process.clone_data
+        process_run_data["dag"] = instance_dag(process_run_data["dag"], process_run_uuid)
+        process_run = ProcessRun.objects.create(process_id=process.id, root_id=pipeline["id"], **process_run_data)
+        node_run_bulk = []
+        for pipeline_id, node in node_map.items():
+            _node = {k: v for k, v in node.__dict__.items() if k in NodeRun.field_names()}
+            _node["uuid"] = process_run_uuid[pipeline_id]
+            node_run_bulk.append(NodeRun(process_run=process_run, **_node))
+        NodeRun.objects.bulk_create(node_run_bulk, batch_size=500)
         return Response({})
 
 

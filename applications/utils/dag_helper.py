@@ -191,6 +191,14 @@ class DAG(object):
         return len(self.graph)
 
 
+def instance_dag(dag_dict, process_run_uuid):
+    new_dag_dict = defaultdict(list)
+    for k, v_list in dag_dict.items():
+        for v in v_list:
+            new_dag_dict[process_run_uuid[k]].append(process_run_uuid[v])
+    return dict(new_dag_dict)
+
+
 if __name__ == '__main__':
     dag = DAG()
     dag.add_node("a")

@@ -1,7 +1,12 @@
+import json
+
 from django.db import transaction
 from rest_framework import serializers
+from bamboo_engine import api
+from pipeline.eri.runtime import BambooDjangoRuntime
 
-from applications.flow.models import Process, Node, ProcessRun
+from applications.flow.constants import PIPELINE_STATE_TO_FLOW_STATE
+from applications.flow.models import Process, Node, ProcessRun, NodeRun
 
 
 class ProcessViewSetsSerializer(serializers.Serializer):
@@ -105,11 +110,6 @@ class RetrieveProcessViewSetsSerializer(serializers.ModelSerializer):
 class RetrieveProcessRunViewSetsSerializer(serializers.ModelSerializer):
     pipeline_tree = serializers.SerializerMethodField()
 
-    # category = serializers.SerializerMethodField()
-    #
-    # def get_category(self, obj):
-    #     return obj.category.all()
-
     def get_pipeline_tree(self, obj):
         lines = []
         nodes = []
@@ -119,16 +119,28 @@ class RetrieveProcessRunViewSetsSerializer(serializers.ModelSerializer):
                     "from": _from,
                     "to": _to
                 })
-        node_list = Node.objects.filter(process_id=obj.id).values()
+        runtime = BambooDjangoRuntime()
+        process_info = api.get_pipeline_states(runtime, root_id=obj.root_id)
+        process_state = PIPELINE_STATE_TO_FLOW_STATE.get(process_info.data[obj.root_id]["state"])
+        state_map = process_info.data[obj.root_id]["children"]
+        node_list = NodeRun.objects.filter(process_run_id=obj.id).values()
         for node in node_list:
+            pipeline_state = state_map.get(node["uuid"], {}).get("state", "READY")
+            flow_state = PIPELINE_STATE_TO_FLOW_STATE[pipeline_state]
+            outputs = ""
+            if node["node_type"] not in [0, 1] and flow_state == "success":
+                output_data = api.get_execution_data_outputs(runtime, node_id=node["uuid"])
+                outputs = json.dumps(output_data.data["outputs"])
             nodes.append({"show": node["show"],
                           "top": node["top"],
                           "left": node["left"],
                           "ico": node["ico"],
                           "type": node["node_type"],
                           "name": node["name"],
+                          "state": flow_state,
                           "node_data": {
                               "inputs": node["inputs"],
+                              "outputs": outputs,
                               "run_mark": 0,
                               "node_name": node["name"],
                               "description": node["description"],
@@ -138,11 +150,11 @@ class RetrieveProcessRunViewSetsSerializer(serializers.ModelSerializer):
                               "is_skip_fail": node["is_skip_fail"],
                               "is_timeout_alarm": node["is_timeout_alarm"]},
                           "uuid": node["uuid"]})
-        return {"lines": lines, "nodes": nodes}
+        return {"lines": lines, "nodes": nodes, "process_state": process_state}
 
     class Meta:
         model = ProcessRun
-        fields = ("id", "name", "description", "category", "run_type", "pipeline_tree")
+        fields = ("id", "name", "description", "run_type", "pipeline_tree")
 
 
 class ExecuteProcessSerializer(serializers.Serializer):
