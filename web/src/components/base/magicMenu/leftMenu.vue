@@ -33,6 +33,16 @@ export default {
                         "children": []
                     },
                     {
+                        "name": "NewJob",
+                        "cnName": "作业节点管理",
+                        "to": "/newjob",
+                        "icon": "iconfont icon-mianxingtubiao-zuoyeguanli",
+                        "hasChild": true,
+                        "children": [
+                            {"name": "NewJob", "cnName": "新建作业", "to": "/newjob", "hasChild": false},
+                            {"name": "JobList", "cnName": "作业列表", "to": "/joblist", "hasChild": false}]
+                    },
+                    {
                         'name': 'NewJobFlow',
                         'cnName': '作业流管理',
                         'to': '/newjobflow',

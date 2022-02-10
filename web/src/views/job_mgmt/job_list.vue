@@ -84,20 +84,12 @@
                 <bk-table-column label="操作" width="180">
                     <template slot-scope="props">
                         <div style="display: flex;align-items: center;">
-                            <bk-button class="mr10" theme="primary" text @click="handleImplement(props.row)"
-                                v-if="auth.operate">执行</bk-button>
                             <bk-button class="mr10" theme="primary" text @click="handleOpenUpdate(props.row)"
                                 v-if="auth.modify">修改</bk-button>
+                            <bk-button class="mr10" theme="primary" text @click="handleClone(props.row)" v-if="auth.modify">克隆
+                            </bk-button>
                             <bk-button class="mr10" theme="primary" text @click="handleDelete(props.row)" v-if="auth.del">删除
                             </bk-button>
-                            <bk-popover ext-cls="dot-menu" placement="bottom-start" theme="dot-menu light" trigger="click"
-                                :arrow="false" :distance="0" offset="15">
-                                <span class="dot-menu-trigger"></span>
-                                <ul class="dot-menu-list" slot="content">
-                                    <li class="dot-menu-item" v-if="auth.modify" @click="handleClone(props.row)">克隆</li>
-                                    <li class="dot-menu-item" @click="handleJumpHistory(props.row)">执行历史</li>
-                                </ul>
-                            </bk-popover>
                         </div>
                     </template>
                 </bk-table-column>

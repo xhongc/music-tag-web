@@ -59,6 +59,8 @@ class BaseNode(models.Model):
 
     inputs = JSONField("输入参数", default=dict)
     outputs = JSONField("输出参数", default=dict)
+    # 如为子流程content为process id， 如为 节点模板为node id
+    content = models.IntegerField("模板id", default=0)
 
     class Meta:
         abstract = True
@@ -96,3 +98,7 @@ class NodeRun(BaseNode):
     @staticmethod
     def field_names():
         return [field.name for field in NodeRun._meta.get_fields() if field.name not in ["id"]]
+
+
+class NodeTemplate(BaseNode):
+    template_type = models.CharField("节点模板类型", max_length=1, default="2")

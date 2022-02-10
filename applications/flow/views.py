@@ -6,10 +6,10 @@ from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from applications.flow.models import Process, Node, ProcessRun, NodeRun
+from applications.flow.models import Process, Node, ProcessRun, NodeRun, NodeTemplate
 from applications.flow.serializers import ProcessViewSetsSerializer, ListProcessViewSetsSerializer, \
     RetrieveProcessViewSetsSerializer, ExecuteProcessSerializer, ListProcessRunViewSetsSerializer, \
-    RetrieveProcessRunViewSetsSerializer
+    RetrieveProcessRunViewSetsSerializer, NodeTemplateSerializer
 from applications.utils.dag_helper import DAG, instance_dag
 from component.drf.viewsets import GenericViewSet
 
@@ -18,6 +18,7 @@ class ProcessViewSets(mixins.ListModelMixin,
                       mixins.CreateModelMixin,
                       mixins.RetrieveModelMixin,
                       mixins.DestroyModelMixin,
+                      mixins.UpdateModelMixin,
                       GenericViewSet):
     queryset = Process.objects.order_by("-update_time")
 
@@ -83,6 +84,15 @@ class ProcessRunViewSets(mixins.ListModelMixin,
             return RetrieveProcessRunViewSetsSerializer
         elif self.action == "execute":
             return ExecuteProcessSerializer
+
+
+class NodeTemplateViewSet(mixins.ListModelMixin,
+                          mixins.CreateModelMixin,
+                          mixins.UpdateModelMixin,
+                          mixins.DestroyModelMixin,
+                          GenericViewSet):
+    queryset = NodeTemplate.objects.order_by("-id")
+    serializer_class = NodeTemplateSerializer
 
 
 # Create your views here.

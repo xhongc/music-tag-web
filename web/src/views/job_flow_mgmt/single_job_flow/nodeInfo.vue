@@ -90,7 +90,7 @@
         </div>
         <div class="footer" v-if="!disabled">
             <bk-button theme="primary" @click="handleConfim" style="margin-right: 8px;" :loading="isChecking">确定</bk-button>
-            <bk-button @click="handleCancel">取消</bk-button>
+            <bk-button @click="handleCancel">保存为模板</bk-button>
         </div>
     </div>
 </template>
@@ -270,7 +270,24 @@
             },
             // 处理取消
             handleCancel() {
-                this.$emit('node-drawer-close', true)
+                this.isChecking = true
+                this.$refs.form.validate().then(validator => {
+                    this.isChecking = false
+                    this.$emit('update-node-data', this.form, this.nodeData.id)
+                    this.form['name'] = this.form['node_name']
+                    this.form['component_code'] = 'http_request'
+                    this.$api.content.create(this.form).then(res => {
+                        if (res.result) {
+                            this.$cwMessage('保存成功！', 'success')
+                        } else {
+                            this.$cwMessage(res.message, 'error')
+                        }
+                    })
+                    this.$emit('node-drawer-close', true)
+                }, validator => {
+                    this.isChecking = false
+                    // alert(`${validator.field}：${validator.content}`)
+                })
             },
             // 处理删除前置条件检测命令
             handleDeleteCommand(index) {

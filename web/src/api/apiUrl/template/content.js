@@ -3,22 +3,22 @@ import {GET, POST, PUT, DELETE, reUrl} from '../../axiosconfig/axiosconfig'
 export default {
     // 作业台
     list: function(params) {
-        return GET(reUrl + '/content/', params)
+        return GET(reUrl + '/node/template/', params)
     },
     create: function(params) {
-        return POST(reUrl + '/content/', params)
+        return POST(reUrl + '/node/template/', params)
     },
     retrieve: function(id, params) {
-        return GET(reUrl + '/content/' + JSON.stringify(id) + '/', params)
+        return GET(reUrl + '/node/template/' + JSON.stringify(id) + '/', params)
     },
     update: function(id, params) {
-        return PUT(reUrl + '/content/' + JSON.stringify(id) + '/', params)
+        return PUT(reUrl + '/node/template/' + JSON.stringify(id) + '/', params)
     },
     clone: function(params) {
-        return POST(reUrl + '/content/clone/', params)
+        return POST(reUrl + '/node/template/clone/', params)
     },
     delete: function(id) {
-        return DELETE(reUrl + '/content/' + JSON.stringify(id) + '/')
+        return DELETE(reUrl + '/node/template/' + JSON.stringify(id) + '/')
     },
     execute: function(params) {
         return POST(reUrl + '/content/execute/', params)

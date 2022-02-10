@@ -1,12 +1,13 @@
 import json
 
-from django.db import transaction
-from rest_framework import serializers
 from bamboo_engine import api
+from django.db import transaction
 from pipeline.eri.runtime import BambooDjangoRuntime
+from rest_framework import serializers
 
 from applications.flow.constants import PIPELINE_STATE_TO_FLOW_STATE
-from applications.flow.models import Process, Node, ProcessRun, NodeRun
+from applications.flow.models import Process, Node, ProcessRun, NodeRun, NodeTemplate
+from applications.utils.uuid_helper import get_uuid
 
 
 class ProcessViewSetsSerializer(serializers.Serializer):
@@ -17,16 +18,22 @@ class ProcessViewSetsSerializer(serializers.Serializer):
     pipeline_tree = serializers.JSONField(required=True)
 
     def save(self, **kwargs):
+        if self.instance is not None:
+            self.update(instance=self.instance, validated_data=self.validated_data)
+        else:
+            self.create(validated_data=self.validated_data)
+
+    def create(self, validated_data):
         node_map = {}
-        for node in self.validated_data["pipeline_tree"]["nodes"]:
+        for node in validated_data["pipeline_tree"]["nodes"]:
             node_map[node["uuid"]] = node
         dag = {k: [] for k in node_map.keys()}
         for line in self.validated_data["pipeline_tree"]["lines"]:
             dag[line["from"]].append(line["to"])
         with transaction.atomic():
-            process = Process.objects.create(name=self.validated_data["name"],
-                                             description=self.validated_data["description"],
-                                             run_type=self.validated_data["run_type"],
+            process = Process.objects.create(name=validated_data["name"],
+                                             description=validated_data["description"],
+                                             run_type=validated_data["run_type"],
                                              dag=dag)
             bulk_nodes = []
             for node in node_map.values():
@@ -38,7 +45,7 @@ class ProcessViewSetsSerializer(serializers.Serializer):
                                        fail_retry_count=node_data.get("fail_retry_count", 0) or 0,
                                        fail_offset=node_data.get("fail_offset", 0) or 0,
                                        fail_offset_unit=node_data.get("fail_offset_unit", "seconds"),
-                                       node_type=node.get("type", 3),
+                                       node_type=node.get("type", 2),
                                        is_skip_fail=node_data["is_skip_fail"],
                                        is_timeout_alarm=node_data["is_skip_fail"],
                                        inputs=node_data["inputs"],
@@ -47,9 +54,53 @@ class ProcessViewSetsSerializer(serializers.Serializer):
                                        left=node["left"],
                                        ico=node["ico"],
                                        outputs={},
-                                       component_code="http_request"
+                                       component_code="http_request",
+                                       content=node.get("content", 0) or 0
                                        ))
             Node.objects.bulk_create(bulk_nodes, batch_size=500)
+        self._data = {}
+
+    def update(self, instance, validated_data):
+        node_map = {}
+        for node in validated_data["pipeline_tree"]["nodes"]:
+            node_map[node["uuid"]] = node
+        dag = {k: [] for k in node_map.keys()}
+        for line in self.validated_data["pipeline_tree"]["lines"]:
+            dag[line["from"]].append(line["to"])
+        with transaction.atomic():
+            instance.name = validated_data["name"]
+            instance.description = validated_data["description"]
+            instance.run_type = validated_data["run_type"]
+            instance.dag = dag
+            instance.save()
+            bulk_nodes = []
+            node_dict = Node.objects.filter(process_id=instance.id).in_bulk(field_name="uuid")
+            for node in node_map.values():
+                node_data = node["node_data"]
+                node_obj = node_dict[node["uuid"]]
+
+                node_obj.content = node.get("content", 0) or 0
+                node_obj.name = node_data["node_name"]
+                node_obj.description = node_data["description"]
+                node_obj.fail_retry_count = node_data.get("fail_retry_count", 0) or 0
+                node_obj.fail_offset = node_data.get("fail_offset", 0) or 0
+                node_obj.fail_offset_unit = node_data.get("fail_offset_unit", "seconds")
+                node_obj.node_type = node.get("type", 3)
+                node_obj.is_skip_fail = node_data["is_skip_fail"]
+                node_obj.is_timeout_alarm = node_data["is_timeout_alarm"]
+                node_obj.inputs = node_data["inputs"]
+                node_obj.show = node["show"]
+                node_obj.top = node["top"]
+                node_obj.left = node["left"]
+                node_obj.ico = node["ico"]
+                node_obj.outputs = {}
+                node_obj.component_code = "http_request"
+                bulk_nodes.append(node_obj)
+            Node.objects.bulk_update(bulk_nodes, fields=["name", "description", "fail_retry_count", "fail_offset",
+                                                         "fail_offset_unit", "node_type", "is_skip_fail",
+                                                         "is_timeout_alarm", "inputs", "show", "top", "left", "ico",
+                                                         "outputs", "component_code"], batch_size=500)
+        self._data = {}
 
 
 class ListProcessViewSetsSerializer(serializers.ModelSerializer):
@@ -89,6 +140,7 @@ class RetrieveProcessViewSetsSerializer(serializers.ModelSerializer):
                           "ico": node["ico"],
                           "type": node["node_type"],
                           "name": node["name"],
+                          "content": node["content"],
                           "node_data": {
                               "inputs": node["inputs"],
                               "run_mark": 0,
@@ -159,3 +211,14 @@ class RetrieveProcessRunViewSetsSerializer(serializers.ModelSerializer):
 
 class ExecuteProcessSerializer(serializers.Serializer):
     process_id = serializers.IntegerField(required=True)
+
+
+class NodeTemplateSerializer(serializers.ModelSerializer):
+
+    def validate(self, attrs):
+        attrs["uuid"] = get_uuid()
+        return attrs
+
+    class Meta:
+        model = NodeTemplate
+        exclude = ("uuid",)

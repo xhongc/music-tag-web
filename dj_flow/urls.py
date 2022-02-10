@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from applications.flow.urls import flow_router
+from applications.flow.urls import flow_router, node_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("process/", include(flow_router.urls)),
+    path("node/", include(node_router.urls)),
 
 ]

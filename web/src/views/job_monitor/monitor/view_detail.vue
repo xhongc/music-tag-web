@@ -234,7 +234,7 @@
                 this.graph.on('node:click', e => {
                     const model = e.item.get('model')
                     // 开始节点，结束节点，作业流节点不做处理
-                    if (model.nodeType === 0 || model.nodeType === 1 || model.nodeType === 3) {
+                    if (model.nodeType === 0 || model.nodeType === 1) {
                         return false
                     }
                     this.nodeData = {

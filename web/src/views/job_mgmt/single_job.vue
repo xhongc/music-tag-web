@@ -107,12 +107,9 @@
                             </bk-col>
                         </bk-row>
                     </template>
-                    <bk-form-item label="脚本内容:" :error-display-type="'normal'" :required="true"
-                        :property="'data.script_content'"
-                        v-show="!(form.data.script_type === 6) && !(form.data.script_type === 7)">
-                        <!-- <bk-input :type="'textarea'" style="width: 720px;" :rows="10" ext-cls="custom-textarea" v-model="form.data.script_content"></bk-input> -->
-                        <editor :width="'720px'" :height="'300px'" ref="editor" :codes="form.data.script_content">
-                        </editor>
+                    <bk-form-item label="脚本内容:" :error-display-type="'normal'" :required="true" :property="'data.script_content'" v-show="!(form.data.script_type === 6) && !(form.data.script_type === 7)">
+                        <bk-input :type="'textarea'" style="width: 720px;" :rows="10" ext-cls="custom-textarea" v-model="form.data.script_content">
+                        </bk-input>
                     </bk-form-item>
                     <bk-form-item label="作业退出码:">
                         <bk-input placeholder="作业退出码" v-model="form.exit_code"></bk-input>
@@ -139,14 +136,12 @@
 </template>
 
 <script>
-    import editor from '@/components/monacoEditor'
     import {
         deepClone, isJson
     } from '../../common/util.js'
     import { validateURL } from '../../common/validate.js'
     export default {
         components: {
-            editor
         },
         data() {
             return {
@@ -585,7 +580,7 @@
             },
             // 获取跑批系统
             getRunSysList() {
-                this.formLoading = true
+                // this.formLoading = true
                 this.runSysList = []
             },
             // 设置默认编辑器

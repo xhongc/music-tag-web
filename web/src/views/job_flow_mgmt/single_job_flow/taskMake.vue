@@ -9,12 +9,12 @@
         </div>
         <div class="box">
             <bk-compose-form-item head-background-color="#fff">
-                <bk-select :clearable="false" style="width: 94px;" v-model="form.makeType" placeholder="请选择" @change="handleMakeTypeChange"
-                    :disabled="disabled ? true : controlType === 'calendar' ? false : true">
+                <bk-select :clearable="false" style="width: 111px;" v-model="form.makeType" placeholder="请选择" @change="handleMakeTypeChange"
+                    :disabled="false">
                     <bk-option v-for="(item, index) in makeList" :key="index" :id="item.value" :name="item.label">
                     </bk-option>
                 </bk-select>
-                <bk-input clearable style="width: 380px;" :placeholder="'请输入'" :right-icon="'bk-icon icon-search'"
+                <bk-input clearable style="width: 356px;margin-left: 8px" :placeholder="'请输入'" :right-icon="'bk-icon icon-search'"
                     v-model="form.name" @right-icon-click="handleSearch" @enter="handleSearch" :disabled="disabled">
                 </bk-input>
             </bk-compose-form-item>
@@ -52,63 +52,55 @@
                 form: {
                     system_id: '', // 跑批系统id
                     agent_id: '', // agent
-                    makeType: 0, // 是否编排
+                    makeType: 3, // 是否编排
                     name: '' // 作业名
                 },
-                makeList: [{
-                    label: '已编排',
-                    value: 1
-                }, {
-                    label: '未编排',
-                    value: 0
-                }],
+                makeList: [
+                    {
+                        label: '逻辑节点',
+                        value: 3
+                    }, {
+                        label: '空节点模板',
+                        value: 0
+                    }, {
+                        label: '节点模板',
+                        value: 2
+                    }, {
+                        label: '子流程',
+                        value: 1
+                    }],
                 jobList: [
                     {
                         'id': 45,
                         'creator': 'product',
-                        'name': 'HTTP请求',
-                        'type': 2,
-                        'nodeType': 2,
-                        'create_time': '2021-08-10 17:34:57',
-                        'description': 'xx',
-                        'editor': 'product',
-                        'edit_time': '2021-11-15 11:55:06',
-                        'total_run_count': 145,
-                        'last_run_at': '2021-11-15 11:55:06',
-                        'exit_code': '',
-                        'station': 'agent11',
-                        'ip': '192.168.163.185',
-                        'os': 'linux centos',
-                        'category': 'v17',
-                        'process': '参数传递_test2_20210818191900,stop_test,重新执行测试,参数传递_test2,外部作业流_test1',
-                        'account': 'root',
-                        'script_type': 4,
-                        'script_content': '1',
-                        'script_timeout': 8600,
+                        'name': '条件网关',
+                        'type': 4,
+                        'nodeType': 4,
                         'icon': 'e6d9'
                     },
                     {
-                        'id': 45,
+                        'id': 46,
                         'creator': 'product',
-                        'name': '條件分支',
+                        'name': '并行网关',
                         'type': 4,
                         'nodeType': 4,
-                        'create_time': '2021-08-10 17:34:57',
-                        'description': 'xx',
-                        'editor': 'product',
-                        'edit_time': '2021-11-15 11:55:06',
-                        'total_run_count': 145,
-                        'last_run_at': '2021-11-15 11:55:06',
-                        'exit_code': '',
-                        'station': 'agent11',
-                        'ip': '192.168.163.185',
-                        'os': 'linux centos',
-                        'category': 'v17',
-                        'process': '参数传递_test2_20210818191900,stop_test,重新执行测试,参数传递_test2,外部作业流_test1',
-                        'account': 'root',
-                        'script_type': 4,
-                        'script_content': '1',
-                        'script_timeout': 8600
+                        'icon': 'e6d9'
+                    },
+                    {
+                        'id': 47,
+                        'creator': 'product',
+                        'name': '汇聚网关',
+                        'type': 4,
+                        'nodeType': 4,
+                        'icon': 'e6d9'
+                    },
+                    {
+                        'id': 48,
+                        'creator': 'product',
+                        'name': '条件并行网关',
+                        'type': 4,
+                        'nodeType': 4,
+                        'icon': 'e6d9'
                     }
                 ]
             }
@@ -160,10 +152,34 @@
                     this.jobListLoading = false
                 })
             },
+            // 获取节点模板
+            getNodeTemplateList(str) {
+                this.jobListLoading = true
+                const params = {
+                    category: this.form.system_id
+                }
+                if (str === 'search') {
+                    params.name = this.form.name
+                }
+                this.$api.content.list(params).then(res => {
+                    if (res.result) {
+                        this.jobList = res.data.items.map((item) => {
+                            return {
+                                ...item,
+                                nodeType: 2,
+                                endUuid: item.end_uuid,
+                                icon: 'e6d9'
+                            }
+                        })
+                    } else {
+                        this.$cwMessage(res.message, 'error')
+                    }
+                    this.jobListLoading = false
+                })
+            },
             // 获取作业
             getJobList(str) {
-                if (this.form.agent_id === '') return
-                this.jobListLoading = true
+                // this.jobListLoading = true
                 const params = {
                     station: this.form.agent_id
                 }
@@ -209,19 +225,51 @@
                 this.jobList = []
                 this.form.name = ''
                 this.form.agent_id = ''
-                if (this.form.system_id !== '') {
-                    // 编排类型切换为未编排时，当前跑批系统id不为空，默认获取agent列表
-                    if (!this.form.makeType) {
-                        this.form.system_id = this.midRunId
-                        if (this.form.system_id !== '') {
-                            this.getAgentList()
+                // 编排类型切换为未编排时，当前跑批系统id不为空，默认获取agent列表
+                if (this.form.makeType === 0) {
+                    this.getNodeTemplateList()
+                } else if (this.form.makeType === 1) {
+                    // 编排类型切换成已编排时，记录此时的跑批id
+                    this.midRunId = this.form.system_id
+                    // 编排类型切换为已编排时，当前跑批系统id不为空，默认获取作业流列表
+                    this.getJobFlowList()
+                } else if (this.form.makeType === 2) {
+                    this.getNodeTemplateList()
+                } else if (this.form.makeType === 3) {
+                    this.jobList = [
+                        {
+                            'id': 45,
+                            'creator': 'product',
+                            'name': '条件网关',
+                            'type': 4,
+                            'nodeType': 4,
+                            'icon': 'e6d9'
+                        },
+                        {
+                            'id': 46,
+                            'creator': 'product',
+                            'name': '并行网关',
+                            'type': 4,
+                            'nodeType': 4,
+                            'icon': 'e6d9'
+                        },
+                        {
+                            'id': 47,
+                            'creator': 'product',
+                            'name': '汇聚网关',
+                            'type': 4,
+                            'nodeType': 4,
+                            'icon': 'e6d9'
+                        },
+                        {
+                            'id': 48,
+                            'creator': 'product',
+                            'name': '条件并行网关',
+                            'type': 4,
+                            'nodeType': 4,
+                            'icon': 'e6d9'
                         }
-                    } else {
-                        // 编排类型切换成已编排时，记录此时的跑批id
-                        this.midRunId = this.form.system_id
-                        // 编排类型切换为已编排时，当前跑批系统id不为空，默认获取作业流列表
-                        this.getJobFlowList()
-                    }
+                    ]
                 }
             },
             // 处理查询

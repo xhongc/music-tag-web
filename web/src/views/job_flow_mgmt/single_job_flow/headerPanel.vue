@@ -5,7 +5,7 @@
                 <i class="iconfont icon-mianxingtubiao-jibenxinxi" :style="{ color: isActive === 1 ? '#3A84FF' : '#979BA5' }"></i>
                 <p :style="{ color: isActive === 1 ? '#3A84FF' : '#333333' }">基本信息</p>
             </div>
-            <div class="box" style="margin-left: 36px;" @click="handleOpenTaskMake">
+            <div class="box" style="margin-left: 36px;" @click="handleOpenTaskMake" v-if="!disabled">
                 <i class="iconfont icon-mianxingtubiao-renwubianpai" :style="{ color: isActive === 2 ? '#3A84FF' : '#979BA5' }"></i>
                 <p :style="{ color: isActive === 2 ? '#3A84FF' : '#333333' }">任务编排</p>
             </div>
@@ -13,7 +13,7 @@
         <div class="right">
             <i class="iconfont icon-xianxingtubiao-fuwei" title="复位" @click="handleReset"></i>
             <i class="iconfont icon-xianxingtubiao-yijianbianpai" title="一键排版" @click="handleLayoutSetting"></i>
-            <i class="iconfont icon-xianxingtubiao-baocun" title="保存" @click="handleSave"></i>
+            <i class="iconfont icon-xianxingtubiao-baocun" title="保存" @click="handleSave" v-if="!disabled"></i>
         </div>
     </div>
 </template>
@@ -48,7 +48,8 @@
                 validatorFlag: true, // 上传前校验位
                 midNodes: [], // 保存前节点数据处理
                 midLines: [],
-                isActive: 0
+                isActive: 0,
+                disabled: false
             }
         },
         created() {
@@ -366,11 +367,11 @@
                     this.checkClose()
                     // 表明已形成闭环，开始表单校验
                     if (this.validatorFlag) {
-                        this.checnkFrom()
+                        this.checkFrom()
                     }
                 }
             },
-            checnkFrom() {
+            checkFrom() {
                 this.father_this.$refs.baseInfo.$refs.form.validate().then(validator => {
                     this.validatorFlag = true
                     // let flag = false
@@ -420,19 +421,6 @@
                         params.description = this.father_this.$refs.baseInfo.form.jobFlowDescribe // 作业流描述
                         params.var_table = this.father_this.$refs.baseInfo.form.var_table // 变量表值
                         params.category = this.father_this.$refs.baseInfo.form.category // 跑批系统id
-                        // 有前置依赖
-                        if (this.father_this.$refs.baseInfo.form.pre_commands[0].key !== '') {
-                            if (!this.father_this.$refs.baseInfo.form.pre_category) {
-                                return this.$cwMessage('有前置依赖，前置跑批系统不能为空，请选择！', 'warning')
-                            }
-                            if (!this.father_this.$refs.baseInfo.form.pre_agent) {
-                                return this.$cwMessage('有前置依赖，前置Agent不能为空，请选择！', 'warning')
-                            }
-                            // 到了这里说明此时有前置依赖，且前置跑批系统和前置Agent都不为空
-                            params.pre_category = this.father_this.$refs.baseInfo.form.pre_category // 作业流前置跑批id
-                            params.pre_agent = this.father_this.$refs.baseInfo.form.pre_agent // 作业流前置agent
-                            params.pre_commands = this.father_this.$refs.baseInfo.form.pre_commands // 作业流前置依赖
-                        }
                         // 有前置文件路径
                         if (this.father_this.$refs.baseInfo.form.file_dependence.file_path !== '') {
                             if (!this.father_this.$refs.baseInfo.form.pre_category) {
