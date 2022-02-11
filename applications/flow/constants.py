@@ -36,3 +36,10 @@ PIPELINE_STATE_TO_FLOW_STATE = {
     StateType.CREATED: "positive",
 
 }
+
+
+class NodeTemplateType:
+    # 空节点模板
+    EmptyTemplate = "0"
+    # 带内容的节点模板
+    ContentTemplate = "2"

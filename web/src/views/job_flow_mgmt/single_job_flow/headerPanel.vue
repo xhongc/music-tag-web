@@ -306,7 +306,8 @@
                     }
                 })
                 // 删除作业流节点及连线，避免干扰
-                const flag = this.deleteFlowNode(paramData)
+                // const flag = this.deleteFlowNode(paramData)
+                const flag = true
                 if (!flag) {
                     this.validatorFlag = false
                     return false

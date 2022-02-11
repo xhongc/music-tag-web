@@ -131,7 +131,7 @@
             getJobFlowList(str) {
                 this.jobListLoading = true
                 const params = {
-                    category: this.form.system_id
+                    page_size: 20
                 }
                 if (str === 'search') {
                     params.name = this.form.name
@@ -156,7 +156,8 @@
             getNodeTemplateList(str) {
                 this.jobListLoading = true
                 const params = {
-                    category: this.form.system_id
+                    template_type: this.form.makeType,
+                    page_size: 999
                 }
                 if (str === 'search') {
                     params.name = this.form.name
@@ -274,12 +275,50 @@
             },
             // 处理查询
             handleSearch() {
-                if (!this.form.makeType) {
-                    // 当前作业为未编排,查询获取作业列表
-                    this.getJobList('search')
-                } else {
-                    // 当前作业为已编排,查询获取作业流列表
+                if (this.form.makeType === 0) {
+                    this.getNodeTemplateList('search')
+                } else if (this.form.makeType === 1) {
+                    // 编排类型切换成已编排时，记录此时的跑批id
+                    this.midRunId = this.form.system_id
+                    // 编排类型切换为已编排时，当前跑批系统id不为空，默认获取作业流列表
                     this.getJobFlowList('search')
+                } else if (this.form.makeType === 2) {
+                    this.getNodeTemplateList('search')
+                } else if (this.form.makeType === 3) {
+                    this.jobList = [
+                        {
+                            'id': 45,
+                            'creator': 'product',
+                            'name': '条件网关',
+                            'type': 4,
+                            'nodeType': 4,
+                            'icon': 'e6d9'
+                        },
+                        {
+                            'id': 46,
+                            'creator': 'product',
+                            'name': '并行网关',
+                            'type': 4,
+                            'nodeType': 4,
+                            'icon': 'e6d9'
+                        },
+                        {
+                            'id': 47,
+                            'creator': 'product',
+                            'name': '汇聚网关',
+                            'type': 4,
+                            'nodeType': 4,
+                            'icon': 'e6d9'
+                        },
+                        {
+                            'id': 48,
+                            'creator': 'product',
+                            'name': '条件并行网关',
+                            'type': 4,
+                            'nodeType': 4,
+                            'icon': 'e6d9'
+                        }
+                    ]
                 }
             },
             // 处理跑批系统id变化

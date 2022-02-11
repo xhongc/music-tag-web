@@ -4,7 +4,7 @@ from django.db import models
 from django.forms import BooleanField
 from django_mysql.models import JSONField
 
-from applications.flow.constants import FAIL_OFFSET_UNIT_CHOICE
+from applications.flow.constants import FAIL_OFFSET_UNIT_CHOICE, NodeTemplateType
 
 
 class Category(models.Model):
@@ -101,4 +101,4 @@ class NodeRun(BaseNode):
 
 
 class NodeTemplate(BaseNode):
-    template_type = models.CharField("节点模板类型", max_length=1, default="2")
+    template_type = models.CharField("节点模板类型", max_length=1, default=NodeTemplateType.ContentTemplate)

@@ -112,10 +112,6 @@ export default G6 => {
                 if (targetNode._cfg.model.nodeType === 0 && sourceNode._cfg.model.nodeType !== 3) {
                     return this.graph.emit('before-edge-add', false, {msg: '禁止从开始节点结束！'})
                 }
-                //从作业流节点结束
-                if (targetNode._cfg.model.nodeType === 3) {
-                    return this.graph.emit('before-edge-add', false, {msg: '禁止从作业流节点结束！'})
-                }
                 let msg = ''
                 this.graph.getEdges().forEach(line => {
                     //重复连线

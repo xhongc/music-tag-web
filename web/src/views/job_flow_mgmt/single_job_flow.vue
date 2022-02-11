@@ -671,11 +671,6 @@
                                         this.graph.emit('before-edge-add', false, {msg: '禁止从开始节点结束！'})
                                         return false
                                     }
-                                    // 从作业流节点结束
-                                    if (targetNode._cfg.model.nodeType === 3) {
-                                        this.graph.emit('before-edge-add', false, {msg: '禁止从作业流节点结束！'})
-                                        return false
-                                    }
                                     let msg = ''
                                     this.graph.getEdges().forEach(line => {
                                         // 重复连线

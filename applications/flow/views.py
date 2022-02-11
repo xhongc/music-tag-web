@@ -6,6 +6,7 @@ from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from applications.flow.filters import NodeTemplateFilter
 from applications.flow.models import Process, Node, ProcessRun, NodeRun, NodeTemplate
 from applications.flow.serializers import ProcessViewSetsSerializer, ListProcessViewSetsSerializer, \
     RetrieveProcessViewSetsSerializer, ExecuteProcessSerializer, ListProcessRunViewSetsSerializer, \
@@ -93,6 +94,7 @@ class NodeTemplateViewSet(mixins.ListModelMixin,
                           GenericViewSet):
     queryset = NodeTemplate.objects.order_by("-id")
     serializer_class = NodeTemplateSerializer
+    filterset_class = NodeTemplateFilter
 
 
 # Create your views here.
