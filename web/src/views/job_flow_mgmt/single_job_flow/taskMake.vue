@@ -60,7 +60,7 @@
                         label: '逻辑节点',
                         value: 3
                     }, {
-                        label: '空节点模板',
+                        label: '标准节点',
                         value: 0
                     }, {
                         label: '节点模板',
