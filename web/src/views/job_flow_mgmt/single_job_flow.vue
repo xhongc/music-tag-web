@@ -743,22 +743,8 @@
                         }
                     },
                     node_data: {
-                        inputs: {
-                            url: '',
-                            method: 'get',
-                            header: [
-                                {
-                                    key: '',
-                                    value: ''
-                                }],
-                            body: '{}',
-                            timeout: 60,
-                            check_point: {
-                                key: '',
-                                condition: '',
-                                values: ''
-                            }
-                        },
+                        inputs: e.target.dataset.inputs,
+                        inputs_component: e.target.dataset.inputs_component,
                         run_mark: 0,
                         node_name: e.target.innerText,
                         description: '',
@@ -780,7 +766,7 @@
                     x,
                     y
                 }
-                console.log('model', model)
+                console.log('model', e.target.dataset)
                 if (model.endUuid !== '' && this.graph.findById(model.endUuid)) {
                     return this.$cwMessage('相同作业流已存在，不可重复添加', 'warning')
                 }

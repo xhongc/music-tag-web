@@ -43,3 +43,28 @@ class NodeTemplateType:
     EmptyTemplate = "0"
     # 带内容的节点模板
     ContentTemplate = "2"
+
+
+a = [
+    {"key": "url", "type": "textarea", "label": "请求地址："},
+    {"key": "method", "type": "select", "label": "请求类型：", "choices": [{"label": "GET", "value": "get"}]},
+    {"key": "header", "type": "dict_map", "label": "Header"},
+    {"key": "body", "type": "textarea", "label": "Body："},
+    {"key": "timeout", "type": "number", "label": "超时时间："}
+]
+i = {
+    "url": "",
+    "method": "get",
+    "header": [
+        {
+            "key": "",
+            "value": ""
+        }],
+    "body": "{}",
+    "timeout": 60,
+    "check_point": {
+        "key": "",
+        "condition": "",
+        "values": ""
+    }
+}
