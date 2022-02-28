@@ -21,7 +21,9 @@
         </div>
         <div class="select-node-box" v-bkloading="{ isLoading: jobListLoading, zIndex: 10 }">
             <div v-for="(item, index) in jobList" :key="index" class="select-node" draggable="true" :title="item.name"
-                :data-nodetype="item.nodeType" :data-content="item.id" :data-icon="item.icon" :data-endUuid="item.endUuid">
+                :data-nodetype="item.nodeType" :data-content="item.id" :data-icon="item.icon" :data-endUuid="item.endUuid"
+                :data-inputs_component="JSON.stringify(item.inputs_component)"
+                :data-inputs="JSON.stringify(item.inputs)">
                 {{item.name}}
             </div>
         </div>

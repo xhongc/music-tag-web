@@ -102,3 +102,5 @@ class NodeRun(BaseNode):
 
 class NodeTemplate(BaseNode):
     template_type = models.CharField("节点模板类型", max_length=1, default=NodeTemplateType.ContentTemplate)
+    inputs_component = JSONField("前端参数组件", default=list)
+    outputs_component = JSONField("前端参数组件", default=list)
