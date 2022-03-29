@@ -155,9 +155,9 @@
                 overflowTooltip: true,
                 sortable: false
             }, {
-                id: 'category_name',
-                label: '跑批系统',
-                overflowTooltip: true,
+                id: 'run_type',
+                label: '调度方式',
+                overflowTooltip: false,
                 sortable: false
             }, {
                 id: 'state',
@@ -165,15 +165,10 @@
                 overflowTooltip: false,
                 sortable: false
             }, {
-                id: 'total_job_count',
-                label: '作业总数',
+                id: 'create_time',
+                label: '创建时间',
                 overflowTooltip: false,
                 sortable: true
-            }, {
-                id: 'type',
-                label: '调度方式',
-                overflowTooltip: false,
-                sortable: false
             }, {
                 id: 'total_not_execute_job_count',
                 label: '未执行作业数',
@@ -205,7 +200,7 @@
                 setting: {
                     size: 'small', // 表格大小
                     fields: fields, // 表格所有列
-                    selectedFields: fields.slice(0, 1) // 表格当前显示列
+                    selectedFields: fields.slice(0, 4) // 表格当前显示列
                 },
                 opreateFlag: false,
                 midSearchForm: {},

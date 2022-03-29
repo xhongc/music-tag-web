@@ -13,14 +13,11 @@
     export default {
         data() {
             return {
-                panels: [{
-                             name: 'jobflowview',
-                             label: '作业流视图'
-                         },
-                         {
-                             name: 'jobview',
-                             label: '作业视图'
-                         }
+                panels: [
+                    {
+                        name: 'jobflowview',
+                        label: '作业流视图'
+                    }
                 ]
             }
         },

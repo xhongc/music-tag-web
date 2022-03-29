@@ -106,13 +106,25 @@ class ProcessViewSetsSerializer(serializers.Serializer):
 class ListProcessViewSetsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Process
-        fields = "__all__"
+        # fields = "__all__"
+        exclude = ("dag",)
 
 
 class ListProcessRunViewSetsSerializer(serializers.ModelSerializer):
+    state = serializers.SerializerMethodField()
+
     class Meta:
         model = ProcessRun
         fields = "__all__"
+
+    def get_state(self, obj):
+        runtime = BambooDjangoRuntime()
+        process_info = api.get_pipeline_states(runtime, root_id=obj.root_id)
+        try:
+            process_state = PIPELINE_STATE_TO_FLOW_STATE.get(process_info.data[obj.root_id]["state"])
+        except Exception:
+            process_state = "error"
+        return process_state
 
 
 class RetrieveProcessViewSetsSerializer(serializers.ModelSerializer):
@@ -133,7 +145,13 @@ class RetrieveProcessViewSetsSerializer(serializers.ModelSerializer):
                     "to": _to
                 })
         node_list = Node.objects.filter(process_id=obj.id).values()
+        node_content_id = [node["content"] for node in node_list if node.get("content", 0)]
+        content_map = NodeTemplate.objects.filter(id__in=node_content_id).in_bulk()
         for node in node_list:
+            node_template = content_map.get(node.get("content", 0), "")
+            inputs_component = ""
+            if node_template:
+                inputs_component = json.dumps(node_template.inputs_component)
             nodes.append({"show": node["show"],
                           "top": node["top"],
                           "left": node["left"],
@@ -142,7 +160,8 @@ class RetrieveProcessViewSetsSerializer(serializers.ModelSerializer):
                           "name": node["name"],
                           "content": node["content"],
                           "node_data": {
-                              "inputs": node["inputs"],
+                              "inputs": json.dumps(node["inputs"]),
+                              "inputs_component": inputs_component,
                               "run_mark": 0,
                               "node_name": node["name"],
                               "description": node["description"],
@@ -180,9 +199,13 @@ class RetrieveProcessRunViewSetsSerializer(serializers.ModelSerializer):
             pipeline_state = state_map.get(node["uuid"], {}).get("state", "READY")
             flow_state = PIPELINE_STATE_TO_FLOW_STATE[pipeline_state]
             outputs = ""
-            if node["node_type"] not in [0, 1] and flow_state == "success":
+            print(flow_state)
+            if node["node_type"] not in [0, 1] and flow_state not in ["wait"]:
                 output_data = api.get_execution_data_outputs(runtime, node_id=node["uuid"])
-                outputs = json.dumps(output_data.data["outputs"])
+                outputs = output_data.data.get("outputs", "")
+            # todo先简单判断node有fail，process就为fail
+            if flow_state == "fail":
+                process_state = "fail"
             nodes.append({"show": node["show"],
                           "top": node["top"],
                           "left": node["left"],

@@ -117,33 +117,28 @@
                 overflowTooltip: true,
                 sortable: false
             }, {
-                id: 'total_job_count',
-                label: '作业数量',
-                overflowTooltip: false,
-                sortable: false
-            }, {
-                id: 'type',
+                id: 'run_type',
                 label: '调度方式',
                 overflowTooltip: false,
                 sortable: true
             }, {
                 id: 'category',
-                label: '跑批系统',
+                label: '分类',
                 overflowTooltip: false,
                 sortable: false
             }, {
-                id: 'creator',
-                label: '创建人',
+                id: 'create_by',
+                label: '创建者',
                 overflowTooltip: false,
                 sortable: false
             }, {
-                id: 'edit_time',
-                label: '上次修改时间',
+                id: 'create_time',
+                label: '创建时间',
                 overflowTooltip: true,
                 sortable: true
             }, {
-                id: 'last_run_at',
-                label: '上次执行时间',
+                id: 'update_time',
+                label: '更新时间',
                 overflowTooltip: true,
                 sortable: true
             }, {
@@ -154,11 +149,6 @@
             }, {
                 id: 'description',
                 label: '作业流描述',
-                overflowTooltip: true,
-                sortable: false
-            }, {
-                id: 'cross_day_dependence',
-                label: '跨日依赖',
                 overflowTooltip: true,
                 sortable: false
             }]

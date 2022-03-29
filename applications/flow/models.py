@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from django.db import models
-from django.forms import BooleanField
 from django_mysql.models import JSONField
 
 from applications.flow.constants import FAIL_OFFSET_UNIT_CHOICE, NodeTemplateType

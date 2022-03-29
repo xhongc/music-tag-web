@@ -124,55 +124,10 @@
                 overflowTooltip: true,
                 sortable: false
             }, {
-                id: 'process',
-                label: '所属作业流',
+                id: 'template_type',
+                label: '模板类型',
                 overflowTooltip: true,
                 sortable: false
-            }, {
-                id: 'station',
-                label: 'Agent',
-                overflowTooltip: false,
-                sortable: false
-            }, {
-                id: 'ip',
-                label: 'IP',
-                overflowTooltip: false,
-                sortable: false
-            }, {
-                id: 'category',
-                label: '跑批系统',
-                overflowTooltip: false,
-                sortable: false
-            }, {
-                id: 'account',
-                label: '执行账号',
-                overflowTooltip: false,
-                sortable: false
-            }, {
-                id: 'script_content',
-                label: '脚本',
-                overflowTooltip: true,
-                sortable: false
-            }, {
-                id: 'creator',
-                label: '创建人',
-                overflowTooltip: false,
-                sortable: false
-            }, {
-                id: 'edit_time',
-                label: '上一次修改时间',
-                overflowTooltip: true,
-                sortable: true
-            }, {
-                id: 'total_run_count',
-                label: '执行次数',
-                overflowTooltip: false,
-                sortable: true
-            }, {
-                id: 'last_run_at',
-                label: '上一次执行时间',
-                overflowTooltip: true,
-                sortable: true
             }, {
                 id: 'description',
                 label: '作业描述',

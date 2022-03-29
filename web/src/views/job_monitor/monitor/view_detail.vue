@@ -46,36 +46,6 @@
                 </div>
             </div>
         </div>
-        <div class="box">
-            <p class="title">前置命令检测</p>
-            <!--            <bk-input :type="'textarea'" :rows="8" ext-cls="custom-textarea" :disabled="true" v-model="form.pre_commands"></bk-input> -->
-            <editor :height="'200px'" ref="editor" :codes="form.pre_commands" :read-only="true" :language="'shell'">
-            </editor>
-        </div>
-        <div class="box">
-            <p class="title">先行作业/作业流</p>
-            <bk-table :data="form.upstream_nodes" ext-cls="customTable">
-                <bk-table-column prop="type" label="类型"></bk-table-column>
-                <bk-table-column prop="name" label="名称"></bk-table-column>
-                <bk-table-column prop="station" label="Agent"></bk-table-column>
-                <bk-table-column prop="state" label="状态"></bk-table-column>
-                <bk-table-column prop="eta" label="计划开始时间"></bk-table-column>
-                <bk-table-column prop="start_time" label="实际开始时间"></bk-table-column>
-                <bk-table-column prop="end_time" label="实际完成时间"></bk-table-column>
-            </bk-table>
-        </div>
-        <div class="box">
-            <p class="title">后续作业/作业流</p>
-            <bk-table :data="form.downstream_nodes" ext-cls="customTable">
-                <bk-table-column prop="type" label="类型"></bk-table-column>
-                <bk-table-column prop="name" label="名称"></bk-table-column>
-                <bk-table-column prop="station" label="Agent"></bk-table-column>
-                <bk-table-column prop="state" label="状态"></bk-table-column>
-                <bk-table-column prop="eta" label="计划开始时间"></bk-table-column>
-                <bk-table-column prop="start_time" label="实际开始时间"></bk-table-column>
-                <bk-table-column prop="end_time" label="实际完成时间"></bk-table-column>
-            </bk-table>
-        </div>
         <div class="node-drawer">
             <bk-sideslider :is-show.sync="nodeDrawer.show" :quick-close="true" :title="nodeDrawer.title"
                 :width="nodeDrawer.width" ext-cls="custom-sidelider">
@@ -94,12 +64,10 @@
     import G6 from '@antv/g6'
     import statusList from './job_flow_view_detail/statusList.vue'
     import nodeInfo from './job_flow_view_detail/nodeInfo.vue'
-    import editor from '@/components/monacoEditor'
     export default {
         components: {
             statusList,
-            nodeInfo,
-            editor
+            nodeInfo
         },
         data() {
             return {
@@ -596,7 +564,7 @@
                         // this.nodeDrawer.show = false
                         this.renderCanvas(true, first)
                         const processState = res.data.pipeline_tree.process_state
-                        if (processState === 'success') {
+                        if (processState === 'success' || processState === 'fail') {
                             clearInterval(this.timer)
                         }
                     } else {

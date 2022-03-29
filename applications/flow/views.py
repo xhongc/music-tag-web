@@ -1,3 +1,7 @@
+from datetime import datetime
+
+from django.db.models import F
+
 from bamboo_engine import api
 from bamboo_engine.builder import *
 from django.http import JsonResponse
@@ -70,6 +74,7 @@ class ProcessViewSets(mixins.ListModelMixin,
             _node["uuid"] = process_run_uuid[pipeline_id]
             node_run_bulk.append(NodeRun(process_run=process_run, **_node))
         NodeRun.objects.bulk_create(node_run_bulk, batch_size=500)
+        Process.objects.filter(id=process_id).update(total_run_count=F("total_run_count") + 1)
         return Response({})
 
 
@@ -91,6 +96,7 @@ class NodeTemplateViewSet(mixins.ListModelMixin,
                           mixins.CreateModelMixin,
                           mixins.UpdateModelMixin,
                           mixins.DestroyModelMixin,
+                          mixins.RetrieveModelMixin,
                           GenericViewSet):
     queryset = NodeTemplate.objects.order_by("-id")
     serializer_class = NodeTemplateSerializer

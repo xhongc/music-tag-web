@@ -21,11 +21,15 @@ class HttpRequestService(Service):
             res = requests.request(inputs["method"], url=inputs["url"], headers=headers, timeout=inputs["timeout"],
                                    **req_data).content
             print("执行了", res)
-            res = json.loads(res)
+            try:
+                res = json.loads(res)
+            except Exception:
+                res = res
             data.outputs.outputs = res
             time.sleep(5)
             return True
-        except Exception:
+        except Exception as e:
+            data.outputs.outputs = str(e)
             return False
 
     def parse_headers(self, headers):

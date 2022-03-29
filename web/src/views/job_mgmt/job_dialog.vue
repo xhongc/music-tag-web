@@ -1,165 +1,72 @@
 <template>
     <div id="jobDialog">
-        <div class="form">
-            <div class="form-item">
-                <span>作业名</span>
-                <p>{{form.name}}</p>
-            </div>
-            <div class="form-item">
-                <span>所属作业流</span>
-                <p :title="form.process">{{checkFormValue(form.process)}}</p>
-            </div>
-            <div class="form-item">
-                <span>Agent</span>
-                <p>{{form.station}}</p>
-            </div>
-            <div class="form-item">
-                <span>IP</span>
-                <p>{{form.ip}}</p>
-            </div>
-            <div class="form-item">
-                <span>操作系统</span>
-                <p>{{form.os}}</p>
-            </div>
-            <div class="form-item">
-                <span>作业描述</span>
-                <p :title="form.description">{{checkFormValue(form.description)}}</p>
-            </div>
-            <div class="form-item">
-                <span>执行账号</span>
-                <p>{{form.account}}</p>
-            </div>
-            <div class="form-item">
-                <span>脚本类型</span>
-                <p>{{scriptTypeList.find(item => item.key === form.script_type).label}}</p>
-            </div>
-            <template v-if="form.script_type === 6">
-                <div class="form-item">
-                    <span>请求方式</span>
-                    <p>{{checkFormValue(form.request_type)}}</p>
+        <bk-form ref="form" :label-width="144" :model="form">
+            <bk-form-item label="节点名称:" :required="true" :error-display-type="'normal'" :property="'node_name'">
+                <bk-input v-model="form.name" type="text" style="width: 350px;margin-right: 9px;" :disabled="disabled"></bk-input>
+            </bk-form-item>
+            <bk-form-item label="运行标志:" :required="true" :error-display-type="'normal'" :property="'run_mark'">
+                <bk-radio-group v-model="form.run_mark">
+                    <bk-radio :value="item.value" v-for="(item, index) in reviewList" :key="index" style="margin-right: 24px;" :disabled="disabled">
+                        {{ item.label }}
+                    </bk-radio>
+                </bk-radio-group>
+            </bk-form-item>
+            <bk-form-item label="描述:">
+                <bk-input v-model="form.description" type="textarea" style="width: 350px;margin-right: 9px;" :disabled="disabled" :min="0"></bk-input>
+            </bk-form-item>
+            <bk-form-item label="失败重试次数:" :required="true" :error-display-type="'normal'" :property="'fail_retry_count'">
+                <bk-input v-model="form.fail_retry_count" type="number" style="width: 350px;margin-right: 9px;" :disabled="disabled" :min="0"></bk-input>
+            </bk-form-item>
+            <bk-form-item label="失败重试间隔:">
+                <bk-compose-form-item>
+                    <bk-input v-model="form.fail_offset" type="number" style="width: 139px;margin-right: 9px;" :disabled="disabled" :min="0"></bk-input>
+                    <bk-select :clearable="true" style="background-color: #fff;width: 138px;margin-right: 14px;" v-model="form.fail_offset_unit" placeholder="请选择" :disabled="disabled">
+                        <bk-option v-for="(item, index) in timeTypeList" :key="index" :id="item.value" :name="item.label">
+                        </bk-option>
+                    </bk-select>
+                    <span>产生重试</span>
+                </bk-compose-form-item>
+            </bk-form-item>
+            <bk-form-item label="忽略失败:">
+                <bk-switcher v-model="form.is_skip_fail" :disabled="disabled"></bk-switcher>
+            </bk-form-item>
+            <bk-form-item label="超时告警:">
+                <bk-switcher v-model="form.is_timeout_alarm" :disabled="disabled"></bk-switcher>
+            </bk-form-item>
+            <bk-divider style="width: 540px;position: relative;right: 20px;border-color: #dcdee5;"></bk-divider>
+            <p class="title">输入参数</p>
+            <bk-form-item v-for="(item,index) in form.inputs_component" :label="item.label" :key="index">
+                <div v-if="item.type === 'textarea'">
+                    <bk-input v-model="form.inputs[item.key]" type="textarea" style="width: 350px;margin-right: 9px;" :disabled="disabled" :min="0"></bk-input>
                 </div>
-                <div class="form-item">
-                    <span>URL</span>
-                    <p>{{checkFormValue(form.request_url)}}</p>
+                <div v-else-if="item.type === 'select'">
+                    <bk-select :clearable="true" style="background-color: #fff;width: 130px;margin-right: 14px;" v-model="form.inputs[item.key]" placeholder="请选择" :disabled="disabled">
+                        <bk-option v-for="(item2, index2) in item.choices || []" :key="index2" :id="item2.value" :name="item2.label">
+                        </bk-option>
+                    </bk-select>
                 </div>
-                <div class="form-item">
-                    <span>请求头</span>
-                    <p>{{checkFormValue(form.headers)}}</p>
+                <div v-else-if="item.type === 'dict_map'">
+                    <div v-for="(item3, index3) in form.inputs[item.key]" class="pre-commands" :key="index3" style="margin-bottom: 12px;">
+                        <bk-compose-form-item>
+                            <bk-input v-model="item3.key" type="text" style="width: 130px;margin-right: 9px;" :disabled="disabled" :min="0"></bk-input>
+                            <bk-input v-model="item3.value" type="text" style="width: 130px;margin-right: 9px;" :disabled="disabled" :min="0"></bk-input>
+                        </bk-compose-form-item>
+                        <i class="iconfont icon-changyongtubiao-chahao btn" style="margin-left: 8px;" v-if="!disabled && form.inputs[item.key].length > 1"></i>
+                        <i class="iconfont icon-changyongtubiao-jiahao btn" v-if="!disabled"></i>
+                    </div>
                 </div>
-                <div class="form-item">
-                    <span>请求体</span>
-                    <p :title="form.params">{{JSON.parse(JSON.stringify(checkFormValue(form.params)))}}</p>
+                <div v-else-if="item.type === 'number'">
+                    <bk-input v-model="form.inputs[item.key]" type="number" style="width: 350px;margin-right: 9px;" :disabled="disabled" :min="0"></bk-input>
                 </div>
-            </template>
-            <div class="form-item" v-if="form.script_type !== 6">
-                <span>脚本内容</span>
-                <p :title="form.script_content">{{form.script_content}}</p>
-            </div>
-            <div class="form-item">
-                <span>超时时间</span>
-                <p>{{checkFormValue(form.script_timeout)}}</p>
-            </div>
-            <div class="form-item">
-                <span>退出码</span>
-                <p>{{checkFormValue(form.exit_code)}}</p>
-            </div>
-            <div class="form-item">
-                <span>上一次执行时间</span>
-                <p>{{checkFormValue(form.last_run_at)}}</p>
-            </div>
-            <div class="form-item">
-                <span>执行次数</span>
-                <p>{{checkFormValue(form.total_run_count)}}</p>
-            </div>
-            <div class="form-item">
-                <span>创建人</span>
-                <p>{{form.creator}}</p>
-            </div>
-            <div class="form-item">
-                <span>创建时间</span>
-                <p>{{form.create_time}}</p>
-            </div>
-            <div class="form-item">
-                <span>修改人</span>
-                <p>{{checkFormValue(form.editor)}}</p>
-            </div>
-            <div class="form-item">
-                <span>上一次修改时间</span>
-                <p>{{checkFormValue(form.edit_time)}}</p>
-            </div>
-        </div>
-        <!--        <bk-form ref="form">
-            <bk-form-item label="作业名:">
-                <bk-input v-model="form.name" :disabled="true"></bk-input>
+                <div v-else-if="item.type === 'text'">
+                    <bk-input v-model="form.inputs[item.key]" type="text" style="width: 350px;margin-right: 9px;" :disabled="disabled" :min="0"></bk-input>
+                </div>
+                <div v-else>
+                    <div style="color: red">ERROR:不支持的类型</div>
+                </div>
             </bk-form-item>
-            <bk-form-item label="所属作业流:">
-                <bk-input v-model="form.process" :disabled="true" :title="form.process"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="Agent:">
-                <bk-input v-model="form.station" :disabled="true"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="IP:">
-                <bk-input v-model="form.ip" :disabled="true"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="系统:">
-                <bk-input v-model="form.os" :disabled="true"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="作业描述:">
-                <bk-input v-model="form.description" :disabled="true" :title="form.description"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="执行账号:">
-                <bk-input v-model="form.account" :disabled="true"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="脚本类型:">
-                <bk-select v-model="form.script_type"
-                    placeholder="请选择" :disabled="true">
-                    <bk-option v-for="(item, index) in scriptTypeList" :key="index" :id="item.key"
-                        :name="item.label">
-                    </bk-option>
-                </bk-select>
-            </bk-form-item>
-            <template v-if="form.script_type === 6">
-                <bk-form-item label="请求方式">
-                    <bk-input :disabled="true" v-model="form.request_type"></bk-input>
-                </bk-form-item>
-                <bk-form-item label="URL">
-                    <bk-input :disabled="true" v-model="form.request_url"></bk-input>
-                </bk-form-item>
-                <bk-form-item label="请求头">
-                    <bk-input :disabled="true" v-model="form.headers" :title="form.headers"></bk-input>
-                </bk-form-item>
-                <bk-form-item label="请求体">
-                    <bk-input :disabled="true" v-model="form.params" :type="'textarea'" :rows="4" :title="form.params"></bk-input>
-                </bk-form-item>
-            </template>
-            <bk-form-item label="脚本内容:" v-if="form.script_type !== 6">
-                <bk-input v-model="form.script_content" :disabled="true" :title="form.script_content"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="超时时间:">
-                <bk-input v-model="form.script_timeout" :disabled="true"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="退出码:">
-                <bk-input v-model="form.exit_code" :disabled="true"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="上一次执行时间:">
-                <bk-input v-model="form.last_run_at" :disabled="true"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="执行次数:">
-                <bk-input v-model="form.total_run_count" :disabled="true"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="创建人:">
-                <bk-input v-model="form.creator" :disabled="true"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="创建时间:">
-                <bk-input v-model="form.create_time" :disabled="true"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="修改人:">
-                <bk-input v-model="form.editor" :disabled="true"></bk-input>
-            </bk-form-item>
-            <bk-form-item label="上一次修改时间:">
-                <bk-input v-model="form.edit_time" :disabled="true"></bk-input>
-            </bk-form-item>
-        </bk-form> -->
+            <bk-divider style="width: 540px;position: relative;right: 20px;border-color: #dcdee5;"></bk-divider>
+        </bk-form>
     </div>
 </template>
 
@@ -176,6 +83,28 @@
             return {
                 formLoading: false,
                 form: {},
+                disabled: true,
+                timeTypeList: [{ // 执行时长告警时间类型下拉列表
+                                   value: 'hours',
+                                   label: '时'
+                               },
+                               {
+                                   value: 'minutes',
+                                   label: '分'
+
+                               },
+                               {
+                                   value: 'seconds',
+                                   label: '秒'
+                               }
+                ],
+                reviewList: [{ // 执行前人工复核单选列表
+                    label: '正常运行',
+                    value: 0
+                }, {
+                    label: '禁止运行',
+                    value: 1
+                }],
                 scriptTypeList: [{
                                      key: 1,
                                      label: 'Shell(Linux)',
