@@ -16,3 +16,4 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+local_settings.py

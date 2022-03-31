@@ -16,6 +16,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/lib" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/web/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/static/dist" />
     </content>
     <content url="file://$MODULE_DIR$/web/node_modules" />
     <orderEntry type="jdk" jdkName="Python 3.6 (dj-flow)" jdkType="Python SDK" />

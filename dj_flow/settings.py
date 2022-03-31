@@ -9,7 +9,7 @@ BROKER_URL = "redis://localhost:6379/3"
 
 SECRET_KEY = 'django-insecure-u5_r=pekio0@zt!y(kgbufuosb9mddu8*qeejkzj@=7uyvb392'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_CREDENTIALS = True
@@ -138,7 +138,8 @@ REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%Y-%m-%d %H:%M:%S",
     "NON_FIELD_ERRORS_KEY": "params_error",
 }
+try:
+    from local_settings import *  # noqa
+except ImportError:
+    pass
 
-# 本地调试
-# CELERY_ALWAYS_EAGER = True
-# CELERY_TASK_ALWAYS_EAGER = True
