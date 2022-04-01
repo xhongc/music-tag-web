@@ -38,6 +38,10 @@ class ProcessViewSetsSerializer(serializers.Serializer):
             bulk_nodes = []
             for node in node_map.values():
                 node_data = node["node_data"]
+                if isinstance(node_data["inputs"], dict):
+                    node_inputs = node_data["inputs"]
+                else:
+                    node_inputs = json.loads(node_data["inputs"])
                 bulk_nodes.append(Node(process=process,
                                        name=node_data["node_name"],
                                        uuid=node["uuid"],
@@ -48,7 +52,7 @@ class ProcessViewSetsSerializer(serializers.Serializer):
                                        node_type=node.get("type", 2),
                                        is_skip_fail=node_data["is_skip_fail"],
                                        is_timeout_alarm=node_data["is_skip_fail"],
-                                       inputs=node_data["inputs"],
+                                       inputs=node_inputs,
                                        show=node["show"],
                                        top=node["top"],
                                        left=node["left"],
@@ -79,6 +83,10 @@ class ProcessViewSetsSerializer(serializers.Serializer):
             for node in node_map.values():
                 node_data = node["node_data"]
                 node_obj = node_dict.get(node["uuid"], None)
+                if isinstance(node_data["inputs"], dict):
+                    node_inputs = node_data["inputs"]
+                else:
+                    node_inputs = json.loads(node_data["inputs"])
                 if node_obj:
                     node_obj.content = node.get("content", 0) or 0
                     node_obj.name = node_data["node_name"]
@@ -89,7 +97,7 @@ class ProcessViewSetsSerializer(serializers.Serializer):
                     node_obj.node_type = node.get("type", 3)
                     node_obj.is_skip_fail = node_data["is_skip_fail"]
                     node_obj.is_timeout_alarm = node_data["is_timeout_alarm"]
-                    node_obj.inputs = node_data["inputs"]
+                    node_obj.inputs = node_inputs
                     node_obj.show = node["show"]
                     node_obj.top = node["top"]
                     node_obj.left = node["left"]
@@ -108,7 +116,7 @@ class ProcessViewSetsSerializer(serializers.Serializer):
                     node_obj.node_type = node.get("type", 3)
                     node_obj.is_skip_fail = node_data["is_skip_fail"]
                     node_obj.is_timeout_alarm = node_data["is_timeout_alarm"]
-                    node_obj.inputs = node_data["inputs"]
+                    node_obj.inputs = node_inputs
                     node_obj.show = node["show"]
                     node_obj.top = node["top"]
                     node_obj.left = node["left"]
