@@ -73,33 +73,57 @@ class ProcessViewSetsSerializer(serializers.Serializer):
             instance.run_type = validated_data["run_type"]
             instance.dag = dag
             instance.save()
-            bulk_nodes = []
+            bulk_update_nodes = []
+            bulk_create_nodes = []
             node_dict = Node.objects.filter(process_id=instance.id).in_bulk(field_name="uuid")
             for node in node_map.values():
                 node_data = node["node_data"]
-                node_obj = node_dict[node["uuid"]]
-
-                node_obj.content = node.get("content", 0) or 0
-                node_obj.name = node_data["node_name"]
-                node_obj.description = node_data["description"]
-                node_obj.fail_retry_count = node_data.get("fail_retry_count", 0) or 0
-                node_obj.fail_offset = node_data.get("fail_offset", 0) or 0
-                node_obj.fail_offset_unit = node_data.get("fail_offset_unit", "seconds")
-                node_obj.node_type = node.get("type", 3)
-                node_obj.is_skip_fail = node_data["is_skip_fail"]
-                node_obj.is_timeout_alarm = node_data["is_timeout_alarm"]
-                node_obj.inputs = node_data["inputs"]
-                node_obj.show = node["show"]
-                node_obj.top = node["top"]
-                node_obj.left = node["left"]
-                node_obj.ico = node["ico"]
-                node_obj.outputs = {}
-                node_obj.component_code = "http_request"
-                bulk_nodes.append(node_obj)
-            Node.objects.bulk_update(bulk_nodes, fields=["name", "description", "fail_retry_count", "fail_offset",
-                                                         "fail_offset_unit", "node_type", "is_skip_fail",
-                                                         "is_timeout_alarm", "inputs", "show", "top", "left", "ico",
-                                                         "outputs", "component_code"], batch_size=500)
+                node_obj = node_dict.get(node["uuid"], None)
+                if node_obj:
+                    node_obj.content = node.get("content", 0) or 0
+                    node_obj.name = node_data["node_name"]
+                    node_obj.description = node_data["description"]
+                    node_obj.fail_retry_count = node_data.get("fail_retry_count", 0) or 0
+                    node_obj.fail_offset = node_data.get("fail_offset", 0) or 0
+                    node_obj.fail_offset_unit = node_data.get("fail_offset_unit", "seconds")
+                    node_obj.node_type = node.get("type", 3)
+                    node_obj.is_skip_fail = node_data["is_skip_fail"]
+                    node_obj.is_timeout_alarm = node_data["is_timeout_alarm"]
+                    node_obj.inputs = node_data["inputs"]
+                    node_obj.show = node["show"]
+                    node_obj.top = node["top"]
+                    node_obj.left = node["left"]
+                    node_obj.ico = node["ico"]
+                    node_obj.outputs = {}
+                    node_obj.component_code = "http_request"
+                    bulk_update_nodes.append(node_obj)
+                else:
+                    node_obj = Node()
+                    node_obj.content = node.get("content", 0) or 0
+                    node_obj.name = node_data["node_name"]
+                    node_obj.description = node_data["description"]
+                    node_obj.fail_retry_count = node_data.get("fail_retry_count", 0) or 0
+                    node_obj.fail_offset = node_data.get("fail_offset", 0) or 0
+                    node_obj.fail_offset_unit = node_data.get("fail_offset_unit", "seconds")
+                    node_obj.node_type = node.get("type", 3)
+                    node_obj.is_skip_fail = node_data["is_skip_fail"]
+                    node_obj.is_timeout_alarm = node_data["is_timeout_alarm"]
+                    node_obj.inputs = node_data["inputs"]
+                    node_obj.show = node["show"]
+                    node_obj.top = node["top"]
+                    node_obj.left = node["left"]
+                    node_obj.ico = node["ico"]
+                    node_obj.outputs = {}
+                    node_obj.component_code = "http_request"
+                    node_obj.uuid = node["uuid"]
+                    node_obj.process_id = instance.id
+                    bulk_create_nodes.append(node_obj)
+            Node.objects.bulk_update(bulk_update_nodes,
+                                     fields=["name", "description", "fail_retry_count", "fail_offset",
+                                             "fail_offset_unit", "node_type", "is_skip_fail",
+                                             "is_timeout_alarm", "inputs", "show", "top", "left", "ico",
+                                             "outputs", "component_code"], batch_size=500)
+            Node.objects.bulk_create(bulk_create_nodes, batch_size=500)
         self._data = {}
 
 
