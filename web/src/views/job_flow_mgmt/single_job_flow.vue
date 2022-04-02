@@ -297,9 +297,11 @@
             },
             // 处理渲染，true为详情方式渲染，false为编辑或新增方式渲染
             handleRender(detail) {
+                console.log('handlerender')
                 this.mainLoading = true
                 const _this = this
                 setTimeout(() => {
+                    console.log('handlerender2222')
                     const data = {
                         edges: _this.jobFlowFrom.pipeline_tree.lines.map(line => {
                             const item = {
@@ -326,7 +328,7 @@
                                     lineWidth: 1,
                                     r: 24
                                 }
-                            } else if (node.type === 4 || node.type === 5) {
+                            } else if (node.type === '4' || node.type === 5) {
                                 style = {
                                     fill: '#fff',
                                     stroke: '#DCDEE5',
@@ -354,7 +356,7 @@
                                 x: node.left,
                                 y: node.top,
                                 nodeType: node.type,
-                                type: (node.type === 0 || node.type === 1 || node.type === 4) ? 'circle-node' : 'rect-node',
+                                type: (node.type === 0 || node.type === 1 || node.type === '4') ? 'circle-node' : 'rect-node',
                                 labelCfg: {
                                     style: {
                                         textAlign: (node.type === 0 || node.type === 1) ? 'center' : 'left'

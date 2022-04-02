@@ -15,7 +15,7 @@ from applications.flow.models import Process, Node, ProcessRun, NodeRun, NodeTem
 from applications.flow.serializers import ProcessViewSetsSerializer, ListProcessViewSetsSerializer, \
     RetrieveProcessViewSetsSerializer, ExecuteProcessSerializer, ListProcessRunViewSetsSerializer, \
     RetrieveProcessRunViewSetsSerializer, NodeTemplateSerializer
-from applications.utils.dag_helper import DAG, instance_dag
+from applications.utils.dag_helper import DAG, instance_dag, PipelineBuilder
 from component.drf.viewsets import GenericViewSet
 
 
@@ -40,41 +40,27 @@ class ProcessViewSets(mixins.ListModelMixin,
     def execute(self, request, *args, **kwargs):
         validated_data = self.is_validated_data(request.data)
         process_id = validated_data["process_id"]
-        process = Process.objects.filter(id=process_id).first()
-        node_map = Node.objects.filter(process_id=process_id).in_bulk(field_name="uuid")
-        dag_obj = DAG()
-        dag_obj.from_dict(process.dag)
-        topological_sort = dag_obj.topological_sort()
+        p_builder = PipelineBuilder(process_id)
+        pipeline = p_builder.build()
 
-        start = pipeline_tree = EmptyStartEvent()
-        # 运行实例的uuid
-        process_run_uuid = {topological_sort[0]: start.id}
-        for pipeline_id in topological_sort[1:]:
-            if node_map[pipeline_id].node_type == 0:
-                act = EmptyStartEvent()
-            elif node_map[pipeline_id].node_type == 1:
-                act = EmptyEndEvent()
-            else:
-                act = ServiceActivity(component_code="http_request")
-                act.component.inputs.inputs = Var(type=Var.PLAIN, value=node_map[pipeline_id].inputs)
-            process_run_uuid[pipeline_id] = act.id
-            pipeline_tree = getattr(pipeline_tree, "extend")(act)
-
-        pipeline_data = Data()
-        pipeline = builder.build_tree(start, data=pipeline_data)
+        process = p_builder.process
+        node_map = p_builder.node_map
+        process_run_uuid = p_builder.instance
+        # 执行
         runtime = BambooDjangoRuntime()
         api.run_pipeline(runtime=runtime, pipeline=pipeline)
-
+        # 保存执行后的实例数据
         process_run_data = process.clone_data
         process_run_data["dag"] = instance_dag(process_run_data["dag"], process_run_uuid)
         process_run = ProcessRun.objects.create(process_id=process.id, root_id=pipeline["id"], **process_run_data)
         node_run_bulk = []
         for pipeline_id, node in node_map.items():
             _node = {k: v for k, v in node.__dict__.items() if k in NodeRun.field_names()}
-            _node["uuid"] = process_run_uuid[pipeline_id]
+            _node["uuid"] = process_run_uuid[pipeline_id].id
             node_run_bulk.append(NodeRun(process_run=process_run, **_node))
         NodeRun.objects.bulk_create(node_run_bulk, batch_size=500)
         Process.objects.filter(id=process_id).update(total_run_count=F("total_run_count") + 1)
+
         return Response({})
 
 
@@ -119,14 +105,14 @@ def flow(request):
     start = EmptyStartEvent()
     act = ServiceActivity(component_code="http_request")
 
-    act2 = ServiceActivity(component_code="fac_cal_comp")
+    act2 = ServiceActivity(component_code="http_request")
     act2.component.inputs.n = Var(type=Var.PLAIN, value=50)
 
-    act3 = ServiceActivity(component_code="fac_cal_comp")
+    act3 = ServiceActivity(component_code="http_request")
     act3.component.inputs.n = Var(type=Var.PLAIN, value=5)
 
-    act4 = ServiceActivity(component_code="fast_execute_job")
-    act5 = ServiceActivity(component_code="fast_execute_job")
+    act4 = ServiceActivity(component_code="http_request")
+    act5 = ServiceActivity(component_code="http_request")
     eg = ExclusiveGateway(
         conditions={
             0: '${exe_res} >= 0',
@@ -139,8 +125,7 @@ def flow(request):
 
     end = EmptyEndEvent()
 
-    start.extend(act).extend(eg).connect(act2, act3).to(eg).converge(pg).connect(act4, act5).to(pg).converge(cg).extend(
-        end)
+    start.extend(act).extend(eg).connect(act2, act3).to(act2).extend(act4).extend(act5).to(eg).converge(end)
     # 全局变量
     pipeline_data = Data()
     pipeline_data.inputs['${exe_res}'] = NodeOutput(type=Var.PLAIN, source_act=act.id, source_key='exe_res')

@@ -38,8 +38,8 @@ class ProcessViewSetsSerializer(serializers.Serializer):
             bulk_nodes = []
             for node in node_map.values():
                 node_data = node["node_data"]
-                if isinstance(node_data["inputs"], dict):
-                    node_inputs = node_data["inputs"]
+                if isinstance(node_data.get("inputs", {}), dict):
+                    node_inputs = node_data.get("inputs", {})
                 else:
                     node_inputs = json.loads(node_data["inputs"])
                 bulk_nodes.append(Node(process=process,
@@ -83,8 +83,8 @@ class ProcessViewSetsSerializer(serializers.Serializer):
             for node in node_map.values():
                 node_data = node["node_data"]
                 node_obj = node_dict.get(node["uuid"], None)
-                if isinstance(node_data["inputs"], dict):
-                    node_inputs = node_data["inputs"]
+                if isinstance(node_data.get("inputs", {}), dict):
+                    node_inputs = node_data.get("inputs", {})
                 else:
                     node_inputs = json.loads(node_data["inputs"])
                 if node_obj:

@@ -84,24 +84,24 @@
                         'id': 46,
                         'creator': 'product',
                         'name': '并行网关',
-                        'type': 4,
-                        'nodeType': 4,
+                        'type': 6,
+                        'nodeType': 6,
                         'icon': 'e6d9'
                     },
                     {
                         'id': 47,
                         'creator': 'product',
                         'name': '汇聚网关',
-                        'type': 4,
-                        'nodeType': 4,
+                        'type': 5,
+                        'nodeType': 5,
                         'icon': 'e6d9'
                     },
                     {
                         'id': 48,
                         'creator': 'product',
                         'name': '条件并行网关',
-                        'type': 4,
-                        'nodeType': 4,
+                        'type': 7,
+                        'nodeType': 7,
                         'icon': 'e6d9'
                     }
                 ]

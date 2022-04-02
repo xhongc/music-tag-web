@@ -99,6 +99,7 @@
                 })
             },
             handleRender(detail) {
+                console.log('pre render')
                 this.mainLoading = true
                 const _this = this
                 setTimeout(() => {

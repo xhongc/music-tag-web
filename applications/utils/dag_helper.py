@@ -1,6 +1,10 @@
 from collections import OrderedDict, defaultdict
 from copy import copy, deepcopy
 
+from applications.flow.models import Process, Node
+from bamboo_engine.builder import EmptyStartEvent, EmptyEndEvent, ExclusiveGateway, ServiceActivity, Var, builder, Data, \
+    ParallelGateway, ConvergeGateway, ConditionalParallelGateway
+
 
 class DAG(object):
     """ Directed acyclic graph implementation. """
@@ -195,8 +199,71 @@ def instance_dag(dag_dict, process_run_uuid):
     new_dag_dict = defaultdict(list)
     for k, v_list in dag_dict.items():
         for v in v_list:
-            new_dag_dict[process_run_uuid[k]].append(process_run_uuid[v])
+            new_dag_dict[process_run_uuid[k].id].append(process_run_uuid[v].id)
     return dict(new_dag_dict)
+
+
+class PipelineBuilder:
+    def __init__(self, process_id):
+        self.process_id = process_id
+        self.process = Process.objects.filter(id=process_id).first()
+        self.node_map = Node.objects.filter(process_id=process_id).in_bulk(field_name="uuid")
+        self.dag_obj = self.setup_dag()
+        self.instance = self.setup_instance()
+
+    def setup_instance(self):
+        pipeline_instance = {}
+        for p_id, node in self.node_map.items():
+            if node.node_type == Node.START_NODE:
+                pipeline_instance[p_id] = EmptyStartEvent()
+            elif node.node_type == Node.END_NODE:
+                pipeline_instance[p_id] = EmptyEndEvent()
+            elif node.node_type == Node.CONDITION_NODE:
+                pipeline_instance[p_id] = ExclusiveGateway(
+                    conditions={
+                        0: '1==0',
+                        1: '0==0'
+                    },
+                    name='act_2 or act_3'
+                )
+            elif node.node_type == Node.PARALLEL_NODE:
+                pipeline_instance[p_id] = ParallelGateway()
+            elif node.node_type == Node.CONVERGE_NODE:
+                pipeline_instance[p_id] = ConvergeGateway()
+            elif node.node_type == Node.CONDITION_PARALLEL_NODE:
+                pipeline_instance[p_id] = ConditionalParallelGateway(
+                    conditions={
+                        0: '1==0',
+                        1: '1==1',
+                        2: '2==2'
+                    },
+                    name='[act_2] or [act_3 and act_4]'
+                )
+            else:
+                act = ServiceActivity(component_code="http_request")
+                act.component.inputs.inputs = Var(type=Var.PLAIN, value=node.inputs)
+                pipeline_instance[p_id] = act
+        return pipeline_instance
+
+    def setup_dag(self):
+        dag_obj = DAG()
+        dag_obj.from_dict(self.process.dag)
+        return dag_obj
+
+    def get_inst(self, p_id):
+        return self.instance.get(p_id)
+
+    def get_inst_list(self, p_ids):
+        return [self.instance.get(p_id) for p_id in p_ids]
+
+    def build(self):
+        start = self.dag_obj.ind_nodes()[0]
+        for _in, out_list in self.dag_obj.graph.items():
+            for _out in out_list:
+                self.get_inst(_in).extend(self.get_inst(_out))
+        pipeline_data = Data()
+        pipeline = builder.build_tree(self.get_inst(start), data=pipeline_data)
+        return pipeline
 
 
 if __name__ == '__main__':
