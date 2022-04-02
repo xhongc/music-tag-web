@@ -27,7 +27,11 @@ class HttpRequestService(Service):
                 res = res
             data.outputs.outputs = res
             time.sleep(5)
-            return True
+            if res.get("result"):
+                return True
+            else:
+                return False
+
         except Exception as e:
             data.outputs.outputs = str(e)
             return False
