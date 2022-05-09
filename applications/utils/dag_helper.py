@@ -3,7 +3,7 @@ from copy import copy, deepcopy
 
 from applications.flow.models import Process, Node
 from bamboo_engine.builder import EmptyStartEvent, EmptyEndEvent, ExclusiveGateway, ServiceActivity, Var, builder, Data, \
-    ParallelGateway, ConvergeGateway, ConditionalParallelGateway
+    ParallelGateway, ConvergeGateway, ConditionalParallelGateway, SubProcess
 
 
 class DAG(object):
@@ -239,6 +239,11 @@ class PipelineBuilder:
                     },
                     name='[act_2] or [act_3 and act_4]'
                 )
+            elif node.node_type == Node.SUB_PROCESS_NODE:
+                process_id = node.content
+                p_builder = PipelineBuilder(process_id)
+                pipeline = p_builder.build(is_subprocess=True)
+                pipeline_instance[p_id] = pipeline
             else:
                 act = ServiceActivity(component_code="http_request")
                 act.component.inputs.inputs = Var(type=Var.PLAIN, value=node.inputs)
@@ -256,13 +261,16 @@ class PipelineBuilder:
     def get_inst_list(self, p_ids):
         return [self.instance.get(p_id) for p_id in p_ids]
 
-    def build(self):
+    def build(self, is_subprocess=False):
         start = self.dag_obj.ind_nodes()[0]
         for _in, out_list in self.dag_obj.graph.items():
             for _out in out_list:
                 self.get_inst(_in).extend(self.get_inst(_out))
         pipeline_data = Data()
-        pipeline = builder.build_tree(self.get_inst(start), data=pipeline_data)
+        if is_subprocess:
+            pipeline = SubProcess(self.get_inst(start), data=pipeline_data)
+        else:
+            pipeline = builder.build_tree(self.get_inst(start), data=pipeline_data)
         return pipeline
 
 

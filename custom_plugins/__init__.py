@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 true = True
 false = False
+null = ""
 a = {"result": true, "code": "OK", "message": "success", "data": {"menu": [
     {"name": "home", "cnName": "首页", "to": "/home", "icon": "iconfont icon-mianxingtubiao-shouye", "hasChild": false,
      "children": []},
@@ -104,3 +105,26 @@ a = {"result": true, "code": "OK", "message": "success", "data": {"menu": [
     {"url": "/userandpermissions", "auth": {"search": true, "create": true}},
     {"url": "/systemclassmanage", "auth": {"search": true, "create": true, "modify": true, "del": true}},
     {"url": "/log", "auth": {"search": true}}, {"url": "/viewdetail", "auth": {"search": true, "operate": true}}]}}
+component = {"result": true, "code": "OK", "message": "success",
+             "data": {"page": 1, "total_page": 1, "count": 2,
+                      "items":
+                          [
+                              {"id": 1, "name": "HTTP请求", "description": "", "show": true, "top": 300, "left": 300,
+                               "ico": null,
+                               "fail_retry_count": 0, "fail_offset": 10, "fail_offset_unit": "seconds", "node_type": 2,
+                               "component_code": "http_request", "is_skip_fail": false, "is_timeout_alarm": false,
+                               "inputs": {"url": "", "body": "{}", "header": [{"key": "", "value": ""}],
+                                          "method": "get",
+                                          "timeout": 60,
+                                          "check_point": {"key": "", "values": "", "condition": ""}}, "outputs": {},
+                               "content": 0,
+                               "template_type": "0",
+                               "inputs_component": [{"key": "url", "type": "textarea", "label": "请求地址："},
+                                                    {"key": "method", "type": "select", "label": "请求类型：",
+                                                     "choices": [{"label": "GET", "value": "get"}]},
+                                                    {"key": "header", "type": "dict_map",
+                                                     "label": "Header"},
+                                                    {"key": "body", "type": "textarea", "label": "Body："},
+                                                    {"key": "timeout", "type": "number",
+                                                     "label": "超时时间："}],
+                               "outputs_component": []}]}}

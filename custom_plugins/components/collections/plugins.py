@@ -3,10 +3,12 @@ import math
 from pipeline.core.flow.activity import Service, StaticIntervalGenerator
 from pipeline.component_framework.component import Component
 import json
-import eventlet
 import time
+import requests
 
-requests = eventlet.import_patched('requests')
+# to adapter window pc
+# import eventlet
+# requests = eventlet.import_patched('requests')
 
 
 class HttpRequestService(Service):

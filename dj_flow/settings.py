@@ -79,7 +79,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "bomboo",  # noqa
         "USER": "root",
-        "PASSWORD": "xhongc",
+        "PASSWORD": "",
         "HOST": "localhost",
         "PORT": "3306",
         # 单元测试 DB 配置，建议不改动

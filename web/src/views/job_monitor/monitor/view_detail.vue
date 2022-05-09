@@ -53,6 +53,29 @@
                 </node-info>
             </bk-sideslider>
         </div>
+        <bk-dialog title="连线模式选择"
+            v-model="flowModeDialog.show"
+            :confirm-fn="handleFlowAddEdgeConfirm"
+            ext-cls="add-mode-dialog"
+            :mask-close="false"
+            header-position="left">
+            <add-mode-dialog :key="flowModeDialogKey" ref="addModeDialog"></add-mode-dialog>
+            <bk-dialog v-model="flowModeDialog.childDialog.show"
+                :mask-close="false"
+                :width="flowModeDialog.childDialog.width"
+                header-position="left"
+                :render-directive="'if'"
+                :position="{ top: 50 }"
+                ext-cls="pre-flow-canvas-dialog"
+                :confirm-fn="handlePreFlowNOdeAddConfirm"
+                :show-footer="flowModeDialog.childDialog.footerShow">
+                <div slot="header">
+                    <span style="color: #313237;">当前作业流：{{flowModeDialog.childDialog.title}}</span>
+                    <span class="iconfont icon-mianxingtubiao-wenti" style="margin-left: 4px;color: #979BA5;font-size: 16px;" v-bk-tooltips="flowModeTipConfig"></span>
+                </div>
+                <pre-flow-canvas :options="flowModeDialog.curObj" :pre-edges="flowModeDialog.preEdges" ref="preFlowCanvas"></pre-flow-canvas>
+            </bk-dialog>
+        </bk-dialog>
     </div>
 </template>
 
@@ -64,15 +87,20 @@
     import G6 from '@antv/g6'
     import statusList from './job_flow_view_detail/statusList.vue'
     import nodeInfo from './job_flow_view_detail/nodeInfo.vue'
+    import addModeDialog from '@/views/job_flow_mgmt/single_job_flow/addModeDialog.vue'
+    import preFlowCanvas from '@/views/job_flow_mgmt/single_job_flow/preFlowCanvas.vue'
     export default {
         components: {
             statusList,
-            nodeInfo
+            nodeInfo,
+            addModeDialog, // 前置作业流连线模式选择弹窗
+            preFlowCanvas // 前置作业流详情画布
         },
         data() {
             return {
                 formLoading: false,
                 nodeSliderKey: 0,
+                flowModeDialogKey: 0, // 前置作业流连线弹窗组件key
                 form: {},
                 graph: null,
                 mainLoading: false,
@@ -87,6 +115,24 @@
                 },
                 nodeData: {},
                 timer: null,
+                flowModeDialog: { // 前置作业流连线模式选择弹窗
+                    show: false,
+                    curObj: {}, // 当前前置作业流的信息
+                    preEdges: [], // 当前前置作业流节点的出线集
+                    childDialog: { // 当前前置作业流节点的详情弹框
+                        footerShow: false,
+                        show: false,
+                        width: 960,
+                        title: ''
+                    }
+                },
+                flowModeTipConfig: {
+                    content: '选择前置作业流中的某个节点作为前置依赖连线，不可重复选择节点连线，不可选择该作业流中的前置作业流节点！',
+                    placement: 'right',
+                    width: 300,
+                    zIndex: 999999
+                    // delay: [0, 60000]
+                },
                 stateList: [{
                                 id: 1,
                                 name: 'wait',
@@ -198,25 +244,100 @@
                 this.graph.changeSize(this.$refs.main.clientWidth, 550)
                 this.graph.fitView([20, 30, 30, 80])
             },
+            handlePreFlowNOdeAddConfirm() {
+                if (!this.$refs.preFlowCanvas.currentChooseNode) {
+                    this.$cwMessage('当前作业节点未选择，至少选择一个作业节点！', 'warning')
+                } else {
+                    const _this = this
+                    setTimeout(() => {
+                        const label = `${_this.$refs.preFlowCanvas.currentChooseNode.name}→${_this.flowModeDialog.curObj.targetNode.getModel().name}`
+                        this.graph.addItem('edge', {
+                            id: getUUID(32, 16),
+                            source: _this.flowModeDialog.curObj.sourceNode.get('id'),
+                            target: _this.flowModeDialog.curObj.targetNode.get('id'),
+                            label: label.length > 10 ? `${label.substr(0, 10)}...` : label,
+                            rely_node: {
+                                name: label,
+                                label: label.length > 10 ? `${label.substr(0, 10)}...` : label,
+                                content: _this.$refs.preFlowCanvas.currentChooseNode.content,
+                                id: _this.$refs.preFlowCanvas.currentChooseNode.id
+                            },
+                            gateWay: {
+                                name: '', // 分支名
+                                expression: '' // 条件表达式
+                            }
+                        })
+                        _this.flowModeDialog.childDialog.show = false
+                        _this.flowModeDialog.show = false
+                    }, 100)
+                }
+            },
+            handleFlowAddEdgeConfirm() {
+                if (this.$refs.addModeDialog.modeValue === 'flow') {
+                    setTimeout(() => {
+                        this.graph.addItem('edge', {
+                            id: getUUID(32, 16),
+                            source: this.flowModeDialog.curObj.sourceNode.get('id'),
+                            target: this.flowModeDialog.curObj.targetNode.get('id'),
+                            gateWay: {
+                                name: '', // 分支名
+                                expression: '' // 条件表达式
+                            }
+                        })
+                    }, 100)
+                    this.flowModeDialog.show = false
+                } else {
+                    const edges = this.flowModeDialog.curObj.sourceNode.getEdges()
+                    // 表明已有其他前置连线，收集前置节点连线
+                    if (edges.length) {
+                        this.flowModeDialog.preEdges = edges.filter(item => {
+                            return item.getModel().hasOwnProperty('label')
+                        })
+                    }
+                    this.flowModeDialog.childDialog.title = this.flowModeDialog.curObj.sourceNode.getModel().name
+                    this.flowModeDialog.childDialog.footerShow = true
+                    this.flowModeDialog.childDialog.show = true
+                }
+            },
+            handleOpenFlowDrawer(e) {
+                this.flowModeDialog.preEdges = []
+                const edges = e.item.getEdges()
+                console.log(1234, e.item.getModel())
+                // 表明已有其他前置连线，收集前置节点连线
+                if (edges.length) {
+                    this.flowModeDialog.preEdges = edges.filter(item => {
+                        return item.getModel().hasOwnProperty('label')
+                    })
+                }
+                this.flowModeDialog.curObj = { sourceNode: e.item }
+                this.flowModeDialog.childDialog.title = e.item.getModel().name
+                this.flowModeDialog.childDialog.footerShow = false
+                this.flowModeDialog.childDialog.show = true
+            },
             initGraphEvent() {
                 this.graph.on('node:click', e => {
                     const model = e.item.get('model')
                     // 开始节点，结束节点，作业流节点不做处理
+                    console.log(model.nodeType)
                     if (model.nodeType === 0 || model.nodeType === 1) {
                         return false
                     }
-                    this.nodeData = {
-                        data: deepClone(model.node_data), // 深拷贝节点数据
-                        log: model.log,
-                        state: model.state,
-                        script_content: model.script_content,
-                        start_time: model.start_time,
-                        end_time: model.end_time,
-                        id: model.id
+                    if (model.nodeType === 3) {
+                        this.handleOpenFlowDrawer(e)
+                    } else {
+                        this.nodeData = {
+                            data: deepClone(model.node_data), // 深拷贝节点数据
+                            log: model.log,
+                            state: model.state,
+                            script_content: model.script_content,
+                            start_time: model.start_time,
+                            end_time: model.end_time,
+                            id: model.id
+                        }
+                        this.nodeSliderKey += 1
+                        this.nodeDrawer.show = true
+                        this.nodeDrawer.title = model.name
                     }
-                    this.nodeSliderKey += 1
-                    this.nodeDrawer.show = true
-                    this.nodeDrawer.title = model.name
                 })
             },
             createGraphic() {

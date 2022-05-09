@@ -51,30 +51,6 @@
             <p class="title">前置命令检测</p>
             <editor :height="'200px'" ref="editorPrecommd" :read-only="true" :language="'json'"></editor>
         </div>
-        <div class="box">
-            <p class="title">先行作业/作业流</p>
-            <bk-table :data="form.upstream_nodes" ext-cls="customTable">
-                <bk-table-column prop="type" label="类型"></bk-table-column>
-                <bk-table-column prop="name" label="名称"></bk-table-column>
-                <bk-table-column prop="station" label="Agent"></bk-table-column>
-                <bk-table-column prop="state" label="状态"></bk-table-column>
-                <bk-table-column prop="eta" label="计划开始时间"></bk-table-column>
-                <bk-table-column prop="start_time" label="实际开始时间"></bk-table-column>
-                <bk-table-column prop="end_time" label="实际完成时间"></bk-table-column>
-            </bk-table>
-        </div>
-        <div class="box">
-            <p class="title">后续作业/作业流</p>
-            <bk-table :data="form.downstream_nodes" ext-cls="customTable">
-                <bk-table-column prop="type" label="类型"></bk-table-column>
-                <bk-table-column prop="name" label="名称"></bk-table-column>
-                <bk-table-column prop="station" label="Agent"></bk-table-column>
-                <bk-table-column prop="state" label="状态"></bk-table-column>
-                <bk-table-column prop="eta" label="计划开始时间"></bk-table-column>
-                <bk-table-column prop="start_time" label="实际开始时间"></bk-table-column>
-                <bk-table-column prop="end_time" label="实际完成时间"></bk-table-column>
-            </bk-table>
-        </div>
     </div>
 </template>
 

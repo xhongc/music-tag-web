@@ -87,7 +87,7 @@
             getSingleJobFlow() {
                 this.mainLoading = true
                 const model = this.options.sourceNode.getModel()
-                console.log(11, model)
+                console.log('model', model)
                 this.$api.process.retrieve(model.content).then(res => {
                     if (res.result) {
                         this.jobFlowFrom = res.data

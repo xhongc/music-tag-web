@@ -2,6 +2,8 @@ import json
 
 from bamboo_engine import api
 from django.db import transaction
+
+from pipeline.eri.models import State
 from pipeline.eri.runtime import BambooDjangoRuntime
 from rest_framework import serializers
 
@@ -231,10 +233,14 @@ class RetrieveProcessRunViewSetsSerializer(serializers.ModelSerializer):
             pipeline_state = state_map.get(node["uuid"], {}).get("state", "READY")
             flow_state = PIPELINE_STATE_TO_FLOW_STATE[pipeline_state]
             outputs = ""
-            print(flow_state)
+            # print(flow_state)
             if node["node_type"] not in [0, 1] and flow_state not in ["wait"]:
                 output_data = api.get_execution_data_outputs(runtime, node_id=node["uuid"])
                 outputs = output_data.data.get("outputs", "")
+                if node["node_type"] == 3:
+                    # todo先简单判断node有fail，process就为fail
+                    if State.objects.filter(parent_id=node["uuid"],name="FAILED").exists():
+                        flow_state = "fail"
             # todo先简单判断node有fail，process就为fail
             if flow_state == "fail":
                 process_state = "fail"
@@ -245,6 +251,7 @@ class RetrieveProcessRunViewSetsSerializer(serializers.ModelSerializer):
                           "type": node["node_type"],
                           "name": node["name"],
                           "state": flow_state,
+                          "content": node["content"],
                           "node_data": {
                               "inputs": node["inputs"],
                               "outputs": outputs,
