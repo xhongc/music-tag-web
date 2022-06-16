@@ -98,8 +98,37 @@ class ProcessRun(models.Model):
     root_id = models.CharField("根节点uuid", max_length=255)
 
 
+class SubProcessRun(models.Model):
+    process_run = models.ForeignKey(Process, on_delete=models.CASCADE, null=True, db_constraint=False,
+                                    related_name="sub")
+    process = models.ForeignKey(Process, on_delete=models.SET_NULL, null=True, db_constraint=False,
+                                related_name="sub_run")
+    name = models.CharField("作业名称", max_length=255, blank=False, null=False)
+    description = models.CharField("作业描述", max_length=255, blank=True, null=True)
+    run_type = models.CharField("调度类型", max_length=32)
+    gateways = JSONField("网关信息", default=dict)
+    constants = JSONField("内部变量信息", default=dict)
+    dag = JSONField("DAG", default=dict)
+
+    create_by = models.CharField("创建者", max_length=64, null=True)
+    create_time = models.DateTimeField("创建时间", default=datetime.now)
+    update_time = models.DateTimeField("修改时间", auto_now=True)
+    update_by = models.CharField("修改人", max_length=64, null=True)
+
+    root_id = models.CharField("根节点uuid", max_length=255)
+
+
+class SubNodeRun(BaseNode):
+    subprocess_run = models.ForeignKey(SubProcessRun, on_delete=models.CASCADE, null=True, db_constraint=False,
+                                       related_name="sub_nodes_run")
+
+    @staticmethod
+    def field_names():
+        return [field.name for field in NodeRun._meta.get_fields() if field.name not in ["id"]]
+
+
 class NodeRun(BaseNode):
-    process_run = models.ForeignKey(ProcessRun, on_delete=models.SET_NULL, null=True, db_constraint=False,
+    process_run = models.ForeignKey(ProcessRun, on_delete=models.CASCADE, null=True, db_constraint=False,
                                     related_name="nodes_run")
 
     @staticmethod

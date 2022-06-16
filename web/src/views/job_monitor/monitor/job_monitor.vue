@@ -17,6 +17,10 @@
                     {
                         name: 'jobflowview',
                         label: '作业流视图'
+                    },
+                    {
+                        name: 'jobview',
+                        label: '子作业流视图'
                     }
                 ]
             }

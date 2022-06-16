@@ -24,18 +24,8 @@
                     <bk-form :label-width="110">
                         <bk-row>
                             <bk-col :span="6">
-                                <bk-form-item label="作业名">
-                                    <bk-input :placeholder="'请输入作业名称'" v-model="searchForm.name" clearable></bk-input>
-                                </bk-form-item>
-                            </bk-col>
-                            <bk-col :span="6">
-                                <bk-form-item label="执行者">
-                                    <bk-input :placeholder="'请输入执行者'" v-model="searchForm.executor" clearable></bk-input>
-                                </bk-form-item>
-                            </bk-col>
-                            <bk-col :span="6">
                                 <bk-form-item label="作业流名">
-                                    <bk-input :placeholder="'请输入作业流名称'" v-model="searchForm.process_run_name" clearable></bk-input>
+                                    <bk-input :placeholder="'请输入作业流名称'" v-model="searchForm.name" clearable></bk-input>
                                 </bk-form-item>
                             </bk-col>
                             <bk-col :span="6">
@@ -48,43 +38,50 @@
                                     </bk-select>
                                 </bk-form-item>
                             </bk-col>
-                        </bk-row>
-                        <bk-row style="margin-top: 24px;">
-                            <bk-col :span="6">
-                                <bk-form-item label="Agent">
-                                    <bk-input :placeholder="'请输入Agent'" v-model="searchForm.station" clearable></bk-input>
-                                </bk-form-item>
-                            </bk-col>
                             <bk-col :span="6">
                                 <bk-form-item label="计划开始">
                                     <bk-date-picker :value="searchForm.eta" :placeholder="'选择日期时间'" :type="'datetimerange'"
                                         format="yyyy-MM-dd HH:mm:ss" style="width: 100%;" :transfer="true" @change="handleEtaChange"></bk-date-picker>
                                 </bk-form-item>
                             </bk-col>
+                            <!-- 未支持 -->
                             <bk-col :span="6">
-                                <bk-form-item label="实际开始">
-                                    <bk-date-picker :value="searchForm.startTime" :placeholder="'选择日期时间'" :type="'datetimerange'"
-                                        format="yyyy-MM-dd HH:mm:ss" style="width: 100%;" :transfer="true" @change="handleStartTimeChange"></bk-date-picker>
-                                </bk-form-item>
-                            </bk-col>
-                            <bk-col :span="6">
-                                <bk-form-item label="完成时间">
-                                    <bk-date-picker :value="searchForm.endTime" :placeholder="'选择日期时间'" :type="'datetimerange'"
-                                        format="yyyy-MM-dd HH:mm:ss" style="width: 100%;" :transfer="true" @change="handleEndTimeChange"></bk-date-picker>
+                                <bk-form-item label="作业总数">
+                                    <bk-input :placeholder="'请输入作业总数'" v-model="searchForm.total_job_count" clearable></bk-input>
                                 </bk-form-item>
                             </bk-col>
                         </bk-row>
                         <bk-row style="margin-top: 24px;">
                             <bk-col :span="6">
-                                <bk-form-item label="已复核人">
-                                    <bk-input :placeholder="'请输入已复核人'" v-model="searchForm.confirm_users"></bk-input>
+                                <bk-form-item label="未执行作业数">
+                                    <bk-input :placeholder="'请输入未执行作业数'" v-model="searchForm.total_not_execute_job_count"
+                                        clearable></bk-input>
                                 </bk-form-item>
                             </bk-col>
                             <bk-col :span="6">
-                                <bk-form-item label="待复核人数">
-                                    <bk-input :placeholder="'请输入待复核人数'" v-model="searchForm.need_confirm"></bk-input>
+                                <bk-form-item label="释放依赖">
+                                    <bk-select class="header-select" :clearable="true" style="background-color: #fff;"
+                                        v-model="searchForm.is_release_dependency">
+                                        <bk-option v-for="(item, index) in replyList" :key="index" :id="item.value"
+                                            :name="item.label">
+                                        </bk-option>
+                                    </bk-select>
                                 </bk-form-item>
                             </bk-col>
+                            <bk-col :span="6">
+                                <bk-form-item label="实际开始">
+                                    <bk-date-picker :value="searchForm.start_time" :placeholder="'选择日期时间'" :type="'datetimerange'"
+                                        format="yyyy-MM-dd HH:mm:ss" style="width: 100%;" :transfer="true" @change="handleStartTimeChange"></bk-date-picker>
+                                </bk-form-item>
+                            </bk-col>
+                            <bk-col :span="6">
+                                <bk-form-item label="完成时间">
+                                    <bk-date-picker :value="searchForm.end_time" :placeholder="'选择日期时间'" :type="'datetimerange'"
+                                        format="yyyy-MM-dd HH:mm:ss" style="width: 100%;" :transfer="true" @change="handleEndTimeChange"></bk-date-picker>
+                                </bk-form-item>
+                            </bk-col>
+                        </bk-row>
+                        <bk-row style="margin-top: 24px;">
                             <bk-col :span="6">
                                 <bk-form-item label="跑批系统">
                                     <bk-select :clearable="true" style="background-color: #fff;" v-model="searchForm.category"
@@ -101,6 +98,7 @@
                             <bk-button style="margin-left: 8px;" @click="handleOpenSeniorSearch">取消</bk-button>
                         </bk-row>
                     </bk-form>
+
                 </bk-container>
             </div>
         </div>
@@ -146,13 +144,13 @@
         data() {
             const fields = [{
                 id: 'name',
-                label: '作业名',
+                label: '作业流名',
                 overflowTooltip: true,
                 sortable: false
             }, {
-                id: 'process',
-                label: '所属作业流名',
-                overflowTooltip: true,
+                id: 'run_type',
+                label: '调度方式',
+                overflowTooltip: false,
                 sortable: false
             }, {
                 id: 'state',
@@ -160,30 +158,20 @@
                 overflowTooltip: false,
                 sortable: false
             }, {
-                id: 'category_name',
-                label: '跑批系统',
+                id: 'create_time',
+                label: '创建时间',
                 overflowTooltip: false,
                 sortable: true
             }, {
-                id: 'need_confirm',
-                label: '待复核人数',
+                id: 'total_not_execute_job_count',
+                label: '未执行作业数',
                 overflowTooltip: false,
                 sortable: false
             }, {
-                id: 'confirm_users',
-                label: '已复核人',
-                overflowTooltip: false,
-                sortable: false
-            }, {
-                id: 'station',
-                label: 'Agent',
+                id: 'is_release_dependency',
+                label: '是否释放依赖',
                 overflowTooltip: true,
-                sortable: false
-            }, {
-                id: 'executor',
-                label: '执行者',
-                overflowTooltip: true,
-                sortable: false
+                sortable: true
             }, {
                 id: 'eta',
                 label: '计划开始时间',
@@ -192,7 +180,7 @@
             }, {
                 id: 'start_time',
                 label: '实际开始时间',
-                overflowTooltip: true,
+                overflowTooltip: false,
                 sortable: true
             }, {
                 id: 'end_time',
@@ -205,7 +193,7 @@
                 setting: {
                     size: 'small', // 表格大小
                     fields: fields, // 表格所有列
-                    selectedFields: fields // 表格当前显示列
+                    selectedFields: fields.slice(0, 4) // 表格当前显示列
                 },
                 opreateFlag: false,
                 midSearchForm: {},

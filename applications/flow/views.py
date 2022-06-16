@@ -12,10 +12,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from applications.flow.filters import NodeTemplateFilter
-from applications.flow.models import Process, Node, ProcessRun, NodeRun, NodeTemplate
+from applications.flow.models import Process, Node, ProcessRun, NodeRun, NodeTemplate, SubProcessRun
 from applications.flow.serializers import ProcessViewSetsSerializer, ListProcessViewSetsSerializer, \
     RetrieveProcessViewSetsSerializer, ExecuteProcessSerializer, ListProcessRunViewSetsSerializer, \
-    RetrieveProcessRunViewSetsSerializer, NodeTemplateSerializer
+    RetrieveProcessRunViewSetsSerializer, NodeTemplateSerializer, ListSubProcessRunViewSetsSerializer, \
+    RetrieveSubProcessRunViewSetsSerializer
 from applications.utils.dag_helper import DAG, instance_dag, PipelineBuilder
 from component.drf.viewsets import GenericViewSet
 
@@ -45,7 +46,7 @@ class ProcessViewSets(mixins.ListModelMixin,
         # 执行
         runtime = BambooDjangoRuntime()
         api.run_pipeline(runtime=runtime, pipeline=pipeline)
-        
+
         Process.objects.filter(id=process_id).update(total_run_count=F("total_run_count") + 1)
 
         return Response({})
@@ -63,6 +64,18 @@ class ProcessRunViewSets(mixins.ListModelMixin,
             return RetrieveProcessRunViewSetsSerializer
         elif self.action == "execute":
             return ExecuteProcessSerializer
+
+
+class SubProcessRunViewSets(mixins.ListModelMixin,
+                            mixins.RetrieveModelMixin,
+                            GenericViewSet):
+    queryset = SubProcessRun.objects.order_by("-update_time")
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return ListSubProcessRunViewSetsSerializer
+        elif self.action == "retrieve":
+            return RetrieveSubProcessRunViewSetsSerializer
 
 
 class TestViewSets(GenericViewSet):

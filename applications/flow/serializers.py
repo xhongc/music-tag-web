@@ -8,7 +8,7 @@ from pipeline.eri.runtime import BambooDjangoRuntime
 from rest_framework import serializers
 
 from applications.flow.constants import PIPELINE_STATE_TO_FLOW_STATE
-from applications.flow.models import Process, Node, ProcessRun, NodeRun, NodeTemplate
+from applications.flow.models import Process, Node, ProcessRun, NodeRun, NodeTemplate, SubProcessRun, SubNodeRun
 from applications.utils.uuid_helper import get_uuid
 
 
@@ -161,6 +161,23 @@ class ListProcessRunViewSetsSerializer(serializers.ModelSerializer):
         return process_state
 
 
+class ListSubProcessRunViewSetsSerializer(serializers.ModelSerializer):
+    state = serializers.SerializerMethodField()
+
+    class Meta:
+        model = SubProcessRun
+        fields = "__all__"
+
+    def get_state(self, obj):
+        runtime = BambooDjangoRuntime()
+        process_info = api.get_pipeline_states(runtime, root_id=obj.root_id)
+        try:
+            process_state = PIPELINE_STATE_TO_FLOW_STATE.get(process_info.data[obj.root_id]["state"])
+        except Exception:
+            process_state = "error"
+        return process_state
+
+
 class RetrieveProcessViewSetsSerializer(serializers.ModelSerializer):
     pipeline_tree = serializers.SerializerMethodField()
 
@@ -239,7 +256,7 @@ class RetrieveProcessRunViewSetsSerializer(serializers.ModelSerializer):
                 outputs = output_data.data.get("outputs", "")
                 if node["node_type"] == 3:
                     # todo先简单判断node有fail，process就为fail
-                    if State.objects.filter(parent_id=node["uuid"],name="FAILED").exists():
+                    if State.objects.filter(parent_id=node["uuid"], name="FAILED").exists():
                         flow_state = "fail"
             # todo先简单判断node有fail，process就为fail
             if flow_state == "fail":
@@ -268,6 +285,65 @@ class RetrieveProcessRunViewSetsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProcessRun
+        fields = ("id", "name", "description", "run_type", "pipeline_tree")
+
+
+class RetrieveSubProcessRunViewSetsSerializer(serializers.ModelSerializer):
+    pipeline_tree = serializers.SerializerMethodField()
+
+    def get_pipeline_tree(self, obj):
+        lines = []
+        nodes = []
+        for _from, to_list in obj.dag.items():
+            for _to in to_list:
+                lines.append({
+                    "from": _from,
+                    "to": _to
+                })
+        runtime = BambooDjangoRuntime()
+        process_info = api.get_pipeline_states(runtime, root_id=obj.root_id)
+        process_state = PIPELINE_STATE_TO_FLOW_STATE.get(process_info.data[obj.root_id]["state"])
+        state_map = process_info.data[obj.root_id]["children"]
+        node_list = SubNodeRun.objects.filter(subprocess_run_id=obj.id).values()
+        for node in node_list:
+            pipeline_state = state_map.get(node["uuid"], {}).get("state", "READY")
+            flow_state = PIPELINE_STATE_TO_FLOW_STATE[pipeline_state]
+            outputs = ""
+            # print(flow_state)
+            if node["node_type"] not in [0, 1] and flow_state not in ["wait"]:
+                output_data = api.get_execution_data_outputs(runtime, node_id=node["uuid"])
+                outputs = output_data.data.get("outputs", "")
+                if node["node_type"] == 3:
+                    # todo先简单判断node有fail，process就为fail
+                    if State.objects.filter(parent_id=node["uuid"], name="FAILED").exists():
+                        flow_state = "fail"
+            # todo先简单判断node有fail，process就为fail
+            if flow_state == "fail":
+                process_state = "fail"
+            nodes.append({"show": node["show"],
+                          "top": node["top"],
+                          "left": node["left"],
+                          "ico": node["ico"],
+                          "type": node["node_type"],
+                          "name": node["name"],
+                          "state": flow_state,
+                          "content": node["content"],
+                          "node_data": {
+                              "inputs": node["inputs"],
+                              "outputs": outputs,
+                              "run_mark": 0,
+                              "node_name": node["name"],
+                              "description": node["description"],
+                              "fail_retry_count": node["fail_retry_count"],
+                              "fail_offset": node["fail_offset"],
+                              "fail_offset_unit": node["fail_offset_unit"],
+                              "is_skip_fail": node["is_skip_fail"],
+                              "is_timeout_alarm": node["is_timeout_alarm"]},
+                          "uuid": node["uuid"]})
+        return {"lines": lines, "nodes": nodes, "process_state": process_state}
+
+    class Meta:
+        model = SubProcessRun
         fields = ("id", "name", "description", "run_type", "pipeline_tree")
 
 

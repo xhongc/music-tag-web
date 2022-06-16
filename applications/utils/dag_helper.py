@@ -212,6 +212,7 @@ class PipelineBuilder:
         self.instance = self.setup_instance()
 
     def setup_instance(self):
+        """将节点转换成bamboo实例"""
         pipeline_instance = {}
         for p_id, node in self.node_map.items():
             if node.node_type == Node.START_NODE:
@@ -244,6 +245,8 @@ class PipelineBuilder:
                 p_builder = PipelineBuilder(process_id)
                 pipeline = p_builder.build(is_subprocess=True)
                 pipeline_instance[p_id] = pipeline
+                # 子流程的pid一并加入pipeline_instance
+                pipeline_instance.update(p_builder.instance)
             else:
                 act = ServiceActivity(component_code="http_request")
                 act.component.inputs.inputs = Var(type=Var.PLAIN, value=node.inputs)
