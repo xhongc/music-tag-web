@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from applications.flow.urls import flow_router, node_router
 from applications.flow.views import flow
+from applications.task.urls import task_router
 from dj_flow.views import index
 
 urlpatterns = [
@@ -24,6 +25,6 @@ urlpatterns = [
     path('', index),
     path("process/", include(flow_router.urls)),
     path("node/", include(node_router.urls)),
+    path("task/", include(task_router.urls)),
     path("tt/", flow),
-
 ]

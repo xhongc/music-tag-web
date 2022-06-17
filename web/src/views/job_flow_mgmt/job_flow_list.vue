@@ -77,7 +77,7 @@
                     <template slot-scope="props">
                         <div style="display: flex;align-items: center;">
                             <bk-button class="mr10" theme="primary" text @click="handleImplement(props.row)"
-                                v-if="auth.operate">执行</bk-button>
+                                v-if="auth.operate">新建任务</bk-button>
                             <bk-button class="mr10" theme="primary" text @click="handleOpenUpdate(props.row)"
                                 v-if="auth.modify">修改</bk-button>
                             <bk-button class="mr10" theme="primary" text @click="handleDelete(props.row)"
@@ -252,21 +252,13 @@
                     type: 'primary',
                     title: '确认要执行吗？',
                     confirmLoading: false,
-                    confirmFn: async() => {
-                        this.tableLoading = true
-                        this.$api.process.execute({
-                            process_id: row.id
-                        }).then(res => {
-                            if (res.result) {
-                                this.$cwMessage('执行成功!', 'success')
-                                this.$store.commit('changeTabActive', 'jobflowview')
-                                this.$router.push({
-                                    path: '/jobflowview'
-                                })
-                            } else {
-                                this.$cwMessage('启动失败', 'error')
+                    confirmFn: () => {
+                        this.$router.push({
+                            path: '/taskCreate',
+                            query: {
+                                job_flow_data: row.id,
+                                type: 'detail'
                             }
-                            this.tableLoading = false
                         })
                     }
                 })

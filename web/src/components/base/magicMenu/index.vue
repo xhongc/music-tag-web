@@ -13,7 +13,8 @@
             <leftMenu ref="leftMenu"></leftMenu>
         </template>
         <!--      内容区域      -->
-        <container></container>
+        <container>
+        </container>
     </bk-navigation>
 </template>
 

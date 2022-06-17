@@ -61,6 +61,13 @@ export default {
                         }]
                     },
                     {
+                        "name": "TaskList",
+                        "cnName": "任务管理",
+                        "to": "/taskList",
+                        "icon": "iconfont icon-mianxingtubiao-zuoyejiankong",
+                        "hasChild": false
+                    },
+                    {
                         "name": "JobMonitor",
                         "cnName": "作业监视",
                         "to": "/jobmonitor",
@@ -75,6 +82,7 @@ export default {
     watch: {
         $route(val) {
             this.nav.id = val.meta.hasOwnProperty('fatherName') ? val.meta.fatherName : val.name
+            console.log(this.nav.id)
         }
     },
     mounted() {

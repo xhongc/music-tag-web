@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "custom_plugins",
     "rest_framework",
-    "applications.flow"
+    "applications.flow",
+    "applications.task"
 
 ]
 

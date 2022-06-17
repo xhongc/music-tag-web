@@ -96,6 +96,12 @@
             addModeDialog, // 前置作业流连线模式选择弹窗
             preFlowCanvas // 前置作业流详情画布
         },
+        props: {
+            pid: {
+                type: String,
+                default: ''
+            }
+        },
         data() {
             return {
                 formLoading: false,
@@ -672,7 +678,7 @@
                     this.formLoading = true
                 }
                 // 在操作接口未调用结束的情况下不做轮询
-                this.$api.processRun.retrieve(parseInt(this.$route.query.id)).then(res => {
+                this.$api.processRun.retrieve(parseInt(this.$route.query.id) || parseInt(this.pid)).then(res => {
                     if (res.result) {
                         this.form = res.data
                         if (this.form.hasOwnProperty('pre_commands')) {

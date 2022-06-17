@@ -42,9 +42,14 @@ import lodash from 'lodash'
 import './assets/custom_icon/iconfont.css'
 // import '../static/cw-icon/iconfont.css'
 import 'echarts/dist/extension/dataTool'
+import VeeValidate, {Validator} from 'vee-validate'
+import cron from '@/assets/js/cron-validator.js'
 
-// Vue.use(ElementUI)
-// Vue.use(ViewUI);
+const config = {
+    errorBagName: 'veeErrors',
+    fieldsBagName: 'veeFields'
+}
+Vue.use(VeeValidate, config)
 Vue.use(bkMagic)
 Vue.use(Echarts)
 Vue.use(G6)
@@ -61,9 +66,18 @@ const headTheme = 'light' // 选择 light 或 blue
 Vue.prototype.headTheme = headTheme
 Vue.prototype.$lodash = lodash
 Vue.prototype.hasPerm = hasPermission
-
 Vue.config.productionTip = false
-
+Vue.prototype.cloneDeep = function(data) {
+    return lodash.cloneDeep(data)
+}
+Validator.extend('cronRlue', {
+    getMessage: (field, args) => args + '输入定时表达式非法，请校验',
+    validate: value => cron.validate(value).status
+})
+Validator.extend('integer', {
+    getMessage: (field, args) => args + '间隔时间必须是正整数',
+    validate: value => Number(value) >= 1 && Number(value) % 1 === 0
+})
 /* eslint-disable no-new */
 new Vue({
     el: '#app',

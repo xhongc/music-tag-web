@@ -5,6 +5,7 @@
         </keep-alive>
         <router-view v-if="$route.path !== '/largescreen'"></router-view>
     </div>
+
 </template>
 
 <script>

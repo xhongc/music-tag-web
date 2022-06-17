@@ -35,6 +35,8 @@ import JobViewDetail from '@/views/job_monitor/history/job_view_detail'
 import variableChange from '@/views/job_flow_mgmt/variable_change'
 import AddCalendarMgmt from '@/views/job_flow_mgmt/add_calendar_mgmt'
 import LargeScreen from '@/views/job_monitor_large_screen/large_screen'
+import TaskList from '@/views/task_mgmt/task_list'
+import TaskCreate from '@/views/task_mgmt/task_create'
 
 // const _import = require('./router/_import_' + process.env.NODE_ENV) // 获取组件的方法
 
@@ -375,6 +377,24 @@ router.beforeEach((to, from, next) => {
                     'meta': {
                         'title': '告警中心'
                     }
+                },
+                {
+                    'path': '/taskList',
+                    'name': 'TaskList',
+                    'component': 'TaskList',
+                    'meta': {
+                        'title': '任务管理'
+                    }
+                },
+                {
+                    'path': '/taskCreate',
+                    'name': 'taskCreate',
+                    'component': 'TaskCreate',
+                    'meta': {
+                        'title': '新建任务',
+                        'fatherName': 'TaskList',
+                        'back': 'true'
+                    }
                 }
             ]
             getButton = [
@@ -508,6 +528,20 @@ router.beforeEach((to, from, next) => {
                         'search': true,
                         'operate': true
                     }
+                },
+                {
+                    'url': '/taskList',
+                    'auth': {
+                        'search': true,
+                        'operate': true
+                    }
+                },
+                {
+                    'url': '/taskCreate',
+                    'auth': {
+                        'search': true,
+                        'operate': true
+                    }
                 }
             ]
             saveObjArr('router', getRouter) // 存储路由到localStorage
@@ -578,13 +612,14 @@ const ROUTER_MAP = {
     'SystemClassManage': SystemClassManage,
     'JobFlowDetail': JobFlowDetail,
     'JobViewDetail': JobViewDetail,
-    'LargeScreen': LargeScreen
+    'LargeScreen': LargeScreen,
+    'TaskList': TaskList,
+    'TaskCreate': TaskCreate
 }
 
 function filterAsyncRouter(asyncRouterMap) { // 遍历后台传来的路由字符串，转换为组件对象
     const accessedRouters = asyncRouterMap.filter(route => {
         if (route.component) {
-            // console.log(route.component, 'oooo')
             route.component = ROUTER_MAP[route.component]
             // if (route.component === 'Layout') { //Layout组件特殊处理
             //     route.component = Layout
