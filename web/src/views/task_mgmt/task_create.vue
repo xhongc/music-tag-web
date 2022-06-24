@@ -119,13 +119,12 @@
             </div>
         </div>
         <div class="step-2" v-if="controllableSteps.curStep === 4">
-            <view-detail :pid="'32'"></view-detail>
         </div>
         <div class="step-footer">
-            <bk-button :theme="'default'" :title="'主要按钮'" class="mr10" style="margin: 20px;width: 100px;">
+            <bk-button :theme="'default'" :title="'主要按钮'" class="mr10" style="margin: 20px;width: 100px;" @click="lastStep">
                 上一步
             </bk-button>
-            <bk-button :theme="'primary'" :title="'主要按钮'" class="mr10" style="margin: 20px;width: 100px;">
+            <bk-button :theme="'primary'" :title="'主要按钮'" class="mr10" style="margin: 20px;width: 100px;" @click="nextStep">
                 下一步
             </bk-button>
         </div>
@@ -134,20 +133,18 @@
 
 <script>
     import singleJobFlow from '../job_flow_mgmt/single_job_flow'
-    import viewDetail from '../job_monitor/monitor/view_detail'
     import LoopRuleSelect from '@/components/time_crontab/crontab'
 
     export default {
         name: 'task-create',
         components: {
             'single-job-flow': singleJobFlow,
-            'view-detail': viewDetail,
             'LoopRuleSelect': LoopRuleSelect
         },
         data() {
             return {
                 controllableSteps: {
-                    controllable: true,
+                    controllable: false,
                     steps: [
                         { title: '节点选择', icon: 1 },
                         { title: '参数填写', icon: 2 },
@@ -190,7 +187,6 @@
         },
         methods: {
             stepChanged(index) {
-                console.log(index)
                 this.controllableSteps.curStep = index
             },
             changeTime(val) {
@@ -200,6 +196,40 @@
                 }
                 if (this.formItem.runtimeType === 'cycle') {
                     this.formItem.cyclebeginTime = val
+                }
+            },
+            lastStep() {
+                if (this.controllableSteps.curStep === 1 || this.controllableSteps.curStep === 4) {
+                    return false
+                } else {
+                    this.controllableSteps.curStep = this.controllableSteps.curStep - 1
+                }
+            },
+            nextStep() {
+                if (this.controllableSteps.curStep < 3) {
+                    this.controllableSteps.curStep = this.controllableSteps.curStep + 1
+                } else if (this.controllableSteps.curStep === 3) {
+                    this.$bkInfo({
+                        title: '确认要执行吗？',
+                        confirmLoading: false,
+                        confirmFn: async() => {
+                            this.tableLoading = true
+                            this.$api.process.execute({
+                                process_id: this.$route.query.job_flow_data
+                            }).then(res => {
+                                if (res.result) {
+                                    this.$cwMessage('执行成功!', 'success')
+                                    this.$store.commit('changeTabActive', 'jobflowview')
+                                    this.$router.push({
+                                        path: '/jobflowview'
+                                    })
+                                } else {
+                                    this.$cwMessage(res.message, 'error')
+                                }
+                                this.tableLoading = false
+                            })
+                        }
+                    })
                 }
             }
         }
