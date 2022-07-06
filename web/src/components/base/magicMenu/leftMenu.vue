@@ -29,50 +29,10 @@ export default {
                         "cnName": "首页",
                         "to": "/home",
                         "icon": "iconfont icon-mianxingtubiao-shouye",
-                        "hasChild": false,
-                        "children": []
-                    },
-                    {
-                        "name": "NewJob",
-                        "cnName": "作业节点管理",
-                        "to": "/newjob",
-                        "icon": "iconfont icon-mianxingtubiao-zuoyeguanli",
                         "hasChild": true,
                         "children": [
-                            {"name": "NewJob", "cnName": "新建作业", "to": "/newjob", "hasChild": false},
-                            {"name": "JobList", "cnName": "作业列表", "to": "/joblist", "hasChild": false}]
-                    },
-                    {
-                        'name': 'NewJobFlow',
-                        'cnName': '作业流管理',
-                        'to': '/newjobflow',
-                        'icon': 'iconfont icon-mianxingtubiao-zuoyeliuguanli',
-                        'hasChild': true,
-                        'children': [{
-                            'name': 'NewJobFlow',
-                            'cnName': '新建作业流',
-                            'to': '/newjobflow',
-                            'hasChild': false
-                        }, {
-                            'name': 'JobFlowList',
-                            'cnName': '作业流列表',
-                            'to': '/jobflowlist',
-                            'hasChild': false
-                        }]
-                    },
-                    {
-                        "name": "TaskList",
-                        "cnName": "任务管理",
-                        "to": "/taskList",
-                        "icon": "iconfont icon-mianxingtubiao-zuoyejiankong",
-                        "hasChild": false
-                    },
-                    {
-                        "name": "JobMonitor",
-                        "cnName": "作业监视",
-                        "to": "/jobmonitor",
-                        "icon": "iconfont icon-mianxingtubiao-zuoyejiankong",
-                        "hasChild": false
+                            {"name": "home", "cnName": "首页", "to": "/home", "hasChild": false}
+                        ]
                     }],
                 id: '', // 当前激活侧边栏
                 toggle: false
@@ -92,20 +52,6 @@ export default {
             return true
         },
         handleRouterJump(item) {
-            this.$store.commit('getJobFlowHistorySearch', {})
-            this.$store.commit('getJobFlowViewSearch', {})
-            if (item.to === '/jobmonitor') {
-                this.$store.commit('changeTabActive', 'jobflowview')
-                return this.$router.push({
-                    path: '/jobflowview'
-                })
-            }
-            if (item.to === '/jobhistory') {
-                this.$store.commit('changeTabActive', 'jobflowviewhistory')
-                return this.$router.push({
-                    path: '/jobflowviewhistory'
-                })
-            }
             this.$router.push({
                 path: `${item.to}`
             })

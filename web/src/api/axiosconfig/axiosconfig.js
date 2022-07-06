@@ -4,14 +4,7 @@ axios.defaults.baseURL = window.siteUrl
 axios.defaults.withCredentials = true
 axios.defaults.timeout = 200000
 axios.defaults.crossDomain = true
-// const VueEnv = process.env.NODE_ENV
-// let ApiUrl = 'http://127.0.0.1:8000'
-// if (VueEnv === 'production') {
-//     ApiUrl = '.'
-// } else {
-//     ApiUrl = 'http://127.0.0.1:8000'
-// }
-// // axios.defaults.baseURL = ApiUrl;
+
 axios.interceptors.request.use((config) => {
     config.headers['X-Requested-With'] = 'XMLHttpRequest'
     const name = window.CSRF_COOKIE_NAME || 'csrftoken'

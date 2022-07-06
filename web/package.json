@@ -12,8 +12,6 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@antv/g2": "^3.4.10",
-    "@antv/g6": "^4.1.7",
     "axios": "^0.16.2",
     "bk-magic-vue": "^2.3.0",
     "brace": "^0.11.1",
@@ -24,8 +22,6 @@
     "jquery": "^2.2.4",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "monaco-editor": "^0.19.0",
-    "monaco-editor-webpack-plugin": "^1.8.0",
     "screenfull": "^5.1.0",
     "stylelint": "^13.5.0",
     "stylelint-scss": "^3.19.0",

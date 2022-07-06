@@ -30,7 +30,7 @@
         },
         data() {
             return {
-                title: '任务调度平台',
+                title: 'django-vue',
                 headerTitle: '',
                 imgSrc: '',
             }

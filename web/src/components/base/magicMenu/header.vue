@@ -26,10 +26,9 @@
 </template>
 
 <script>
-    import {
-        clearStore
-    } from '../../../common/store.js'
-    export default {
+import {clearStore} from '../../../common/store.js'
+
+export default {
         data() {
             return {
                 logout_url: '',
@@ -44,54 +43,7 @@
         },
         computed: {
             headerTitle() {
-                let title = this.$route.meta.title
-                if (title === '变量表') {
-                    if (this.$route.query.type === 'detail') {
-                        title = '变量表详情'
-                    }
-                    if (this.$route.query.type === 'update') {
-                        title = '修改变量表'
-                    }
-                    if (this.$route.query.type === 'add') {
-                        title = '新增变量表'
-                    }
-                }
-                if (title === '操作日历') {
-                    if (this.$route.query.type === 'add') {
-                        title = '新增日历'
-                    }
-                    if (this.$route.query.type === 'update') {
-                        title = '修改日历'
-                    }
-                    if (this.$route.query.type === 'detail') {
-                        title = '日历详情'
-                    }
-                }
-                // if (title === '操作日历') {
-                //     if (this.$route.params.isAdd === true) {
-                //         title = '新增日历'
-                //     }
-                //     if (this.$route.params.isEdit === true) {
-                //         title = '修改日历'
-                //     }
-                //     if (this.$route.params.isDetail === true) {
-                //         title = '日历详情'
-                //     }
-                // }
-                if (title === '单个作业流') {
-                    if (this.$route.query.type === 'detail') {
-                        title = '单个作业流详情'
-                    }
-                    if (this.$route.query.type === 'update') {
-                        title = '单个作业流修改'
-                    }
-                }
-                if (title === '单个作业') {
-                    if (this.$route.query.type === 'update') {
-                        title = '单个作业修改'
-                    }
-                }
-                return title
+                return this.$route.meta.title
             }
         },
         created() {

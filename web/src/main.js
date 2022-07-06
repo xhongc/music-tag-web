@@ -16,7 +16,6 @@ import 'view-design/dist/styles/iview.css'
 import './components/iview/index'
 // 几何图
 import * as Echarts from 'echarts'
-import G6 from '@antv/g6'
 // 引用API文件
 import api from './api/index'
 // 时间格式化插件
@@ -43,7 +42,6 @@ import './assets/custom_icon/iconfont.css'
 // import '../static/cw-icon/iconfont.css'
 import 'echarts/dist/extension/dataTool'
 import VeeValidate, {Validator} from 'vee-validate'
-import cron from '@/assets/js/cron-validator.js'
 
 const config = {
     errorBagName: 'veeErrors',
@@ -52,11 +50,9 @@ const config = {
 Vue.use(VeeValidate, config)
 Vue.use(bkMagic)
 Vue.use(Echarts)
-Vue.use(G6)
 Vue.use(Component)
 Vue.use(axios)
 Vue.prototype.$echarts = Echarts
-Vue.prototype.$G6 = G6
 Vue.prototype.$moment = moment
 Vue.prototype.$cwMessage = cwMessage
 // 将API方法绑定到全局
@@ -70,10 +66,7 @@ Vue.config.productionTip = false
 Vue.prototype.cloneDeep = function(data) {
     return lodash.cloneDeep(data)
 }
-Validator.extend('cronRlue', {
-    getMessage: (field, args) => args + '输入定时表达式非法，请校验',
-    validate: value => cron.validate(value).status
-})
+
 Validator.extend('integer', {
     getMessage: (field, args) => args + '间隔时间必须是正整数',
     validate: value => Number(value) >= 1 && Number(value) % 1 === 0

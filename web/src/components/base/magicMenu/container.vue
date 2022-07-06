@@ -1,9 +1,6 @@
 <template>
     <div id="container">
-        <keep-alive v-if="keepAliveShow">
-            <router-view v-if="$route.path === '/largescreen'"></router-view>
-        </keep-alive>
-        <router-view v-if="$route.path !== '/largescreen'"></router-view>
+        <router-view></router-view>
     </div>
 
 </template>
@@ -12,19 +9,6 @@
     export default {
         data() {
             return {
-                keepAliveShow: true
-            }
-        },
-        watch: {
-            $route: function(val, oldval) {
-                if (val.name === 'LargeScreen' && oldval.name !== 'ViewDetail') {
-                    // 表明从别的页面进入作业监视大屏
-                    // 刷新keepAlive
-                    this.keepAliveShow = false
-                    setTimeout(() => {
-                        this.keepAliveShow = true
-                    }, 0)
-                }
             }
         }
     }
