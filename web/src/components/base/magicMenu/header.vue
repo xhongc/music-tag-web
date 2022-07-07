@@ -59,12 +59,6 @@ export default {
                 clearStore()
             },
             loginUser() {
-                this.$api.user.login().then(res => {
-                    if (res.result) {
-                        this.userData = res.data
-                        this.logout_url = res.data.logout_url
-                    }
-                })
             },
             handleBack() {
                 this.$router.go(-1)

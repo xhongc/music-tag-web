@@ -26,9 +26,6 @@
                 if (window.innerHeight) {
                     this.winHeight = window.screen.availHeight - (window.outerHeight - window.innerHeight)
                 }
-                // if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
-                //     this.winHeight = document.documentElement.clientHeight;
-                // }
                 this.winHeight = this.winHeight - headerHeight + 'px'
             }
         }

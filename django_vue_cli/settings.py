@@ -107,7 +107,8 @@ USE_L10N = True
 USE_TZ = False
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # noqa
+STATIC_ROOT = 'static'
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # noqa
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 IS_USE_CELERY = True
