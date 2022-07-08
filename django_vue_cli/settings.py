@@ -1,11 +1,13 @@
 from pathlib import Path
 import sys
 import os
+
 # lib文件夹中手动导入的第三方库
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(1, os.path.join(os.getcwd(), 'lib'))
 
-BROKER_URL = "redis://localhost:6379/3"
+# docker 中redis
+BROKER_URL = "redis://redis:6379/3"
 
 SECRET_KEY = 'django-insecure-u5_r=pekio0@zt!y(kgbufuosb9mddu8*qeejkzj@=7uyvb392'
 
@@ -74,8 +76,8 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "bomboo",  # noqa
         "USER": "root",
-        "PASSWORD": "",
-        "HOST": "localhost",
+        "PASSWORD": "xhongc",
+        "HOST": "mysql",
         "PORT": "3306",
         # 单元测试 DB 配置，建议不改动
         "TEST": {"NAME": "test_db", "CHARSET": "utf8", "COLLATION": "utf8_general_ci"},
@@ -138,4 +140,3 @@ try:
     from local_settings import *  # noqa
 except ImportError:
     pass
-
