@@ -11,7 +11,8 @@
                         <bk-input v-model="formData.pwd" :type="'password'" :placeholder="'请输入密码'"></bk-input>
                     </bk-form-item>
                     <div style="margin-top: 30px;">
-                        <bk-button :theme="'primary'" type="submit" :title="'登录'" @click="handleClick" class="mr10" style="width: 100%;">
+                        <bk-button :theme="'primary'" type="submit" :title="'登录'" @click="handleClick" class="mr10"
+                            style="width: 100%;">
                             登录
                         </bk-button>
                     </div>
@@ -26,13 +27,15 @@
         name: 'login',
         data: function() {
             return {
-                uname: '张三',
-                password: '123',
-                formData: {}
+                formData: {username: '', password: ''}
             }
         },
         methods: {
             handleClick() {
+                this.$api.Task.login(this.formData).then((res) => {
+                    this.setCookie('AUTHORIZATION', 'jwt ' + res.token)
+                    this.$router.push({name: 'home'})
+                })
             }
         }
     }
@@ -54,22 +57,6 @@
     justify-content: center;
 }
 
-.login-container {
-    border-radius: 10px;
-    margin: 0px auto;
-    width: 350px;
-    padding: 30px 35px 15px 35px;
-    background: #fff;
-    border: 1px solid #eaeaea;
-    text-align: left;
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.1);
-}
-
-.title {
-    margin: 0px auto 40px auto;
-    text-align: center;
-    color: #505458;
-}
 .login-box {
     width: 500px;
     height: 400px;

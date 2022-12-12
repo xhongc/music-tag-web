@@ -11,17 +11,17 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         // Various Dev Server settings
-        host: '0.0.0.0', // can be overwritten by process.env.HOST
+        host: '127.0.0.1', // can be overwritten by process.env.HOST
         port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         autoOpenBrowser: true,
         errorOverlay: true,
         notifyOnErrors: true,
         proxyTable: {
             '/api': {
-                target: 'http://123.120.48.170:8002/', // 你要代理的域名和端口号，要加上http
+                target: 'http://127.0.0.1:8000', // 你要代理的域名和端口号，要加上http
                 changeOrigin: true, // 跨域
                 pathRewrite: {
-                    '^/api': ''
+                    '^/api-proxy': ''
                 }
             }
         },

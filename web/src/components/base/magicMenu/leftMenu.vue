@@ -1,16 +1,16 @@
 <template>
     <bk-navigation-menu ref="menu" :default-active="nav.id" :before-nav-change="beforeNavChange"
-                        :toggle-active="nav.toggle">
-        <bk-navigation-menu-item v-for="item in nav.menuList" :key="item.name"
-                                 :has-child="item.children && !!item.children.length"
-                                 :group="item.group" :icon="item.icon" :disabled="item.disabled" :url="item.to"
-                                 :id="item.name" @click="handleRouterJump(item, false)">
+        :toggle-active="nav.toggle">
+        <bk-navigation-menu-item v-for="item in permNavList" :key="item.name"
+            :has-child="item.children && !!item.children.length"
+            :group="item.group" :icon="item.icon" :disabled="item.disabled" :url="item.to"
+            :id="item.name" @click="handleRouterJump(item, false)">
             <span>{{ item.cnName }}</span>
             <div slot="child">
                 <bk-navigation-menu-item :key="child.name" v-for="child in item.children" :id="child.name"
-                                         :disabled="child.disabled"
-                                         :icon="child.icon" :default-active="child.active"
-                                         @click="handleRouterJump(child, true)">
+                    :disabled="child.disabled"
+                    :icon="child.icon" :default-active="child.active"
+                    @click="handleRouterJump(child, true)">
                     <span>{{ child.cnName }}</span>
                 </bk-navigation-menu-item>
             </div>
@@ -19,53 +19,63 @@
 </template>
 
 <script>
-export default {
-    data() {
-        return {
-            nav: {
-                menuList: [
-                    {
-                        "name": "home",
-                        "cnName": "首页",
-                        "to": "/",
-                        "icon": "iconfont icon-mianxingtubiao-shouye",
-                        "hasChild": false,
-                        "children": [
-                        ]
-                    },
-                    {
-                        "name": "user",
-                        "cnName": "用户管理",
-                        "to": "/user",
-                        "icon": "iconfont icon-mianxingtubiao-shouye",
-                        "hasChild": false,
-                        "children": [
-                        ]
-                    }],
-                id: '', // 当前激活侧边栏
-                toggle: false
+    import {mapGetters} from 'vuex'
+
+    export default {
+        data() {
+            return {
+                nav: {
+                    menuList: [
+                        {
+                            'name': 'home',
+                            'cnName': '首页',
+                            'to': '/',
+                            'icon': 'iconfont icon-mianxingtubiao-shouye',
+                            'hasChild': false,
+                            'children': []
+                        }
+                       ],
+                    id: '', // 当前激活侧边栏
+                    toggle: false
+                }
+            }
+        },
+        watch: {
+            $route(val) {
+                this.nav.id = val.meta.hasOwnProperty('fatherName') ? val.meta.fatherName : val.name
+                console.log(this.nav.id)
+            }
+        },
+        mounted() {
+        },
+        methods: {
+            beforeNavChange(newId, oldId) {
+                return true
+            },
+            handleRouterJump(item) {
+                this.$router.push({
+                    path: `${item.to}`
+                })
+            }
+        },
+        computed: {
+            ...mapGetters(['getUserRole']),
+            permNavList() {
+                console.log(this.getUserRole)
+                if (this.getUserRole === 'admin') {
+                    this.nav.menuList.push( {
+                        'name': 'user',
+                        'cnName': '用户管理',
+                        'to': '/user',
+                        'icon': 'iconfont icon-mianxingtubiao-shouye',
+                        'hasChild': false,
+                        'children': []
+                    })
+                }
+                return this.nav.menuList
             }
         }
-    },
-    watch: {
-        $route(val) {
-            this.nav.id = val.meta.hasOwnProperty('fatherName') ? val.meta.fatherName : val.name
-            console.log(this.nav.id)
-        }
-    },
-    mounted() {
-    },
-    methods: {
-        beforeNavChange(newId, oldId) {
-            return true
-        },
-        handleRouterJump(item) {
-            this.$router.push({
-                path: `${item.to}`
-            })
-        }
     }
-}
 </script>
 
 <style>

@@ -1,5 +1,6 @@
 // axios基础配置
 import axios from 'axios'
+
 axios.defaults.baseURL = window.siteUrl
 axios.defaults.withCredentials = true
 axios.defaults.timeout = 200000
@@ -7,6 +8,20 @@ axios.defaults.crossDomain = true
 
 axios.interceptors.request.use((config) => {
     config.headers['X-Requested-With'] = 'XMLHttpRequest'
+    const name = 'AUTHORIZATION'
+    let cookieValue = 'NOTPROVIDED'
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';')
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim()
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+                break
+            }
+        }
+    }
+    config.headers['AUTHORIZATION'] = cookieValue
+
     return config
 })
 
@@ -93,4 +108,4 @@ export function DELETE(url, params, config) {
 // reUrl = '';  不需要重定向
 //  reUrl = VueEnv === 'production' ? '' : '/api'; 重定向
 // todo do
-export const reUrl = ''
+export const reUrl = 'api-proxy'
