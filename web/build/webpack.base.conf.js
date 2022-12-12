@@ -3,7 +3,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
+// const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 // const StyleLintPlugin = require('stylelint-webpack-plugin')
 var webpack = require('webpack');
 
@@ -29,10 +29,10 @@ module.exports = {
             jQuery: "jquery",
             "windows.jQuery": "jquery"
         }),
-        new MonacoWebpackPlugin({
-            languages: ['shell', 'bat', 'perl', 'python', 'powershell', 'json'],
-            publicPath: './static/monaco-editor'
-        })
+        // new MonacoWebpackPlugin({
+        //     languages: ['shell', 'bat', 'perl', 'python', 'powershell', 'json'],
+        //     publicPath: './static/monaco-editor'
+        // })
         // new StyleLintPlugin({
         //     files: ['src/**/*.{vue,htm,html,css,sss,less,scss,sass}'],
         //     exclude: [path.resolve(__dirname, '../node_modules/**')]

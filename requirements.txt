@@ -12,3 +12,7 @@ redis==3.5.3
 requests==2.27.1
 gunicorn==20.1.0
 gevent==21.12.0
+sqlalchemy==1.4.42
+django-redis==5.2.0
+django-redis-cache==3.0.1
+djangorestframework-jwt==1.11.0

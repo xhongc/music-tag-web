@@ -1,7 +1,8 @@
 import router from './router'
 import store from '@/vuex/index'
 import Home from '@/views/home/home'
-
+import User from '@/views/user/index'
+import Login from '@/views/user/login'
 // const _import = require('./router/_import_' + process.env.NODE_ENV) // 获取组件的方法
 
 let getRouter // 用来获取后台拿到的路由
@@ -23,11 +24,19 @@ router.beforeEach((to, from, next) => {
                     }
                 },
                 {
-                    'path': '/home',
-                    'name': 'home',
-                    'component': 'Home',
+                    'path': '/user',
+                    'name': 'user',
+                    'component': 'User',
                     'meta': {
-                        'title': '首页'
+                        'title': '用户信息'
+                    }
+                },
+                {
+                    'path': '/login',
+                    'name': 'login',
+                    'component': 'Login',
+                    'meta': {
+                        'title': '登录'
                     }
                 }
             ]
@@ -65,18 +74,15 @@ function getObjArr(name) { // localStorage 获取数组对象的方法
 }
 
 const ROUTER_MAP = {
-    'Home': Home
+    'Home': Home,
+    'User': User,
+    'Login': Login
 }
 
 function filterAsyncRouter(asyncRouterMap) { // 遍历后台传来的路由字符串，转换为组件对象
     const accessedRouters = asyncRouterMap.filter(route => {
         if (route.component) {
             route.component = ROUTER_MAP[route.component]
-            // if (route.component === 'Layout') { //Layout组件特殊处理
-            //     route.component = Layout
-            // } else {
-            //     route.component = _import(route.component)
-            // }
         }
         if (route.children && route.children.length) {
             route.children = filterAsyncRouter(route.children)

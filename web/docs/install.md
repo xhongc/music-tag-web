@@ -1,6 +1,3 @@
-# cw-vue-1.0
-
-> cw-vue-1.0
 
 ## Build Setup
 
@@ -8,12 +5,12 @@
 
 ``` bash
 npm config set registry http://registry.npm.taobao.org
-``` 
+```
 >查看是否切换成功
 
 
 ``` bash
-npm get registry 
+npm get registry
 ```
 >或者使用cnpm代替npm来进行依赖安装
 

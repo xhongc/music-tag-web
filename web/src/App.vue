@@ -1,16 +1,20 @@
 <template>
-    <div id="app">
-        <magic-menu></magic-menu>
+    <div id="app" style="background-color: #f5f5f5;height: 100%;">
+        <magic-menu v-if="$route.name !== 'login'"></magic-menu>
+        <div v-else style="height: 100%;">
+            <login></login>
+        </div>
     </div>
 </template>
 
 <script>
     import magicMenu from '@/components/base/magicMenu'
-
+    import Login from '@/views/user/login'
     export default {
         name: 'app',
         components: {
-            magicMenu
+            magicMenu,
+            Login
         },
         data() {
             return {

@@ -1,7 +1,3 @@
-# cw-vue-1.0
-
-> cw-vue-1.0
-
 ## 综述
 * [代码目录](docs/use.md)
 

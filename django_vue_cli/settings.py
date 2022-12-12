@@ -1,6 +1,7 @@
 from pathlib import Path
 import sys
 import os
+import datetime
 
 # lib文件夹中手动导入的第三方库
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,19 +33,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "rest_framework",
     "applications.task",
+    "applications.user",
 
 ]
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-    'django.middleware.security.SecurityMiddleware',
+    # 'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "component.drf.middleware.AppExceptionMiddleware"
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # "component.drf.middleware.AppExceptionMiddleware"
 ]
 
 ROOT_URLCONF = 'django_vue_cli.urls'
@@ -74,10 +77,10 @@ LANGUAGE_CODE = "zh-hans"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "bomboo",  # noqa
+        "NAME": "dj-vue",  # noqa bomboo
         "USER": "root",
-        "PASSWORD": "xhongc",
-        "HOST": "mysql",
+        "PASSWORD": "",  # xhongc
+        "HOST": "127.0.0.1",  # todo docker config mysql
         "PORT": "3306",
         # 单元测试 DB 配置，建议不改动
         "TEST": {"NAME": "test_db", "CHARSET": "utf8", "COLLATION": "utf8_general_ci"},
@@ -128,13 +131,36 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "component.drf.pagination.CustomPageNumberPagination",
     "PAGE_SIZE": 10,
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
-    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework.authentication.SessionAuthentication",),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.OrderingFilter",
     ),
     "DATETIME_FORMAT": "%Y-%m-%d %H:%M:%S",
     "NON_FIELD_ERRORS_KEY": "params_error",
+}
+DJORM_POOL_PESSIMISTIC = False
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/8",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+JWT_AUTH = {
+    # 过期时间，生成的took七天之后不能使用
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    # 刷新时间 之后的token时间值
+    # 'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    # 请求头携带的参数
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
 try:
     from local_settings import *  # noqa

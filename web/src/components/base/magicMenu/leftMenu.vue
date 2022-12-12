@@ -27,11 +27,19 @@ export default {
                     {
                         "name": "home",
                         "cnName": "首页",
-                        "to": "/home",
+                        "to": "/",
                         "icon": "iconfont icon-mianxingtubiao-shouye",
-                        "hasChild": true,
+                        "hasChild": false,
                         "children": [
-                            {"name": "home", "cnName": "首页", "to": "/home", "hasChild": false}
+                        ]
+                    },
+                    {
+                        "name": "user",
+                        "cnName": "用户管理",
+                        "to": "/user",
+                        "icon": "iconfont icon-mianxingtubiao-shouye",
+                        "hasChild": false,
+                        "children": [
                         ]
                     }],
                 id: '', // 当前激活侧边栏

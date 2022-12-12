@@ -16,6 +16,15 @@ module.exports = {
         autoOpenBrowser: true,
         errorOverlay: true,
         notifyOnErrors: true,
+        proxyTable: {
+            '/api': {
+                target: 'http://123.120.48.170:8002/', // 你要代理的域名和端口号，要加上http
+                changeOrigin: true, // 跨域
+                pathRewrite: {
+                    '^/api': ''
+                }
+            }
+        },
         poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
         // Use Eslint Loader?
@@ -70,5 +79,5 @@ module.exports = {
         // `npm run build --report`
         // Set to `true` or `false` to always turn it on or off
         bundleAnalyzerReport: process.env.npm_config_report
-    }
+    },
 }

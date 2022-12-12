@@ -44,8 +44,8 @@
             // this.initLogo()
         },
         mounted() {
-          const defaultTableHeight = document.documentElement.clientHeight - 52 - 40
-          this.$store.commit('setDefaultTableHeight', defaultTableHeight)
+            const defaultTableHeight = document.documentElement.clientHeight - 52 - 40
+            this.$store.commit('setDefaultTableHeight', defaultTableHeight)
         },
         methods: {
             handleToggle(v) {
@@ -58,25 +58,25 @@
 </script>
 
 <style lang="scss" scoped>
-    .monitor-logo {
-        width: 32px;
-        height: 32px;
-    }
+.monitor-logo {
+    width: 32px;
+    height: 32px;
+}
 
-    .monitor-logo-icon {
-        width: 32px;
-        height: 32px;
-    }
+.monitor-logo-icon {
+    width: 32px;
+    height: 32px;
+}
 </style>
 <style lang="scss">
-    .bk-wrapper {
-        .bk-navigation-wrapper {
-            .navigation-container {
-                max-width: calc(100% - 60px) !important;
-                .container-content {
-                    padding: 0px;
-                }
+.bk-wrapper {
+    .bk-navigation-wrapper {
+        .navigation-container {
+            max-width: calc(100% - 60px) !important;
+            .container-content {
+                padding: 0px;
             }
         }
     }
+}
 </style>

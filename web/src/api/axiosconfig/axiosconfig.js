@@ -7,20 +7,6 @@ axios.defaults.crossDomain = true
 
 axios.interceptors.request.use((config) => {
     config.headers['X-Requested-With'] = 'XMLHttpRequest'
-    const name = window.CSRF_COOKIE_NAME || 'csrftoken'
-    let cookieValue = 'NOTPROVIDED'
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';')
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim()
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
-                break
-            }
-        }
-    }
-    config.headers['X-CSRFToken'] = cookieValue
     return config
 })
 
@@ -106,4 +92,5 @@ export function DELETE(url, params, config) {
 // 前后端分离开发时重定向配置
 // reUrl = '';  不需要重定向
 //  reUrl = VueEnv === 'production' ? '' : '/api'; 重定向
+// todo do
 export const reUrl = ''

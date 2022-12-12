@@ -12,24 +12,13 @@ import 'bk-magic-vue/dist/bk-magic-vue.min.css'
 import store from './vuex'
 import axios from 'axios'
 import 'view-design/dist/styles/iview.css'
-// 按需引入iview
-import './components/iview/index'
-// 几何图
-import * as Echarts from 'echarts'
 // 引用API文件
 import api from './api/index'
-// 时间格式化插件
-import moment from 'moment'
 // filter统一引入
 import './fiter/index.js'
-// 统一样式引入
-import './assets/index'
 import cwMessage from './common/message'
-// 引入自定义组件
-import Component from './components/index.js'
 // vuex
 import '@/vuex/index' // 全局
-// import './promission.js' // 路由后台获取
 import {hasPermission} from './promission.js' // 路由后台获取
 // 引入jquery
 // import $ from 'jquery'
@@ -49,11 +38,7 @@ const config = {
 }
 Vue.use(VeeValidate, config)
 Vue.use(bkMagic)
-Vue.use(Echarts)
-Vue.use(Component)
 Vue.use(axios)
-Vue.prototype.$echarts = Echarts
-Vue.prototype.$moment = moment
 Vue.prototype.$cwMessage = cwMessage
 // 将API方法绑定到全局
 Vue.prototype.$http = axios
@@ -66,7 +51,29 @@ Vue.config.productionTip = false
 Vue.prototype.cloneDeep = function(data) {
     return lodash.cloneDeep(data)
 }
-
+Vue.prototype.setCookie = function(name, value, day) {
+    if (day !== 0) {
+        const curDate = new Date()
+        const curTamp = curDate.getTime()
+        const curWeeHours = new Date(curDate.toLocaleDateString()).getTime() - 1
+        const passedTamp = curTamp - curWeeHours
+        const leftTamp = 24 * 60 * 60 * 1000 - passedTamp
+        const leftTime = new Date()
+        leftTime.setTime(leftTamp + curTamp)
+        document.cookie = name + '=' + escape(value) + ';expires=' + leftTime.toGMTString()
+    } else {
+        document.cookie = name + '=' + escape(value)
+    }
+}
+Vue.prototype.getCookie = function(name) {
+    const reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
+    const arr = document.cookie.match(reg)
+    if (arr) {
+        return unescape(arr[2])
+    } else {
+        return null
+    }
+}
 Validator.extend('integer', {
     getMessage: (field, args) => args + '间隔时间必须是正整数',
     validate: value => Number(value) >= 1 && Number(value) % 1 === 0

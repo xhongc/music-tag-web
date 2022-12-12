@@ -6,7 +6,8 @@ const cwMessage = function(data, theme) {
     if (typeof data === 'string') {
         vm.$bkMessage({
             theme: theme,
-            message: data
+            message: data,
+            delay: 1000
         })
     }
 }
