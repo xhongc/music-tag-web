@@ -78,7 +78,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "dj-vue",  # noqa bomboo
         "USER": "root",
-        "PASSWORD": "",  # xhongc
+        "PASSWORD": "123456",  # xhongc
         "HOST": "127.0.0.1",  # todo docker config mysql
         "PORT": "3306",
         # 单元测试 DB 配置，建议不改动

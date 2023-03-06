@@ -18,7 +18,7 @@ module.exports = {
         notifyOnErrors: true,
         proxyTable: {
             '/api': {
-                target: 'http://127.0.0.1:8000', // 你要代理的域名和端口号，要加上http
+                target: 'http://127.0.0.1:8005', // 你要代理的域名和端口号，要加上http
                 changeOrigin: true, // 跨域
                 pathRewrite: {
                     '^/api-proxy': ''

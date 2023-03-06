@@ -7,8 +7,8 @@
                     <bk-form-item label="" :required="true" :property="'username'">
                         <bk-input v-model="formData.username" :placeholder="'请输入手机号'"></bk-input>
                     </bk-form-item>
-                    <bk-form-item label="" :required="true" :property="'pwd'">
-                        <bk-input v-model="formData.pwd" :type="'password'" :placeholder="'请输入密码'"></bk-input>
+                    <bk-form-item label="" :required="true" :property="'password'">
+                        <bk-input v-model="formData.password" :type="'password'" :placeholder="'请输入密码'"></bk-input>
                     </bk-form-item>
                     <div style="margin-top: 30px;">
                         <bk-button :theme="'primary'" type="submit" :title="'登录'" @click="handleClick" class="mr10"
