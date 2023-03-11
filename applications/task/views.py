@@ -33,7 +33,8 @@ class TaskViewSets(GenericViewSet):
         file_path_list = file_path.split('/')
         data = os.listdir(file_path)
         children_data = []
-        allow_type = ["flac", "mp3"]
+        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
+                      "opus", "wma", "dsf", "dff"]
         for each in data:
             file_type = each.split(".")[-1]
             if file_type not in allow_type:
