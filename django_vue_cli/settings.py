@@ -7,9 +7,6 @@ import datetime
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(1, os.path.join(os.getcwd(), 'lib'))
 
-# docker 中redis
-BROKER_URL = "redis://redis:6379/3"
-
 SECRET_KEY = 'django-insecure-u5_r=pekio0@zt!y(kgbufuosb9mddu8*qeejkzj@=7uyvb392'
 
 DEBUG = False
@@ -72,18 +69,11 @@ TIME_ZONE = "Asia/Shanghai"
 LANGUAGE_CODE = "zh-hans"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "dj-vue",  # noqa bomboo
-        "USER": "root",
-        "PASSWORD": "123456",  # xhongc
-        "HOST": "127.0.0.1",  # todo docker config mysql
-        "PORT": "3306",
-        # 单元测试 DB 配置，建议不改动
-        "TEST": {"NAME": "test_db", "CHARSET": "utf8", "COLLATION": "utf8_general_ci"},
-    },
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
 # Password validation
@@ -142,16 +132,7 @@ REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%Y-%m-%d %H:%M:%S",
     "NON_FIELD_ERRORS_KEY": "params_error",
 }
-DJORM_POOL_PESSIMISTIC = False
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/8",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
+
 JWT_AUTH = {
     # 过期时间，生成的took七天之后不能使用
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
@@ -161,6 +142,8 @@ JWT_AUTH = {
     # 请求头携带的参数
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
+BASE_URL = "https://music.163.com/"
+
 try:
     from local_settings import *  # noqa
 except ImportError:

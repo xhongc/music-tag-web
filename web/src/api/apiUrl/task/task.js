@@ -9,5 +9,20 @@ export default {
     },
     logout: function(params) {
         return POST(reUrl + '/logout/', params)
+    },
+    fileList: function(params) {
+        return POST(reUrl + '/api/file_list/', params)
+    },
+    musicId3: function(params) {
+        return POST(reUrl + '/api/music_id3/', params)
+    },
+    updateId3: function(params) {
+        return POST(reUrl + '/api/update_id3/', params)
+    },
+    fetchId3Title: function(params) {
+        return POST(reUrl + '/api/fetch_id3_by_title/', params)
+    },
+    fetchLyric: function(params) {
+        return POST(reUrl + '/api/fetch_lyric/', params)
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <bk-navigation :default-open="false" navigation-type="left-right" :header-title="headerTitle" :side-title="title"
-        @toggle="handleToggle" class="bk-wrapper">
+        @toggle="handleToggle" :need-menu="false" class="bk-wrapper">
         <!--      头部菜单      -->
         <template slot="header">
             <top-header></top-header>
@@ -9,9 +9,9 @@
             <img class="monitor-logo-icon" :src="imgPath">
         </template>
         <!--      左侧菜单      -->
-        <template slot="menu">
-            <leftMenu ref="leftMenu"></leftMenu>
-        </template>
+        <!--        <template slot="menu">-->
+        <!--            <leftMenu ref="leftMenu"></leftMenu>-->
+        <!--        </template>-->
         <!--      内容区域      -->
         <container>
         </container>
@@ -22,6 +22,7 @@
     import topHeader from './header.vue'
     import leftMenu from './leftMenu.vue'
     import container from './container.vue'
+
     export default {
         components: {
             topHeader,
@@ -72,7 +73,8 @@
 .bk-wrapper {
     .bk-navigation-wrapper {
         .navigation-container {
-            max-width: calc(100% - 60px) !important;
+            max-width: calc(100%) !important;
+
             .container-content {
                 padding: 0px;
             }

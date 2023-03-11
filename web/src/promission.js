@@ -20,7 +20,7 @@ router.beforeEach((to, from, next) => {
                     'name': 'home',
                     'component': 'Home',
                     'meta': {
-                        'title': '首页'
+                        'title': '音乐标签Web版'
                     }
                 },
                 {

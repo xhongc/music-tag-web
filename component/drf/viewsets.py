@@ -84,7 +84,12 @@ class GenericViewSet(ApiGenericMixin, viewsets.GenericViewSet):
         data.update(request.data)
         data._mutable = _mutable
 
+    def failure_response(self, msg="failed"):
+        return Response({"result": False, "code": "400", "data": [], "message": msg})
 
+    def success_response(self, msg="success", data=None):
+        data = data or []
+        return Response({"result": True, "code": "200", "data": data, "message": msg})
 class CreateModelAndLogMixin(mixins.CreateModelMixin):
     """
     Create a model instance and log.

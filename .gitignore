@@ -17,3 +17,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 local_settings.py
+db.sqlite3
