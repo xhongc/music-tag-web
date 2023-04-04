@@ -108,4 +108,4 @@ export function DELETE(url, params, config) {
 // reUrl = '';  不需要重定向
 //  reUrl = VueEnv === 'production' ? '' : '/api'; 重定向
 // todo do
-export const reUrl = ''
+export const reUrl = '/api-proxy'

@@ -29,7 +29,9 @@ class UpdateId3Serializer(serializers.Serializer):
 
 class FetchId3ByTitleSerializer(serializers.Serializer):
     title = serializers.CharField(required=True)
+    resource = serializers.CharField(required=True)
 
 
 class FetchLlyricSerializer(serializers.Serializer):
     song_id = serializers.CharField(required=True)
+    resource = serializers.CharField(required=True)

@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 
 from applications.task.serialziers import FileListSerializer, Id3Serializer, UpdateId3Serializer, \
     FetchId3ByTitleSerializer, FetchLlyricSerializer
+from applications.task.services.music_resource import MusicResource
 from applications.task.utils import timestamp_to_dt
 from applications.utils.send import send
 from component.drf.viewsets import GenericViewSet
@@ -104,9 +105,7 @@ class TaskViewSets(GenericViewSet):
         validate_data = self.is_validated_data(request.data)
         song_id = validate_data["song_id"]
         try:
-            data = send({"url": BASE_URL + "api/song/lyric?lv=-1&kv=-1&tv=-1",
-                         "params": {"id": song_id}}, "linuxapi").POST("")
-            lyric = data.json().get("lrc", {}).get("lyric")
+            lyric = MusicResource(resource).fetch_lyric(song_id)
         except Exception as e:
             lyric = f"未找到歌词 {e}"
         return self.success_response(data=lyric)
@@ -114,30 +113,8 @@ class TaskViewSets(GenericViewSet):
     @action(methods=['POST'], detail=False)
     def fetch_id3_by_title(self, request, *args, **kwargs):
         validate_data = self.is_validated_data(request.data)
+        resource = validate_data["resource"]
+
         title = validate_data["title"]
-        data = send({'s': title, 'type': '1', 'limit': '10', 'offset': '0'}).POST("weapi/cloudsearch/get/web")
-        songs = data.json().get("result", {}).get("songs", [])
-        formated_songs = []
-        for song in songs:
-            artists = song.get("ar", [])
-            album = song.get("al", {})
-            if artists:
-                artist = artists[0].get("name", "")
-                artist_id = artists[0].get("id", "")
-            else:
-                artist = ""
-                artist_id = ""
-            year = song.get("publishTime", 0)
-            if year:
-                year = timestamp_to_dt(year / 1000, "%Y")
-            formated_songs.append({
-                "id": song["id"],
-                "name": song["name"],
-                "artist": artist,
-                "artist_id": artist_id,
-                "album": album.get("name", ""),
-                "album_id": album.get("id", ""),
-                "album_img": album.get("picUrl", {}),
-                "year": year
-            })
-        return self.success_response(data=formated_songs)
+        songs = MusicResource(resource).fetch_id3_by_title(title)
+        return self.success_response(data=songs)

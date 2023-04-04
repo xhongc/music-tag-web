@@ -1,143 +1,162 @@
 <template>
     <div style="display: flex;">
-        <div style="width: 350px;margin-top: 20px;margin-left: 10px;">
-            <bk-input :clearable="true" v-model="filePath"
-                @enter="handleSearchFile"
-                :placeholder="'请输入文件夹路径：'"
-                behavior="simplicity">
-            </bk-input>
-            <transition name="bk-slide-fade-down">
-                <div style="margin-top: 10px;" v-show="fadeShowDir">
-                    <bk-tree
-                        ref="tree1"
-                        :data="treeListOne"
-                        :node-key="'id'"
-                        :has-border="true"
-                        @on-click="nodeClickOne"
-                        @on-expanded="nodeExpandedOne">
-                    </bk-tree>
-                </div>
-            </transition>
+        <div style="background: #fff;height: 100vh;">
+            <div style="width: 350px;margin-top: 20px;margin-left: 10px;">
+                <bk-input :clearable="true" v-model="filePath"
+                    @enter="handleSearchFile"
+                    :placeholder="'请输入文件夹路径：'"
+                    behavior="simplicity">
+                </bk-input>
+                <transition name="bk-slide-fade-down">
+                    <div style="margin-top: 10px;" v-show="fadeShowDir">
+                        <bk-tree
+                            ref="tree1"
+                            :data="treeListOne"
+                            :node-key="'id'"
+                            :has-border="true"
+                            @on-click="nodeClickOne"
+                            @on-expanded="nodeExpandedOne">
+                        </bk-tree>
+                    </div>
+                </transition>
+            </div>
         </div>
-        <transition name="bk-slide-fade-left">
-            <div style="margin-left: 40px;width: 500px;margin-top: 20px;" v-show="musicInfo.title">
-                <div style="width: 100%;">
-                    <bk-button :theme="'success'" :loading="isLoading" @click="handleClick" class="mr10"
-                        style="width: 100%;">
-                        保存信息
-                    </bk-button>
-                </div>
-                <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
-                    <div class="label1">标题：</div>
-                    <div style="width: 70%;">
-                        <bk-input :clearable="true" v-model="musicInfo.title"></bk-input>
-                    </div>
-                    <div>
-                        <bk-icon type="arrows-right-circle" @click="toggleLock('title')"
-                            style="cursor: pointer;font-size: 22px;color: #64c864;margin-left: 10px;"></bk-icon>
-                    </div>
-                </div>
-                <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                    <div class="label1">艺术家：</div>
-                    <div style="width: 70%;">
-                        <bk-input :clearable="true" v-model="musicInfo.artist"></bk-input>
-                    </div>
-                </div>
-                <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                    <div class="label1">专辑：</div>
-                    <div style="width: 70%;">
-                        <bk-input :clearable="true" v-model="musicInfo.album"></bk-input>
-                    </div>
-                </div>
-                <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                    <div class="label1">风格：</div>
-                    <div style="width: 70%;">
+        <div style="background: #fff;height: 100vh;margin-left: 20px;margin-right: 20px;">
+            <transition name="bk-slide-fade-left">
+                <div style="margin-left: 40px;width: 500px;margin-top: 20px;" v-show="musicInfo.title">
+                    <div style="width: 100%;display: flex;">
+                        <bk-button :theme="'success'" :loading="isLoading" @click="handleClick" class="mr10"
+                            style="width: 50%;">
+                            保存信息
+                        </bk-button>
                         <bk-select
                             :disabled="false"
-                            v-model="musicInfo.genre"
-                            style="width: 250px;background: #fff;"
+                            :clearable="false"
+                            v-model="resource"
+                            style="width: 200px;"
                             ext-cls="select-custom"
-                            ext-popover-cls="select-popover-custom"
-                            :placeholder="'请选择歌曲风格'"
-                            searchable>
-                            <bk-option v-for="option in genreList"
+                            ext-popover-cls="select-popover-custom">
+                            <bk-option v-for="option in resourceList"
                                 :key="option.id"
                                 :id="option.id"
                                 :name="option.name">
                             </bk-option>
                         </bk-select>
                     </div>
-                </div>
-                <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                    <div class="label1">年份：</div>
-                    <div style="width: 70%;">
-                        <bk-input :clearable="true" v-model="musicInfo.year"></bk-input>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
+                        <div class="label1">标题：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfo.title"></bk-input>
+                        </div>
+                        <div>
+                            <bk-icon type="arrows-right-circle" @click="toggleLock('title')"
+                                style="cursor: pointer;font-size: 22px;color: #64c864;margin-left: 10px;"></bk-icon>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">艺术家：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfo.artist"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">专辑：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfo.album"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">风格：</div>
+                        <div style="width: 70%;">
+                            <bk-select
+                                :disabled="false"
+                                v-model="musicInfo.genre"
+                                style="width: 250px;background: #fff;"
+                                ext-cls="select-custom"
+                                ext-popover-cls="select-popover-custom"
+                                :placeholder="'请选择歌曲风格'"
+                                searchable>
+                                <bk-option v-for="option in genreList"
+                                    :key="option.id"
+                                    :id="option.id"
+                                    :name="option.name">
+                                </bk-option>
+                            </bk-select>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">年份：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfo.year"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">歌词：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfo.lyrics" type="textarea" :rows="15"
+                            ></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">描述：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfo.comment" type="textarea"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">专辑封面：</div>
+                        <div style="width: 70%;">
+                            <bk-image fit="contain" :src="musicInfo.album_img" style="width: 128px;"
+                                v-show="reloadImg"></bk-image>
+                            <bk-image fit="contain" :src="musicInfo.artwork" style="width: 128px;"
+                                v-show="!musicInfo.album_img"></bk-image>
+                        </div>
                     </div>
                 </div>
-                <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                    <div class="label1">歌词：</div>
-                    <div style="width: 70%;">
-                        <bk-input :clearable="true" v-model="musicInfo.lyrics" type="textarea" :rows="15"
-                        ></bk-input>
+            </transition>
+        </div>
+        <div style="background: #fff;height: 100vh;">
+            <transition name="bk-slide-fade-left">
+                <div
+                    style="display: flex;flex-direction: column;margin-top: 20px;flex: 1;margin-right: 20px;margin-left: 20px;"
+                    v-show="fadeShowDetail">
+                    <div v-if="SongList.length === 0">
+                        <span style="margin-left: 30%;margin-top: 30%;">暂无歌曲信息</span>
                     </div>
-                </div>
-                <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                    <div class="label1">描述：</div>
-                    <div style="width: 70%;">
-                        <bk-input :clearable="true" v-model="musicInfo.comment" type="textarea"></bk-input>
-                    </div>
-                </div>
-                <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                    <div class="label1">专辑封面：</div>
-                    <div style="width: 70%;">
-                        <bk-image fit="contain" :src="musicInfo.album_img" style="width: 128px;"
-                            v-show="reloadImg"></bk-image>
-                        <bk-image fit="contain" :src="musicInfo.artwork" style="width: 128px;"
-                            v-show="!musicInfo.album_img"></bk-image>
-                    </div>
-                </div>
-            </div>
-        </transition>
-        <transition name="bk-slide-fade-left">
-            <div
-                style="display: flex;flex-direction: column;margin-top: 20px;flex: 1;margin-right: 20px;margin-left: 20px;"
-                v-show="fadeShowDetail">
-                <div v-if="SongList.length === 0">
-                    <span style="margin-left: 30%;margin-top: 30%;">暂无歌曲信息</span>
-                </div>
-                <div v-else>
-                    <div class="parent">
-                        <div class="title2">应用</div>
-                        <div class="title2">专辑封面</div>
-                        <div class="title2">歌曲名</div>
-                        <div class="title2">歌手</div>
-                        <div class="title2">专辑</div>
-                        <div class="title2">歌词</div>
-                        <div class="title2">年份</div>
-                    </div>
-                    <div v-for="(item,index) in SongList" :key="index" style="margin-bottom: 10px;">
-                        <div class="song-card">
-                            <div>
-                                <div class="parent">
-                                    <bk-icon type="arrows-left-circle" @click="copyAll(item)"
-                                        style="font-size: 20px;color: #64c864;margin-right: 5px;cursor: pointer;"></bk-icon>
-                                    <bk-image fit="contain" :src="item.album_img" style="width: 64px;cursor: pointer;"
-                                        @click="handleCopy('album_img',item.album_img)">
-                                    </bk-image>
-                                    <div @click="handleCopy('title',item.name)" class="music-item">{{ item.name }}</div>
-                                    <div @click="handleCopy('artist',item.artist)" class="music-item">
-                                        {{item.artist }}
+                    <div v-else>
+                        <div class="parent">
+                            <div class="title2">应用</div>
+                            <div class="title2">专辑封面</div>
+                            <div class="title2">歌曲名</div>
+                            <div class="title2">歌手</div>
+                            <div class="title2">专辑</div>
+                            <div class="title2">歌词</div>
+                            <div class="title2">年份</div>
+                        </div>
+                        <div v-for="(item,index) in SongList" :key="index" style="margin-bottom: 10px;">
+                            <div class="song-card">
+                                <div>
+                                    <div class="parent">
+                                        <bk-icon type="arrows-left-circle" @click="copyAll(item)"
+                                            style="font-size: 20px;color: #64c864;margin-right: 5px;cursor: pointer;"></bk-icon>
+                                        <bk-image fit="contain" :src="item.album_img" style="width: 64px;cursor: pointer;"
+                                            @click="handleCopy('album_img',item.album_img)">
+                                        </bk-image>
+                                        <div @click="handleCopy('title',item.name)" class="music-item">{{ item.name }}</div>
+                                        <div @click="handleCopy('artist',item.artist)" class="music-item">
+                                            {{item.artist }}
+                                        </div>
+                                        <div @click="handleCopy('album',item.album)" class="music-item">{{ item.album }}</div>
+                                        <div @click="handleCopy('lyric',item.id)" class="music-item">加载歌词</div>
+                                        <div @click="handleCopy('year',item.year)" class="music-item">{{ item.year }}</div>
                                     </div>
-                                    <div @click="handleCopy('album',item.album)" class="music-item">{{ item.album }}</div>
-                                    <div @click="handleCopy('lyric',item.id)" class="music-item">加载歌词</div>
-                                    <div @click="handleCopy('year',item.year)" class="music-item">{{ item.year }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </transition>
+            </transition>
+        </div>
     </div>
 </template>
 <script>
@@ -147,6 +166,8 @@
                 treeListOne: [],
                 filePath: '/Users/macbookair/Music/my_music',
                 fileName: '',
+                resource: 'netease',
+                resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}],
                 musicInfo: {
                     'genre': '流行'
                 },
@@ -221,7 +242,7 @@
                         return
                     }
                     this.fadeShowDetail = false
-                    this.$api.Task.fetchId3Title({title: this.musicInfo.title}).then((res) => {
+                    this.$api.Task.fetchId3Title({title: this.musicInfo.title, resource: this.resource}).then((res) => {
                         this.fadeShowDetail = true
                         this.SongList = res.data
                     })

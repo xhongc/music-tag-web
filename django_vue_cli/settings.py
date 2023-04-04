@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "applications.task",
     "applications.user",
+    "applications.music",
 
 ]
 
@@ -75,7 +76,16 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": 'music',  # noqa
+#         "USER": "root",
+#         "PASSWORD": "123456",
+#         "HOST": "localhost",
+#         "PORT": "3306",
+#     },
+# }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
