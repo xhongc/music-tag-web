@@ -9,7 +9,12 @@
 # How to Build
 1. docker-compose -f local.yml build
 2. docker-compose -f local.yml up
-
+# How to Use
+镜像已上传至阿里云Docker Registry
+操作指南：
+1. `docker login --username=xxx registry.cn-hangzhou.aliyuncs.com`
+2. `docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:0.0.1`
+3. `docker run -d -p 8001:8001 -v /path/to/music:/app/media/ registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:0.0.1`
 # User Interface 
 ![](img.png)
 ![img_3.png](img_3.png)
