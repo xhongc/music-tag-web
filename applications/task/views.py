@@ -38,11 +38,20 @@ class TaskViewSets(GenericViewSet):
                       "opus", "wma", "dsf", "dff"]
         for each in data:
             file_type = each.split(".")[-1]
+            if os.path.isdir(f"{file_path}/{each}"):
+                children_data.append({
+                    "name": each,
+                    "title": each,
+                    "icon": "icon-folder",
+                    "children": True
+                })
+                continue
             if file_type not in allow_type:
                 continue
             children_data.append({
                 "name": each,
-                "title": each
+                "title": each,
+                "icon": "icon-monitors"
             })
         res_data = [
             {
@@ -103,6 +112,7 @@ class TaskViewSets(GenericViewSet):
     @action(methods=['POST'], detail=False)
     def fetch_lyric(self, request, *args, **kwargs):
         validate_data = self.is_validated_data(request.data)
+        resource = validate_data["resource"]
         song_id = validate_data["song_id"]
         try:
             lyric = MusicResource(resource).fetch_lyric(song_id)

@@ -2,11 +2,14 @@
     <div style="display: flex;">
         <div style="background: #fff;height: 100vh;">
             <div style="width: 350px;margin-top: 20px;margin-left: 10px;">
-                <bk-input :clearable="true" v-model="filePath"
-                    @enter="handleSearchFile"
-                    :placeholder="'请输入文件夹路径：'"
-                    behavior="simplicity">
-                </bk-input>
+                <div style="display: flex;align-items: center;">
+                    <bk-icon type="arrows-left-shape" @click="backDir" style="cursor: pointer;"></bk-icon>
+                    <bk-input :clearable="true" v-model="filePath"
+                        @enter="handleSearchFile"
+                        :placeholder="'请输入文件夹路径：'"
+                        behavior="simplicity">
+                    </bk-input>
+                </div>
                 <transition name="bk-slide-fade-down">
                     <div style="margin-top: 10px;" v-show="fadeShowDir">
                         <bk-tree
@@ -139,16 +142,29 @@
                                     <div class="parent">
                                         <bk-icon type="arrows-left-circle" @click="copyAll(item)"
                                             style="font-size: 20px;color: #64c864;margin-right: 5px;cursor: pointer;"></bk-icon>
-                                        <bk-image fit="contain" :src="item.album_img" style="width: 64px;cursor: pointer;"
+                                        <bk-image fit="contain" :src="item.album_img"
+                                            style="width: 64px;cursor: pointer;"
                                             @click="handleCopy('album_img',item.album_img)">
                                         </bk-image>
-                                        <div @click="handleCopy('title',item.name)" class="music-item">{{ item.name }}</div>
-                                        <div @click="handleCopy('artist',item.artist)" class="music-item">
-                                            {{item.artist }}
+                                        <div @click="handleCopy('title',item.name)" class="music-item">
+                                            {{
+                                                item.name
+                                            }}
                                         </div>
-                                        <div @click="handleCopy('album',item.album)" class="music-item">{{ item.album }}</div>
+                                        <div @click="handleCopy('artist',item.artist)" class="music-item">
+                                            {{ item.artist }}
+                                        </div>
+                                        <div @click="handleCopy('album',item.album)" class="music-item">
+                                            {{
+                                                item.album
+                                            }}
+                                        </div>
                                         <div @click="handleCopy('lyric',item.id)" class="music-item">加载歌词</div>
-                                        <div @click="handleCopy('year',item.year)" class="music-item">{{ item.year }}</div>
+                                        <div @click="handleCopy('year',item.year)" class="music-item">
+                                            {{
+                                                item.year
+                                            }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -165,6 +181,7 @@
             return {
                 treeListOne: [],
                 filePath: '/Users/macbookair/Music/my_music',
+                bakDir: '/Users/macbookair/Music/my_music',
                 fileName: '',
                 resource: 'netease',
                 resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}],
@@ -193,18 +210,32 @@
                 ]
             }
         },
+        created() {
+            this.handleSearchFile()
+        },
         methods: {
+            backDir() {
+                this.filePath = this.bakDir
+                this.handleSearchFile()
+            },
             nodeClickOne(node) {
-                this.musicInfo = {}
-                this.fileName = node.name
-                this.$api.Task.musicId3({'file_path': this.filePath, 'file_name': node.name}).then((res) => {
-                    console.log(res)
-                    this.musicInfo = res.data
-                })
+                console.log(node)
+                if (node.icon === 'icon-folder') {
+                    this.bakDir = this.filePath
+                    this.filePath = this.filePath + '/' + node.name
+                    this.handleSearchFile()
+                } else {
+                    this.musicInfo = {}
+                    this.fileName = node.name
+                    this.$api.Task.musicId3({'file_path': this.filePath, 'file_name': node.name}).then((res) => {
+                        console.log(res)
+                        this.musicInfo = res.data
+                    })
+                }
             },
             handleCopy(k, v) {
                 if (k === 'lyric') {
-                    this.$api.Task.fetchLyric({'song_id': v}).then((res) => {
+                    this.$api.Task.fetchLyric({'song_id': v, 'resource': this.resource}).then((res) => {
                         console.log(res)
                         if (res.result) {
                             this.musicInfo['lyrics'] = res.data
@@ -294,6 +325,7 @@
 .label1 {
     width: 80px;
 }
+
 .parent {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -302,15 +334,48 @@
     grid-row-gap: 0;
     place-items: center;
 }
+
 .title2 {
     font-weight: 500;
 }
+
 .song-card {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #E2E2E2;
 }
+
 .song-card:hover {
     background: #E2E2E2;
+}
+
+.add-button {
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+    display: inline-block;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 5px;
+    font-size: 12px;
+    color: rgb(97, 97, 97);
+    text-align: center;
+    cursor: pointer;
+}
+
+.delete-button {
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+    display: inline-block;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 5px;
+    font-size: 12px;
+    color: rgb(63, 63, 63);
+    text-align: center;
+    cursor: pointer;
 }
 </style>

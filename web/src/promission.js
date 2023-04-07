@@ -7,7 +7,6 @@ import Login from '@/views/user/login'
 
 let getRouter // 用来获取后台拿到的路由
 // let getMenuList // 用来获取后台拿到的菜单
-let getButton // 用来获取后台拿到的按钮权限
 saveObjArr('router', '')
 
 router.beforeEach((to, from, next) => {
@@ -40,7 +39,6 @@ router.beforeEach((to, from, next) => {
                     }
                 }
             ]
-            getButton = []
             saveObjArr('router', getRouter) // 存储路由到localStorage
             routerGo(to, next) // 执行路由跳转方法
         } else { // 从localStorage拿到了路由
@@ -58,7 +56,6 @@ function routerGo(to, next) {
     store.state.antRouter = getRouter // 将路由数据传递给全局变量
     // store.state.displayMenu = getMenuList //将菜单数据传递给全局变量，做侧边栏菜单渲染工作
     // store.state.displayButton = getButton // 将按钮权限数据传递给全局变量，做页面按钮权限渲染工作
-    store.commit('changeBtnPermission', getButton)
     next({
         ...to,
         replace: true
