@@ -14,7 +14,22 @@
 操作指南：
 1. `docker login --username=xxx registry.cn-hangzhou.aliyuncs.com`
 2. `docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:0.0.1`
-3. `docker run -d -p 8001:8001 -v /path/to/music:/app/media/ registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:0.0.1`
+3. docker-compose.yml / portainer stacks
+![img_1.png](img_1.png)
+```yaml
+version: '3'
+
+services:
+  music-tag:
+    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:0.0.3
+    container_name: music-tag-web
+    ports:
+      - "8001:8001"
+    volumes:
+      - D:\Music:/app/media:z
+    command: /start
+    restart: always
+```
 # User Interface 
 ![](img.png)
 ![img_3.png](img_3.png)
