@@ -5,5 +5,8 @@
 为什么开发web版？
 在使用Navidrome时，我的音乐都是在远程服务器上的，本地的Musictag和mp3tag不能满足我的需求，
 我需要部署在远程服务器上去需改线上的音乐标签，相当于在使用Navidrome的边车应用。
+# How to Build
+1. docker-compose -f local.yml build
+2. docker-compose -f local.yml up
 ![](img.png)
 ![img_1.png](img_1.png)
