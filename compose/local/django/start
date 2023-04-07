@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+
+python manage.py migrate
+exec gunicorn -w 1 -k gevent -b 0.0.0.0:8001 django_vue_cli.wsgi:application

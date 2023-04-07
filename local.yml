@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: music-tag-web
+    container_name: music-tag-web
+    ports:
+      - "8001:8001"
+    volumes:
+      - /Users/macbookair/Music/my_music:/app/media:z
+    command: /start
+    restart: always

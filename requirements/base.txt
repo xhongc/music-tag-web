@@ -9,3 +9,4 @@ gevent==21.12.0
 djangorestframework-jwt==1.11.0
 music-tag==0.4.3
 Pillow==9.4.0
+pycryptodomex==3.17
