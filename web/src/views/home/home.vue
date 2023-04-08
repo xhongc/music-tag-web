@@ -109,10 +109,14 @@
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
                         <div class="label1">专辑封面：</div>
                         <div style="width: 70%;">
-                            <bk-image fit="contain" :src="musicInfo.album_img" style="width: 128px;"
-                                v-show="reloadImg"></bk-image>
-                            <bk-image fit="contain" :src="musicInfo.artwork" style="width: 128px;"
-                                v-show="!musicInfo.album_img"></bk-image>
+                            <div v-if="musicInfo.album_img">
+                                <bk-image fit="contain" :src="musicInfo.album_img" style="width: 128px;"
+                                    v-if="reloadImg"></bk-image>
+                            </div>
+                            <div v-if="musicInfo.artwork">
+                                <bk-image fit="contain" :src="musicInfo.artwork" style="width: 128px;"
+                                    v-if="!musicInfo.album_img"></bk-image>
+                            </div>
                         </div>
                     </div>
                 </div>
