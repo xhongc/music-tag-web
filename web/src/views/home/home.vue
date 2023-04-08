@@ -180,8 +180,8 @@
         data() {
             return {
                 treeListOne: [],
-                filePath: '/Users/macbookair/Music/my_music',
-                bakDir: '/Users/macbookair/Music/my_music',
+                filePath: '/app/media',
+                bakDir: '/app/media',
                 fileName: '',
                 resource: 'netease',
                 resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}],

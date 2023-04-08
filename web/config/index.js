@@ -51,8 +51,8 @@ module.exports = {
     },
 
     build: {
-        // Template for index.html
-        index: path.resolve(__dirname, '../index.prod.html'),
+        // Template for index.html'../../static/dist/index.html'
+        index: path.resolve(__dirname, '../../static/dist/index.prod.html'),
 
         // Paths
         assetsRoot: path.resolve(__dirname, '../../'),
@@ -78,6 +78,6 @@ module.exports = {
         // View the bundle analyzer report after build finishes:
         // `npm run build --report`
         // Set to `true` or `false` to always turn it on or off
-        bundleAnalyzerReport: process.env.npm_config_report
+        bundleAnalyzerReport: false
     },
 }

@@ -11,5 +11,4 @@ services:
       - "8001:8001"
     volumes:
       - /Users/macbookair/Music/my_music:/app/media:z
-    command: /start
     restart: always

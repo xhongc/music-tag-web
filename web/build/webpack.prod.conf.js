@@ -12,7 +12,7 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const env = require('../config/prod.env')
- 
+
 const webpackConfig = merge(baseWebpackConfig, {
     module: {
         rules: utils.styleLoaders({
@@ -25,10 +25,10 @@ const webpackConfig = merge(baseWebpackConfig, {
     output: {
         publicPath: './',
         path: config.build.assetsRoot,
-        filename: utils.assetsPath('js/[name].js'),
-        chunkFilename: utils.assetsPath('js/[id].js')
-        // filename: utils.assetsPath('js/[name].[chunkhash].js'),
-        // chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+        // filename: utils.assetsPath('js/[name].js'),
+        // chunkFilename: utils.assetsPath('js/[id].js')
+        filename: utils.assetsPath('js/[name].[chunkhash].js'),
+        chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
     },
     plugins: [
         // http://vuejs.github.io/vue-loader/en/workflow/production.html
@@ -67,7 +67,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         // see https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
             filename: config.build.index,
-            template: 'index.html',
+            template: 'index.template.html',
             inject: true,
             minify: {
                 removeComments: true,

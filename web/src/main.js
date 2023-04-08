@@ -11,7 +11,6 @@ import bkMagic from 'bk-magic-vue'
 import 'bk-magic-vue/dist/bk-magic-vue.min.css'
 import store from './vuex'
 import axios from 'axios'
-import 'view-design/dist/styles/iview.css'
 // 引用API文件
 import api from './api/index'
 // filter统一引入
@@ -25,11 +24,11 @@ import {hasPermission} from './promission.js' // 路由后台获取
 // 引入字体图标库
 import 'font-awesome/css/font-awesome.min.css'
 // 引入lodash
-import lodash from 'lodash'
+// import lodash from 'lodash'
 // 引入自定义icon 图标
 import './assets/custom_icon/iconfont.css'
 // import '../static/cw-icon/iconfont.css'
-import 'echarts/dist/extension/dataTool'
+// import 'echarts/dist/extension/dataTool'
 import VeeValidate, {Validator} from 'vee-validate'
 
 const config = {
@@ -45,12 +44,12 @@ Vue.prototype.$http = axios
 Vue.prototype.$api = api
 const headTheme = 'light' // 选择 light 或 blue
 Vue.prototype.headTheme = headTheme
-Vue.prototype.$lodash = lodash
+// Vue.prototype.$lodash = lodash
 Vue.prototype.hasPerm = hasPermission
 Vue.config.productionTip = false
-Vue.prototype.cloneDeep = function(data) {
-    return lodash.cloneDeep(data)
-}
+// Vue.prototype.cloneDeep = function(data) {
+//     return lodash.cloneDeep(data)
+// }
 Vue.prototype.setCookie = function(name, value, day) {
     if (day !== 0) {
         const curDate = new Date()

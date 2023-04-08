@@ -2,17 +2,19 @@ import base64
 import os
 
 import music_tag
+from django.utils.decorators import method_decorator
+from django.views.decorators.gzip import gzip_page
 from rest_framework.decorators import action
 
 from applications.task.serialziers import FileListSerializer, Id3Serializer, UpdateId3Serializer, \
     FetchId3ByTitleSerializer, FetchLlyricSerializer
 from applications.task.services.music_resource import MusicResource
-from applications.task.utils import timestamp_to_dt
 from applications.utils.send import send
 from component.drf.viewsets import GenericViewSet
-from django_vue_cli.settings import BASE_URL
+from PIL import Image
 
 
+@method_decorator(gzip_page, name="dispatch")
 class TaskViewSets(GenericViewSet):
     def get_serializer_class(self):
         if self.action == "file_list":
@@ -32,23 +34,28 @@ class TaskViewSets(GenericViewSet):
         validate_data = self.is_validated_data(request.data)
         file_path = validate_data['file_path']
         file_path_list = file_path.split('/')
-        data = os.listdir(file_path)
+        try:
+            data = os.listdir(file_path)
+        except FileNotFoundError:
+            return self.failure_response(msg="文件夹不存在")
         children_data = []
         allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
                       "opus", "wma", "dsf", "dff"]
-        for each in data:
+        for index, each in enumerate(data, 1):
             file_type = each.split(".")[-1]
             if os.path.isdir(f"{file_path}/{each}"):
                 children_data.append({
+                    "id": index,
                     "name": each,
                     "title": each,
                     "icon": "icon-folder",
-                    "children": True
+                    "children": []
                 })
                 continue
             if file_type not in allow_type:
                 continue
             children_data.append({
+                "id": index,
                 "name": each,
                 "title": each,
                 "icon": "icon-monitors"
@@ -58,7 +65,7 @@ class TaskViewSets(GenericViewSet):
                 "name": file_path_list[-1],
                 "title": file_path_list[-1],
                 "expanded": True,
-                "id": 1,
+                "id": 0,
                 "children": children_data
             }
         ]
@@ -74,8 +81,9 @@ class TaskViewSets(GenericViewSet):
         artwork = f["artwork"].values
         bs64_img = ""
         if artwork:
-            bs64_img = base64.b64encode(artwork[0].raw).decode()
+            zip_img = artwork[0].raw_thumbnail([128, 128])
 
+            bs64_img = base64.b64encode(zip_img).decode()
         res_data = {
             "title": f["title"].value or file_title,
             "artist": f["artist"].value,
@@ -105,7 +113,7 @@ class TaskViewSets(GenericViewSet):
                 img_data = send().GET(each["album_img"])
                 if img_data.status_code == 200:
                     f['artwork'] = img_data.content
-                    f['artwork'].first.raw_thumbnail([64, 64])
+                    # f['artwork'] = f['artwork'].first.raw_thumbnail([128, 128])
             f.save()
         return self.success_response()
 
