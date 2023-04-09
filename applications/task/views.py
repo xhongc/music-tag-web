@@ -1,17 +1,17 @@
 import base64
 import os
-
+import copy
 import music_tag
 from django.utils.decorators import method_decorator
 from django.views.decorators.gzip import gzip_page
 from rest_framework.decorators import action
 
 from applications.task.serialziers import FileListSerializer, Id3Serializer, UpdateId3Serializer, \
-    FetchId3ByTitleSerializer, FetchLlyricSerializer
+    FetchId3ByTitleSerializer, FetchLlyricSerializer, BatchUpdateId3Serializer
 from applications.task.services.music_resource import MusicResource
+from applications.task.services.update_ids import update_music_info
 from applications.utils.send import send
 from component.drf.viewsets import GenericViewSet
-from PIL import Image
 
 
 @method_decorator(gzip_page, name="dispatch")
@@ -27,6 +27,8 @@ class TaskViewSets(GenericViewSet):
             return FetchId3ByTitleSerializer
         elif self.action == "fetch_lyric":
             return FetchLlyricSerializer
+        elif self.action == "batch_update_id3":
+            return BatchUpdateId3Serializer
         return FileListSerializer
 
     @action(methods=['POST'], detail=False)
@@ -66,7 +68,8 @@ class TaskViewSets(GenericViewSet):
                 "title": file_path_list[-1],
                 "expanded": True,
                 "id": 0,
-                "children": children_data
+                "children": children_data,
+                "icon": "icon-folder",
             }
         ]
         return self.success_response(data=res_data)
@@ -76,6 +79,9 @@ class TaskViewSets(GenericViewSet):
         validate_data = self.is_validated_data(request.data)
         file_path = validate_data['file_path']
         file_name = validate_data['file_name']
+        sub_path = file_path.split('/')[-1]
+        if sub_path == file_name:
+            return self.success_response()
         file_title = file_name.split('.')[0]
         f = music_tag.load_file(f"{file_path}/{file_name}")
         artwork = f["artwork"].values
@@ -100,21 +106,36 @@ class TaskViewSets(GenericViewSet):
     def update_id3(self, request, *args, **kwargs):
         validate_data = self.is_validated_data(request.data)
         music_id3_info = validate_data['music_id3_info']
-        for each in music_id3_info:
-            f = music_tag.load_file(each["file_full_path"])
-            f["title"] = each["title"]
-            f["artist"] = each["artist"]
-            f["album"] = each["album"]
-            f["genre"] = each["genre"]
-            f["year"] = each["year"]
-            f["lyrics"] = each["lyrics"]
-            f["comment"] = each["comment"]
-            if each.get("album_img", None):
-                img_data = send().GET(each["album_img"])
-                if img_data.status_code == 200:
-                    f['artwork'] = img_data.content
-                    # f['artwork'] = f['artwork'].first.raw_thumbnail([128, 128])
-            f.save()
+        update_music_info(music_id3_info)
+        return self.success_response()
+
+    @action(methods=['POST'], detail=False)
+    def batch_update_id3(self, request, *args, **kwargs):
+        validate_data = self.is_validated_data(request.data)
+        file_full_path = validate_data['file_full_path']
+        select_data = validate_data['select_data']
+        music_info = validate_data['music_info']
+        music_id3_info = []
+        for data in select_data:
+            if data.get('icon') == 'icon-folder':
+                file_full_path = f"{file_full_path}/{data.get('name')}"
+                data = os.listdir(file_full_path)
+                allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
+                              "opus", "wma", "dsf", "dff"]
+                for index, each in enumerate(data, 1):
+                    file_type = each.split(".")[-1]
+                    if file_type not in allow_type:
+                        continue
+                    music_info.update({
+                        "file_full_path": f"{file_full_path}/{each}",
+                    })
+                    music_id3_info.append(copy.deepcopy(music_info))
+            else:
+                music_info.update({
+                    "file_full_path": f"{file_full_path}/{data.get('name')}",
+                })
+                music_id3_info.append(copy.deepcopy(music_info))
+        update_music_info(music_id3_info)
         return self.success_response()
 
     @action(methods=['POST'], detail=False)

@@ -27,6 +27,12 @@ class UpdateId3Serializer(serializers.Serializer):
     music_id3_info = MusicId3Serializer(many=True)
 
 
+class BatchUpdateId3Serializer(serializers.Serializer):
+    file_full_path = serializers.JSONField(required=True)
+    music_info = serializers.JSONField(required=True)
+    select_data = serializers.JSONField(required=True)
+
+
 class FetchId3ByTitleSerializer(serializers.Serializer):
     title = serializers.CharField(required=True)
     resource = serializers.CharField(required=True)

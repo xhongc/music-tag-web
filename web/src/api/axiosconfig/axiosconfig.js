@@ -38,7 +38,7 @@ axios.interceptors.response.use(response => {
 }, error => {
     return {
         code: 500,
-        message: error.response.data.message,
+        message: error.response,
         error: error,
         result: false
     }

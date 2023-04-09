@@ -19,6 +19,9 @@ export default {
     updateId3: function(params) {
         return POST(reUrl + '/api/update_id3/', params)
     },
+    batchUpdateId3: function(params) {
+        return POST(reUrl + '/api/batch_update_id3/', params)
+    },
     fetchId3Title: function(params) {
         return POST(reUrl + '/api/fetch_id3_by_title/', params)
     },

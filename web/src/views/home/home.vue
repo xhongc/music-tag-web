@@ -1,6 +1,6 @@
 <template>
     <div style="display: flex;">
-        <div style="background: #fff;height: 100vh;">
+        <div style="background: #fff;height: 100vh;overflow: scroll;">
             <div style="width: 350px;margin-top: 20px;margin-left: 10px;">
                 <div style="display: flex;align-items: center;">
                     <bk-icon type="arrows-left-shape" @click="backDir" style="cursor: pointer;"></bk-icon>
@@ -15,9 +15,11 @@
                         <bk-tree
                             ref="tree1"
                             :data="treeListOne"
+                            :multiple="true"
                             :node-key="'id'"
                             :has-border="true"
                             @on-click="nodeClickOne"
+                            @on-check="nodeCheckTwo"
                             @on-expanded="nodeExpandedOne">
                         </bk-tree>
                     </div>
@@ -26,7 +28,8 @@
         </div>
         <div style="background: #fff;height: 100vh;margin-left: 20px;margin-right: 20px;">
             <transition name="bk-slide-fade-left">
-                <div style="margin-left: 40px;width: 500px;margin-top: 20px;" v-show="musicInfo.title">
+                <div style="margin-left: 40px;width: 500px;margin-top: 20px;"
+                    v-show="musicInfo.title && checkedIds.length === 0">
                     <div style="width: 100%;display: flex;">
                         <bk-button :theme="'success'" :loading="isLoading" @click="handleClick" class="mr10"
                             style="width: 50%;">
@@ -121,6 +124,93 @@
                     </div>
                 </div>
             </transition>
+            <transition name="bk-slide-fade-left">
+                <div style="margin-left: 40px;width: 500px;margin-top: 20px;" v-show="checkedIds.length > 0">
+                    <div style="width: 100%;display: flex;">
+                        <bk-button :theme="'success'" :loading="isLoading" @click="handleBatch" class="mr10"
+                            style="width: 50%;">
+                            手动批量修改
+                        </bk-button>
+                        <bk-button :theme="'success'" :loading="isLoading" :disabled="true" class="mr10"
+                            style="width: 50%;">
+                            自动批量修改
+                        </bk-button>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
+                        <div class="label1">标题：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfoManual.title"></bk-input>
+                        </div>
+                        <div>
+                            <bk-icon type="arrows-right-circle" @click="toggleLock('title')"
+                                style="cursor: pointer;font-size: 22px;color: #64c864;margin-left: 10px;"></bk-icon>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">艺术家：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfoManual.artist"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">专辑：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfoManual.album"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">风格：</div>
+                        <div style="width: 70%;">
+                            <bk-select
+                                :disabled="false"
+                                v-model="musicInfoManual.genre"
+                                style="width: 250px;background: #fff;"
+                                ext-cls="select-custom"
+                                ext-popover-cls="select-popover-custom"
+                                :placeholder="'请选择歌曲风格'"
+                                searchable>
+                                <bk-option v-for="option in genreList"
+                                    :key="option.id"
+                                    :id="option.id"
+                                    :name="option.name">
+                                </bk-option>
+                            </bk-select>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">年份：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfoManual.year"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">歌词：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfoManual.lyrics" type="textarea" :rows="15"
+                            ></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">描述：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfoManual.comment" type="textarea"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">专辑封面：</div>
+                        <div style="width: 70%;">
+                            <div v-if="musicInfoManual.album_img">
+                                <bk-image fit="contain" :src="musicInfoManual.album_img" style="width: 128px;"
+                                    v-if="reloadImg"></bk-image>
+                            </div>
+                            <div v-if="musicInfoManual.artwork">
+                                <bk-image fit="contain" :src="musicInfoManual.artwork" style="width: 128px;"
+                                    v-if="!musicInfoManual.album_img"></bk-image>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
         </div>
         <div style="background: #fff;height: 100vh;">
             <transition name="bk-slide-fade-left">
@@ -184,12 +274,15 @@
         data() {
             return {
                 treeListOne: [],
-                filePath: '/app/media',
-                bakDir: '/app/media',
+                filePath: '/Users/macbookair/Music/my_music',
+                bakDir: '/Users/macbookair/Music/my_music',
                 fileName: '',
                 resource: 'netease',
                 resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}],
                 musicInfo: {
+                    'genre': '流行'
+                },
+                musicInfoManual: {
                     'genre': '流行'
                 },
                 fadeShowDir: false,
@@ -211,7 +304,9 @@
                     {'id': '古典', name: '古典'},
                     {'id': '独立', name: '独立'},
                     {'id': '氛围音乐', name: '氛围音乐'}
-                ]
+                ],
+                checkedIds: [],
+                checkedData: []
             }
         },
         created() {
@@ -223,12 +318,14 @@
                 this.handleSearchFile()
             },
             nodeClickOne(node) {
-                console.log(node)
                 if (node.icon === 'icon-folder') {
                     this.bakDir = this.filePath
                     this.filePath = this.filePath + '/' + node.name
                     this.handleSearchFile()
                 } else {
+                    if (node.children && node.children.length > 0) {
+                        return
+                    }
                     this.musicInfo = {}
                     this.fileName = node.name
                     this.$api.Task.musicId3({'file_path': this.filePath, 'file_name': node.name}).then((res) => {
@@ -236,6 +333,48 @@
                         this.musicInfo = res.data
                     })
                 }
+            },
+            // checkbox
+            nodeCheckTwo(node, checked) {
+                console.log(node, checked)
+                if (checked) {
+                    this.musicInfo = {}
+                    if (node.children && node.children.length > 0) {
+                        this.checkedData = []
+                        this.checkedIds = []
+                        node.children.forEach(el => {
+                            this.checkedData.push({
+                                checked: el.checked,
+                                icon: el.icon,
+                                id: el.id,
+                                name: el.name,
+                                title: el.title
+                            })
+                            this.checkedIds.push(el.id)
+                        })
+                    } else {
+                        this.checkedData.push({
+                            checked: node.checked,
+                            icon: node.icon,
+                            id: node.id,
+                            name: node.name,
+                            title: node.title
+                        })
+                        this.checkedIds.push(node.id)
+                    }
+                } else {
+                    if (node.children && node.children.length > 0) {
+                        this.checkedData = []
+                        this.checkedIds = []
+                    } else {
+                        const index = this.checkedIds.indexOf(node.id)
+                        if (index !== -1) {
+                            this.checkedData.splice(index, 1)
+                            this.checkedIds.splice(index, 1)
+                        }
+                    }
+                }
+                console.log(this.checkedIds)
             },
             handleCopy(k, v) {
                 if (k === 'lyric') {
@@ -266,8 +405,6 @@
                 this.handleCopy('album_img', item.album_img)
             },
             nodeExpandedOne(node, expanded) {
-                console.log(node)
-                console.log(expanded)
             },
             // 查询网易云接口
             toggleLock(mode) {
@@ -286,6 +423,8 @@
             // 文件目录
             handleSearchFile() {
                 this.fadeShowDir = false
+                this.checkedData = []
+                this.checkedIds = []
                 this.$api.Task.fileList({'file_path': this.filePath}).then((res) => {
                     if (res.result) {
                         this.treeListOne = res.data
@@ -304,6 +443,33 @@
                     this.isLoading = false
                     if (res.result) {
                         this.$cwMessage('修改成功', 'success')
+                    }
+                })
+            },
+            handleBatch() {
+                this.$bkInfo({
+                    title: '确认要批量修改？',
+                    confirmLoading: true,
+                    confirmFn: () => {
+                        try {
+                            this.isLoading = true
+
+                            this.$api.Task.batchUpdateId3({
+                                'file_full_path': this.filePath,
+                                'select_data': this.checkedData,
+                                'music_info': this.musicInfoManual
+                            }).then((res) => {
+                                this.isLoading = false
+                                console.log(res)
+                                if (res.result) {
+                                    this.$cwMessage('修改成功', 'success')
+                                }
+                            })
+                            return true
+                        } catch (e) {
+                            console.warn(e)
+                            return false
+                        }
                     }
                 })
             }
