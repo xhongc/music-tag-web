@@ -5,15 +5,15 @@ FROM python:3.9.12-slim-bullseye as python
 FROM python as python-build-stage
 
 ARG BUILD_ENVIRONMENT=local
-
 # Install apt packages
 RUN apt-get update && apt-get install --no-install-recommends -y \
   # dependencies for building Python packages
   build-essential \
   # psycopg2 dependencies
   libpq-dev \
-  default-libmysqlclient-dev
-
+  default-libmysqlclient-dev \
+  libffi-dev \
+  libjpeg-dev
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
 # Create Python Dependency and Sub-Dependency Wheels.

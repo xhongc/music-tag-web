@@ -13,7 +13,7 @@
 镜像已上传至阿里云Docker Registry
 操作指南：
 1. `docker login --username=xxx registry.cn-hangzhou.aliyuncs.com`
-2. `docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:0.05`
+2. `docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:latest`
 3. docker-compose.yml / portainer stacks
 ![img_1.png](img_1.png)
 ```yaml
@@ -21,7 +21,7 @@ version: '3'
 
 services:
   music-tag:
-    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:0.5
+    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:latest
     container_name: music-tag-web
     ports:
       - "8001:8001"
