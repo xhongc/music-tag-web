@@ -10,6 +10,9 @@
                         behavior="simplicity">
                     </bk-input>
                 </div>
+                <div style="margin-top: 10px;">
+                    <bk-input type="text" v-model="searchWord" placeholder="search..." @enter="handleSearch"></bk-input>
+                </div>
                 <transition name="bk-slide-fade-down">
                     <div style="margin-top: 10px;" v-show="fadeShowDir">
                         <bk-tree
@@ -273,9 +276,10 @@
     export default {
         data() {
             return {
+                searchWord: '',
                 treeListOne: [],
-                filePath: '/app/media/',
-                bakDir: '/app/media/',
+                filePath: '/Users/macbookair/Music/my_music',
+                bakDir: '/Users/macbookair/Music/my_music',
                 fileName: '',
                 resource: 'netease',
                 resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}],
@@ -431,6 +435,12 @@
                         this.fadeShowDir = true
                     }
                 })
+            },
+            // 过滤搜索
+            handleSearch() {
+                this.$refs.tree1.searchNode(this.searchWord)
+                const searchResult = this.$refs.tree1.getSearchResult()
+                this.isEmpty = searchResult.isEmpty
             },
             // 保存音乐信息
             handleClick() {
