@@ -99,6 +99,7 @@ class TaskViewSets(GenericViewSet):
             "lyrics": f["lyrics"].value,
             "comment": f["comment"].value,
             "artwork": "data:image/jpeg;base64," + bs64_img,
+            "filename": file_name
         }
         return self.success_response(data=res_data)
 
@@ -112,13 +113,13 @@ class TaskViewSets(GenericViewSet):
     @action(methods=['POST'], detail=False)
     def batch_update_id3(self, request, *args, **kwargs):
         validate_data = self.is_validated_data(request.data)
-        file_full_path = validate_data['file_full_path']
+        full_path = validate_data['file_full_path']
         select_data = validate_data['select_data']
         music_info = validate_data['music_info']
         music_id3_info = []
         for data in select_data:
             if data.get('icon') == 'icon-folder':
-                file_full_path = f"{file_full_path}/{data.get('name')}"
+                file_full_path = f"{full_path}/{data.get('name')}"
                 data = os.listdir(file_full_path)
                 allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
                               "opus", "wma", "dsf", "dff"]
@@ -132,7 +133,7 @@ class TaskViewSets(GenericViewSet):
                     music_id3_info.append(copy.deepcopy(music_info))
             else:
                 music_info.update({
-                    "file_full_path": f"{file_full_path}/{data.get('name')}",
+                    "file_full_path": f"{full_path}/{data.get('name')}",
                 })
                 music_id3_info.append(copy.deepcopy(music_info))
         update_music_info(music_id3_info)

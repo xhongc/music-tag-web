@@ -1,7 +1,7 @@
 <template>
     <div style="display: flex;">
-        <div style="background: #fff;height: 100vh;overflow: scroll;">
-            <div style="width: 350px;margin-top: 20px;margin-left: 10px;">
+        <div class="file-section">
+            <div style="width: 95%;margin-top: 20px;margin-left: 10px;">
                 <div style="display: flex;align-items: center;">
                     <bk-icon type="arrows-left-shape" @click="backDir" style="cursor: pointer;"></bk-icon>
                     <bk-input :clearable="true" v-model="filePath"
@@ -21,6 +21,7 @@
                             :multiple="true"
                             :node-key="'id'"
                             :has-border="true"
+                            :tpl="tpl"
                             @on-click="nodeClickOne"
                             @on-check="nodeCheckTwo"
                             @on-expanded="nodeExpandedOne">
@@ -29,7 +30,7 @@
                 </transition>
             </div>
         </div>
-        <div style="background: #fff;height: 100vh;margin-left: 20px;margin-right: 20px;">
+        <div class="edit-section">
             <transition name="bk-slide-fade-left">
                 <div style="margin-left: 40px;width: 500px;margin-top: 20px;"
                     v-show="musicInfo.title && checkedIds.length === 0">
@@ -53,7 +54,7 @@
                         </bk-select>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
-                        <div class="label1">标题：</div>
+                        <div class="label1" v-bk-tooltips="'变量名:${title}'">标题：</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfo.title"></bk-input>
                         </div>
@@ -63,13 +64,19 @@
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                        <div class="label1">艺术家：</div>
+                        <div class="label1" v-bk-tooltips="'变量名:${filename}'">文件名：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfo.filename"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1" v-bk-tooltips="'变量名:${artist}'">艺术家：</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfo.artist"></bk-input>
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                        <div class="label1">专辑：</div>
+                        <div class="label1" v-bk-tooltips="'变量名:${album}'">专辑：</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfo.album"></bk-input>
                         </div>
@@ -140,7 +147,7 @@
                         </bk-button>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
-                        <div class="label1">标题：</div>
+                        <div class="label1" v-bk-tooltips="'变量名:${title}'">标题：</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfoManual.title"></bk-input>
                         </div>
@@ -150,13 +157,19 @@
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                        <div class="label1">艺术家：</div>
+                        <div class="label1" v-bk-tooltips="'变量名:${filename}'">文件名：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfoManual.filename"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1" v-bk-tooltips="'变量名:${artist}'">艺术家：</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfoManual.artist"></bk-input>
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                        <div class="label1">专辑：</div>
+                        <div class="label1" v-bk-tooltips="'变量名:${album}'">专辑：</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfoManual.album"></bk-input>
                         </div>
@@ -215,7 +228,7 @@
                 </div>
             </transition>
         </div>
-        <div style="background: #fff;height: 100vh;">
+        <div class="resource-section">
             <transition name="bk-slide-fade-left">
                 <div
                     style="display: flex;flex-direction: column;margin-top: 20px;flex: 1;margin-right: 20px;margin-left: 20px;"
@@ -317,6 +330,15 @@
             this.handleSearchFile()
         },
         methods: {
+            tpl(node, ctx) {
+                // 如果在某些情况下 h 不能自动注入而报错，需将 h 参数写上；一般来说 h 默认是第一参数，但是现在改为第一参数会导致已经使用的用户都需要修改，所以先放在最后。
+                // 如果 h 能自动注入则可以忽略 h 参数，无需写上，否则 h 参数会重复。
+                const titleClass = node.selected ? 'node-title node-selected' : 'node-title'
+                return <span>
+                    <span class={titleClass} domPropsInnerHTML={node.title.slice(0, 30)}
+                        onClick={() => { this.nodeClickOne(node) }} v-bk-tooltips={node.title}></span>
+                </span>
+            },
             backDir() {
                 this.filePath = this.bakDir
                 this.handleSearchFile()
@@ -453,6 +475,8 @@
                     this.isLoading = false
                     if (res.result) {
                         this.$cwMessage('修改成功', 'success')
+                    } else {
+                        this.$cwMessage('修改失败', 'error')
                     }
                 })
             },
@@ -557,5 +581,24 @@
     color: rgb(63, 63, 63);
     text-align: center;
     cursor: pointer;
+}
+.file-section {
+    background: #fff;
+    height: calc(100vh - 55px);
+    overflow: scroll;
+    width: 30%;
+}
+.edit-section {
+    background: #fff;
+    height: calc(100vh - 55px);
+    overflow: scroll;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.resource-section {
+    background: #fff;
+    height: calc(100vh - 55px);
+    width: 30%;
+    overflow: scroll;
 }
 </style>
