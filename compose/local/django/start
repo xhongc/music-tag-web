@@ -6,5 +6,5 @@ set -o nounset
 
 
 python manage.py migrate
-#exec gunicorn -w 2 -b 0.0.0.0:8001 django_vue_cli.wsgi:application --timeout 120
-python manage.py runserver 0.0.0.0:8001
+gunicorn -w 2 -b 0.0.0.0:8001 django_vue_cli.wsgi:application --timeout 120
+#python manage.py runserver 0.0.0.0:8001

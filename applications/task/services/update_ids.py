@@ -9,7 +9,7 @@ from applications.utils.send import send
 def update_music_info(music_id3_info, is_raw_thumbnail=False):
     for each in music_id3_info:
         f = music_tag.load_file(each["file_full_path"])
-        base_filename = each["filename"].split(".")[0]
+        base_filename = ".".join(each["filename"].split(".")[:-1])
         var_dict = {
             "title": f["title"].value,
             "artist": f["artist"].value,

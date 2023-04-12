@@ -129,11 +129,13 @@ class TaskViewSets(GenericViewSet):
                         continue
                     music_info.update({
                         "file_full_path": f"{file_full_path}/{each}",
+                        "filename": each
                     })
                     music_id3_info.append(copy.deepcopy(music_info))
             else:
                 music_info.update({
                     "file_full_path": f"{full_path}/{data.get('name')}",
+                    "filename": data.get('name')
                 })
                 music_id3_info.append(copy.deepcopy(music_info))
         update_music_info(music_id3_info)

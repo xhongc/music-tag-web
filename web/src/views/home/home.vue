@@ -336,7 +336,8 @@
                 const titleClass = node.selected ? 'node-title node-selected' : 'node-title'
                 return <span>
                     <span class={titleClass} domPropsInnerHTML={node.title.slice(0, 30)}
-                        onClick={() => { this.nodeClickOne(node) }} v-bk-tooltips={node.title}></span>
+                        onClick={() => { this.nodeClickOne(node) }} v-bk-tooltips={node.title}>
+                    </span>
                 </span>
             },
             backDir() {
