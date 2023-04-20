@@ -37,6 +37,16 @@ def update_music_info(music_id3_info, is_raw_thumbnail=False):
             f["year"] = each["year"]
         if each.get("lyrics", None):
             f["lyrics"] = each["lyrics"]
+            if each.get("is_save_lyrics_file", False):
+                lyrics_file_path = f"{os.path.dirname(each['file_full_path'])}/{base_filename}.lrc"
+                with open(lyrics_file_path, "w", encoding="utf-8") as f_lyc:
+                    f_lyc.write(each["lyrics"])
+        else:
+            if each.get("is_save_lyrics_file", False):
+                lyrics_file_path = f"{os.path.dirname(each['file_full_path'])}/{base_filename}.lrc"
+                if not os.path.exists(lyrics_file_path):
+                    with open(lyrics_file_path, "w", encoding="utf-8") as f_lyc2:
+                        f_lyc2.write(f["lyrics"].value)
         if each.get("comment", None):
             f["comment"] = each["comment"]
         if each.get("album_img", None):

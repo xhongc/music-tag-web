@@ -1,6 +1,7 @@
 import base64
-import os
 import copy
+import os
+
 import music_tag
 from django.utils.decorators import method_decorator
 from django.views.decorators.gzip import gzip_page
@@ -10,7 +11,6 @@ from applications.task.serialziers import FileListSerializer, Id3Serializer, Upd
     FetchId3ByTitleSerializer, FetchLlyricSerializer, BatchUpdateId3Serializer
 from applications.task.services.music_resource import MusicResource
 from applications.task.services.update_ids import update_music_info
-from applications.utils.send import send
 from component.drf.viewsets import GenericViewSet
 
 
@@ -33,6 +33,7 @@ class TaskViewSets(GenericViewSet):
 
     @action(methods=['POST'], detail=False)
     def file_list(self, request, *args, **kwargs):
+        """文件列表"""
         validate_data = self.is_validated_data(request.data)
         file_path = validate_data['file_path']
         file_path_list = file_path.split('/')
@@ -43,8 +44,10 @@ class TaskViewSets(GenericViewSet):
         children_data = []
         allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
                       "opus", "wma", "dsf", "dff"]
+        frc_map = {}
         for index, each in enumerate(data, 1):
             file_type = each.split(".")[-1]
+            file_name = ".".join(each.split(".")[:-1])
             if os.path.isdir(f"{file_path}/{each}"):
                 children_data.append({
                     "id": index,
@@ -54,13 +57,19 @@ class TaskViewSets(GenericViewSet):
                     "children": []
                 })
                 continue
+            if file_type in ["lrc", "txt"]:
+                frc_map[file_name] = each
             if file_type not in allow_type:
                 continue
+            if file_name in frc_map:
+                icon = "icon-script-files"
+            else:
+                icon = "icon-script-file"
             children_data.append({
                 "id": index,
                 "name": each,
                 "title": each,
-                "icon": "icon-monitors"
+                "icon": icon
             })
         res_data = [
             {
@@ -76,9 +85,14 @@ class TaskViewSets(GenericViewSet):
 
     @action(methods=['POST'], detail=False)
     def music_id3(self, request, *args, **kwargs):
+        """获取音乐id3信息"""
         validate_data = self.is_validated_data(request.data)
         file_path = validate_data['file_path']
         file_name = validate_data['file_name']
+        file_type = file_name.split(".")[-1]
+        if file_type in ["lrc", "txt"]:
+            return self.success_response()
+        file_path = file_path.rstrip('/')
         sub_path = file_path.split('/')[-1]
         if sub_path == file_name:
             return self.success_response()
@@ -105,6 +119,7 @@ class TaskViewSets(GenericViewSet):
 
     @action(methods=['POST'], detail=False)
     def update_id3(self, request, *args, **kwargs):
+        """更新音乐id3信息"""
         validate_data = self.is_validated_data(request.data)
         music_id3_info = validate_data['music_id3_info']
         update_music_info(music_id3_info)
@@ -112,6 +127,7 @@ class TaskViewSets(GenericViewSet):
 
     @action(methods=['POST'], detail=False)
     def batch_update_id3(self, request, *args, **kwargs):
+        """批量更新音乐id3信息"""
         validate_data = self.is_validated_data(request.data)
         full_path = validate_data['file_full_path']
         select_data = validate_data['select_data']

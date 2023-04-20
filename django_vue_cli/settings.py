@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "applications.task",
     "applications.user",
     "applications.music",
+    "applications.navidrome",
 
 ]
 
@@ -74,7 +75,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    },
+    # 'navidrome': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': "/Users/macbookair/Music/my_music/data2/navidrome.db",
+    # }
 }
 # DATABASES = {
 #     "default": {

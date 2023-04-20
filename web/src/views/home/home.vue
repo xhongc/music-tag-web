@@ -106,11 +106,17 @@
                             <bk-input :clearable="true" v-model="musicInfo.year"></bk-input>
                         </div>
                     </div>
-                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                        <div class="label1">歌词：</div>
-                        <div style="width: 70%;">
-                            <bk-input :clearable="true" v-model="musicInfo.lyrics" type="textarea" :rows="15"
-                            ></bk-input>
+                    <div style="display: flex;margin-bottom: 10px;flex-direction: column;">
+                        <div style="display: flex;">
+                            <div class="label1">歌词：</div>
+                            <div style="width: 70%;">
+                                <bk-input :clearable="true" v-model="musicInfo.lyrics" type="textarea" :rows="15"
+                                ></bk-input>
+                            </div>
+                        </div>
+                        <div style="display: flex;margin-top: 10px;">
+                            <div class="label1">保存歌词lrc：</div>
+                            <bk-switcher v-model="musicInfo.is_save_lyrics_file"></bk-switcher>
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
@@ -121,14 +127,12 @@
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
                         <div class="label1">专辑封面：</div>
-                        <div style="width: 70%;">
+                        <div style="width: 70%;" v-if="reloadImg">
                             <div v-if="musicInfo.album_img">
-                                <bk-image fit="contain" :src="musicInfo.album_img" style="width: 128px;"
-                                    v-if="reloadImg"></bk-image>
+                                <bk-image fit="contain" :src="musicInfo.album_img" style="width: 128px;"></bk-image>
                             </div>
-                            <div v-if="musicInfo.artwork">
-                                <bk-image fit="contain" :src="musicInfo.artwork" style="width: 128px;"
-                                    v-if="!musicInfo.album_img"></bk-image>
+                            <div v-else>
+                                <bk-image fit="contain" :src="musicInfo.artwork" style="width: 128px;"></bk-image>
                             </div>
                         </div>
                     </div>
@@ -199,13 +203,20 @@
                             <bk-input :clearable="true" v-model="musicInfoManual.year"></bk-input>
                         </div>
                     </div>
-                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                        <div class="label1">歌词：</div>
-                        <div style="width: 70%;">
-                            <bk-input :clearable="true" v-model="musicInfoManual.lyrics" type="textarea" :rows="15"
-                            ></bk-input>
+                    <div style="display: flex;margin-bottom: 10px;flex-direction: column;">
+                        <div style="display: flex;">
+                            <div class="label1">歌词：</div>
+                            <div style="width: 70%;">
+                                <bk-input :clearable="true" v-model="musicInfoManual.lyrics" type="textarea" :rows="15"
+                                ></bk-input>
+                            </div>
+                        </div>
+                        <div style="display: flex;margin-top: 10px;">
+                            <div class="label1">保存歌词lrc：</div>
+                            <bk-switcher v-model="musicInfoManual.is_save_lyrics_file"></bk-switcher>
                         </div>
                     </div>
+
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
                         <div class="label1">描述：</div>
                         <div style="width: 70%;">
@@ -291,16 +302,18 @@
             return {
                 searchWord: '',
                 treeListOne: [],
-                filePath: '/app/media/',
-                bakDir: '/app/media/',
+                filePath: '/Users/macbookair/Music/my_music/',
+                bakDir: '/Users/macbookair/Music/my_music/',
                 fileName: '',
                 resource: 'netease',
                 resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}],
                 musicInfo: {
-                    'genre': '流行'
+                    'genre': '流行',
+                    'is_save_lyrics_file': false
                 },
                 musicInfoManual: {
-                    'genre': '流行'
+                    'genre': '流行',
+                    'is_save_lyrics_file': false
                 },
                 fadeShowDir: false,
                 fadeShowDetail: false,
@@ -601,5 +614,8 @@
     height: calc(100vh - 55px);
     width: 30%;
     overflow: scroll;
+}
+.bk-form-checkbox {
+    margin-right: 10px;
 }
 </style>

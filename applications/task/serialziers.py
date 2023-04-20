@@ -17,6 +17,7 @@ class MusicId3Serializer(serializers.Serializer):
     genre = serializers.CharField(required=True, allow_null=True, allow_blank=True)
     year = serializers.CharField(required=True, allow_null=True, allow_blank=True)
     lyrics = serializers.CharField(required=True, allow_null=True, allow_blank=True)
+    is_save_lyrics_file = serializers.BooleanField(required=True)
     comment = serializers.CharField(required=True, allow_null=True, allow_blank=True)
     album_img = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     filename = serializers.CharField(required=False, allow_null=True, allow_blank=True)
