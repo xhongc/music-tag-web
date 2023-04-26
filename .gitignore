@@ -18,3 +18,4 @@ yarn-error.log*
 *.sln
 local_settings.py
 db.sqlite3
+/media/

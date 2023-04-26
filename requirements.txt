@@ -1,4 +1,7 @@
 Django==2.2.6
+celery==4.4.7
+django-celery-beat==2.2.0
+django-celery-results==1.2.1
 django-cors-headers==3.2.1
 django-filter==2.0.0
 djangorestframework==3.8.1
@@ -11,3 +14,4 @@ music-tag==0.4.3
 Pillow==9.4.0
 pycryptodomex==3.17
 Mako==1.0.6
+django-mysql==3.8.1

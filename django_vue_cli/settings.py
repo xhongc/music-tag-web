@@ -18,8 +18,6 @@ CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:8080"
 ]
 
-# Application definition
-
 INSTALLED_APPS = [
     "corsheaders",
     'django.contrib.admin',
@@ -32,8 +30,8 @@ INSTALLED_APPS = [
     "applications.task",
     "applications.user",
     "applications.music",
-    "applications.navidrome",
-
+    "applications.subsonic",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -71,26 +69,26 @@ TIME_ZONE = "Asia/Shanghai"
 LANGUAGE_CODE = "zh-hans"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-    # 'navidrome': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': "/Users/macbookair/Music/my_music/data2/navidrome.db",
-    # }
-}
 # DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": 'music',  # noqa
-#         "USER": "root",
-#         "PASSWORD": "123456",
-#         "HOST": "localhost",
-#         "PORT": "3306",
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     },
+# 'navidrome': {
+#     'ENGINE': 'django.db.backends.sqlite3',
+#     'NAME': "/Users/macbookair/Music/my_music/data/navidrome.db",
 # }
+# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": 'music3',  # noqa
+        "USER": "root",
+        "PASSWORD": "123456",
+        "HOST": "localhost",
+        "PORT": "3306",
+    },
+}
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -120,11 +118,17 @@ STATIC_ROOT = 'static'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # noqa
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-IS_USE_CELERY = False
+IS_USE_CELERY = True
 
 if IS_USE_CELERY:
+    REDIS_HOST = "127.0.0.1"
+    BROKER_URL = f"redis://{REDIS_HOST}:6379/1"
+    CELERY_TIMEZONE = 'Asia/Shanghai'
     INSTALLED_APPS += ("django_celery_beat", "django_celery_results")
     CELERY_ENABLE_UTC = False
+    ENABLE_UTC = False
+    DJANGO_CELERY_BEAT_TZ_AWARE = False
+
     CELERY_TASK_SERIALIZER = "pickle"
     CELERY_ACCEPT_CONTENT = ['pickle', ]
     CELERYBEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
@@ -158,7 +162,10 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
 BASE_URL = "https://music.163.com/"
-
+REVERSE_PROXY_TYPE = "nginx"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+SUBSONIC_DEFAULT_TRANSCODING_FORMAT = "mp3"
 try:
     from local_settings import *  # noqa
 except ImportError:
