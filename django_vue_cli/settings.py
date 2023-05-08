@@ -67,6 +67,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'django_vue_cli.wsgi.application'
 TIME_ZONE = "Asia/Shanghai"
 LANGUAGE_CODE = "zh-hans"
+if os.getenv("dockerrun", "no") == "yes":
+    REDIS_HOST = "redis"
+    MYSQL_HOST = "db"
+else:
+    REDIS_HOST = "127.0.0.1"
+    MYSQL_HOST = "127.0.0.1"
+
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 # DATABASES = {
@@ -85,7 +92,7 @@ DATABASES = {
         "NAME": 'music3',  # noqa
         "USER": "root",
         "PASSWORD": "123456",
-        "HOST": "localhost",
+        "HOST": MYSQL_HOST,
         "PORT": "3306",
     },
 }
@@ -121,7 +128,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 IS_USE_CELERY = True
 
 if IS_USE_CELERY:
-    REDIS_HOST = "127.0.0.1"
     BROKER_URL = f"redis://{REDIS_HOST}:6379/1"
     CELERY_TIMEZONE = 'Asia/Shanghai'
     INSTALLED_APPS += ("django_celery_beat", "django_celery_results")
