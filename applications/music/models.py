@@ -21,7 +21,7 @@ class Album(models.Model):
     duration = models.FloatField("歌曲时长s", default=0, null=False)
     genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, related_name='albums', db_constraint=False)
     created_at = models.DateTimeField(null=True)
-    updated_at = models.DateTimeField(null=True, auto_now=datetime.now)
+    updated_at = models.DateTimeField(null=True, auto_now=True)
     accessed_date = models.DateTimeField("访问时间", null=True)
 
     full_text = models.CharField(max_length=255, default='', null=True, blank=True)
@@ -67,8 +67,8 @@ class Track(models.Model):
     duration = models.FloatField("歌曲时长s", default=0, null=False)
     bit_rate = models.IntegerField(default=0, null=True)
     genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, related_name='tracks', db_constraint=False)
-    created_at = models.DateTimeField(null=True)
-    updated_at = models.DateTimeField(null=True, auto_now=datetime.now)
+    created_at = models.DateTimeField(null=True, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, auto_now=True)
     accessed_date = models.DateTimeField("访问时间", null=True)
     full_text = models.CharField(default='', max_length=255, null=True, blank=True)
     comment = models.TextField(null=True)
@@ -94,16 +94,13 @@ class Artist(models.Model):
     name = models.CharField(max_length=255, default='', blank=False)
     album_count = models.IntegerField(default=0)
     full_text = models.CharField(max_length=255, default='', null=True, blank=True)
-    order_artist_name = models.CharField(max_length=255, null=True, blank=True)
-    sort_artist_name = models.CharField(max_length=255, null=True, blank=True)
+
     song_count = models.IntegerField(default=0, null=True, blank=True)
     size = models.IntegerField(default=0, null=True, blank=True)
     mbz_artist_id = models.CharField(max_length=255, null=True, blank=True)
     attachment_cover = models.ForeignKey('Attachment', null=True, blank=True, on_delete=models.SET_NULL,
                                          related_name='artist_cover')
-    small_image_url = models.CharField(max_length=255, default='', null=True, blank=True)
-    medium_image_url = models.CharField(max_length=255, default='', null=True, blank=True)
-    large_image_url = models.CharField(max_length=255, default='', null=True, blank=True)
+
     similar_artists = models.CharField(max_length=255, default='', null=True, blank=True)
     external_url = models.CharField(max_length=255, default='', null=True, blank=True)
     external_info_updated_at = models.DateTimeField(null=True, blank=True)
@@ -204,6 +201,7 @@ class Folder(models.Model):
     path = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     last_scan_time = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
     # 文件格式，例如：folder, music, image
     file_type = models.CharField(max_length=32, default='folder')
     uid = models.UUIDField(default=uuid.uuid4, editable=False)

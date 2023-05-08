@@ -23,7 +23,7 @@ def handle_serve(
     now = datetime.now()
     track.accessed_date = now
     track.save(update_fields=["accessed_date"])
-    file_path = track.path
+    file_path = track.path.replace(str(settings.BASE_DIR), "").encode("utf-8")
     mt = track.mimetype
 
     if mt:

@@ -1,11 +1,13 @@
-import music_tag
+import os
+import time
+import uuid
+
 from django.conf import settings
 
-from applications.music.models import Folder, Track
+from applications.music.models import Folder
 from applications.subsonic.constants import AUDIO_EXTENSIONS_AND_MIMETYPE, COVER_TYPE
+from applications.task.services.scan_utils import ScanMusic
 from django_vue_cli.celery_app import app
-import os
-import uuid
 
 
 def get_uuid():
@@ -13,7 +15,7 @@ def get_uuid():
 
 
 @app.task
-def full_scan():
+def full_scan_folder():
     music_folder = os.path.join(settings.MEDIA_ROOT, "music")
     bulk_create = []
     stack = [(None, music_folder)]
@@ -64,8 +66,6 @@ def full_scan():
 
 @app.task
 def scan_music_id3():
-    music_list = Folder.objects.filter(file_type="music").all()
-    bulk_create = []
-    for music in music_list:
-        f = music_tag.load_file(music.path)
-        Track.objects.filter()
+    a = time.time()
+    ScanMusic("/").scan()
+    print(time.time() - a)

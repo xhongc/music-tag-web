@@ -47,7 +47,7 @@ def get_artist_data(artist_values):
     return {
         "id": artist_values["id"],
         "name": artist_values["name"],
-        "albumCount": artist_values["album_count"],
+        "albumCount": artist_values["_albums_count"],
         "coverArt": "ar-{}".format(artist_values["id"]),
     }
 
@@ -56,7 +56,8 @@ class GetArtistsSerializer(serializers.Serializer):
     def to_representation(self, queryset):
         payload = {"ignoredArticles": "", "index": []}
         queryset = queryset.order_by(functions.Lower("name"))
-        values = queryset.values("id", "album_count", "name")
+        queryset = queryset.annotate(_albums_count=Count("albums"))
+        values = queryset.values("id", "_albums_count", "name")
 
         first_letter_mapping = collections.defaultdict(list)
         for artist in values:
