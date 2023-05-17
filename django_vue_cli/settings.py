@@ -76,22 +76,22 @@ else:
     MYSQL_HOST = "127.0.0.1"
 
 # Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": 'music3',  # noqa
-        "USER": "root",
-        "PASSWORD": "123456",
-        "HOST": MYSQL_HOST,
-        "PORT": "3306",
-    },
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": 'music3',  # noqa
+#         "USER": "root",
+#         "PASSWORD": "123456",
+#         "HOST": MYSQL_HOST,
+#         "PORT": "3306",
+#     },
+# }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
