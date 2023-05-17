@@ -26,11 +26,11 @@ DFF等音频格式。
 
 ### 从阿里云Docker Registry拉取镜像
 
-1`docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:latest`
+1`docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.0.0`
 
 ### dokcer run
 
-2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:latest`
+2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.0.0`
    
 或者 使用portainer stacks部署
    ![img_1.png](img_1.png)
@@ -40,7 +40,7 @@ version: '3'
 
 services:
   music-tag:
-    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:latest
+    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.0.0
     container_name: music-tag-web
     ports:
       - "8001:8001"
