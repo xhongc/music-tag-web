@@ -307,6 +307,10 @@
                 fileName: '',
                 resource: 'netease',
                 resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}],
+                baseMusicInfo: {
+                    'genre': '流行',
+                    'is_save_lyrics_file': false
+                },
                 musicInfo: {
                     'genre': '流行',
                     'is_save_lyrics_file': false
@@ -366,11 +370,12 @@
                     if (node.children && node.children.length > 0) {
                         return
                     }
-                    this.musicInfo = {}
+                    this.musicInfo = this.baseMusicInfo
                     this.fileName = node.name
                     this.$api.Task.musicId3({'file_path': this.filePath, 'file_name': node.name}).then((res) => {
                         console.log(res)
                         this.musicInfo = res.data
+                        this.musicInfo.is_save_lyrics_file = false
                     })
                 }
             },
@@ -378,7 +383,7 @@
             nodeCheckTwo(node, checked) {
                 console.log(node, checked)
                 if (checked) {
-                    this.musicInfo = {}
+                    this.musicInfo = this.baseMusicInfo
                     if (node.children && node.children.length > 0) {
                         this.checkedData = []
                         this.checkedIds = []
@@ -480,6 +485,7 @@
             },
             // 保存音乐信息
             handleClick() {
+                console.log(this.musicInfo)
                 const params = [{
                     'file_full_path': this.filePath + '/' + this.fileName,
                     ...this.musicInfo
