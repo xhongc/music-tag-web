@@ -335,6 +335,79 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     @action(
         detail=False,
         methods=["get", "post"],
+        url_name="get_album_list",
+        url_path="getAlbumList",
+    )
+    def get_album_list(self, request, *args, **kwargs):
+        data = request.GET or request.POST
+
+        queryset = Album.objects.order_by("artist__name")
+        filterset = AlbumList2FilterSet(data, queryset=queryset)
+        queryset = filterset.qs
+        al_type = data.get("type", "alphabeticalByArtist")
+        if al_type == "alphabeticalByArtist":
+            queryset = queryset.order_by("artist__name")
+        elif al_type == "random":
+            queryset = queryset.order_by("?")
+        elif al_type == "alphabeticalByName" or not al_type:
+            queryset = queryset.order_by("name")
+        elif al_type == "recent" or not al_type:
+            # 最近播放的
+            queryset = queryset.exclude(max_year=0).order_by("-max_year")
+        elif al_type == "newest" or not al_type:
+            queryset = queryset.order_by("-created_at")
+        elif al_type == "frequent":
+            # 播放量最多的
+            queryset = queryset.order_by("-plays_count")
+        elif al_type == "byGenre" and data.get("genre"):
+            genre = data.get("genre")
+            queryset = queryset.filter(genre__name=genre)
+        elif al_type == "byYear":
+            try:
+                boundaries = [
+                    int(data.get("fromYear", 0)),
+                    int(data.get("toYear", 99999999)),
+                ]
+
+            except (TypeError, ValueError):
+                return response.Response(
+                    {
+                        "error": {
+                            "code": 10,
+                            "message": "Invalid fromYear or toYear parameter",
+                        }
+                    }
+                )
+            # because, yeah, the specification explicitly state that fromYear can be greater
+            # than toYear, to indicate reverse ordering…
+            # http://www.subsonic.org/pages/api.jsp#getAlbumList2
+            from_year = min(boundaries)
+            to_year = max(boundaries)
+            queryset = queryset.filter(
+                max_year__gte=from_year, max_year__lte=to_year
+            )
+            if boundaries[0] <= boundaries[1]:
+                queryset = queryset.order_by("max_year")
+            else:
+                queryset = queryset.order_by("-max_year")
+        try:
+            offset = int(data["offset"])
+        except (TypeError, KeyError, ValueError):
+            offset = 0
+
+        try:
+            size = int(data["size"])
+        except (TypeError, KeyError, ValueError):
+            size = 50
+
+        size = min(size, 500)
+        queryset = queryset[offset: offset + size]
+        data = {"albumList2": {"album": serializers.get_album_list2_data(queryset)}}
+        return response.Response(data)
+
+    @action(
+        detail=False,
+        methods=["get", "post"],
         url_name="get_indexes",
         url_path="getIndexes",
     )
@@ -377,7 +450,8 @@ class SubsonicViewSet(viewsets.GenericViewSet):
                 "starred": "2013-11-02T12:30:00",
                 "child": [
                     {
-                        "id": "11",
+                        "id": "11"
+                        ,
                         "parent": "10",
                         "title": "Arrival",
                         "artist": "ABBA",

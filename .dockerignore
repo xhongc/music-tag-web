@@ -11,3 +11,5 @@ venv
 .git
 /web/
 /media/
+db.sqlite3
+local_settings.py

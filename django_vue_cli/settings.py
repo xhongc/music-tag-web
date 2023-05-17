@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     "applications.user",
     "applications.music",
     "applications.subsonic",
-    "django_extensions",
+    # "django_extensions",
+
 ]
 
 MIDDLEWARE = [
@@ -75,16 +76,11 @@ else:
     MYSQL_HOST = "127.0.0.1"
 
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     },
-# 'navidrome': {
-#     'ENGINE': 'django.db.backends.sqlite3',
-#     'NAME': "/Users/macbookair/Music/my_music/data/navidrome.db",
-# }
+#     }
 # }
 DATABASES = {
     "default": {

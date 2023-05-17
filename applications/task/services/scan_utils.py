@@ -23,6 +23,10 @@ class MusicInfo:
 
     @property
     def album_name(self):
+        album_name = self.file["album"].value
+        album_name = album_name.replace(" ", "")
+        if not album_name:
+            album_name = "未知专辑"
         return self.file["album"].value
 
     @property
@@ -31,11 +35,29 @@ class MusicInfo:
 
     @property
     def year(self):
-        return self.file["year"].value
+        try:
+            year = self.file["year"].value
+        except Exception:
+            return 0
+        try:
+            year = int(year)
+        except Exception:
+            year_list = year.split("-")
+            if year_list and year_list[0]:
+                try:
+                    return int(year_list[0].replace(" ", ""))
+                except Exception:
+                    return 0
+        return year
 
     @property
     def genre(self):
-        return self.file["genre"].value
+        genre = self.file["genre"].value
+        if genre:
+            genre = genre.upper()
+        else:
+            genre = "未知"
+        return genre
 
     @property
     def comment(self):
@@ -63,11 +85,17 @@ class MusicInfo:
 
     @property
     def track_number(self):
-        return self.file['tracknumber'].value
+        try:
+            return self.file['tracknumber'].value
+        except Exception:
+            return 1
 
     @property
     def disc_number(self):
-        return self.file['discnumber'].value
+        try:
+            return self.file['discnumber'].value
+        except Exception:
+            return 1
 
     @property
     def title(self):
@@ -100,10 +128,11 @@ class ScanMusic:
         self.path = path
         self.artist_map = dict(Artist.objects.values_list("name", "id"))
         self.album_map = dict(Album.objects.values_list("full_text", "id"))
-        self.genre_map = dict(Genre.objects.values_list("name", "id"))
+        genre_map = dict(Genre.objects.values_list("name", "id"))
+        self.genre_map = {k.upper(): v for k, v in genre_map.items()}
 
     def get_scan_list(self):
-        music_list = Folder.objects.filter(file_type="music").all()
+        music_list = Folder.objects.filter(file_type="music", state__in=["none", "updated"]).all()
         return music_list
 
     def get_or_create_artist(self, music_info):
@@ -121,7 +150,7 @@ class ScanMusic:
         year = music_info.year
         genre = music_info.genre
         comment = music_info.comment
-        full_text = f"{album_name}-{artist_name}"
+        full_text = f"{album_name}"
 
         if full_text not in self.album_map:
             artist_id = self.artist_map[artist_name]
@@ -139,14 +168,14 @@ class ScanMusic:
         return album
 
     def get_or_create_genre(self, music_info):
-        genre = music_info.genre
+        genre_name = music_info.genre
 
-        if genre not in self.genre_map:
+        if genre_name not in self.genre_map:
             genre = Genre.objects.create(**{
-                "name": genre,
+                "name": genre_name,
             })
-            self.genre_map[genre] = genre.id
-        return self.genre_map[genre]
+            self.genre_map[genre_name] = genre.id
+        return self.genre_map[genre_name]
 
     def get_or_create_attachment(self, music_info, album):
         if album.attachment_cover is None:
@@ -187,9 +216,15 @@ class ScanMusic:
     def scan(self):
         folder_list = self.get_scan_list()
         for folder in folder_list:
-            music_info = MusicInfo(folder)
-            artist_id = self.get_or_create_artist(music_info)
-            genre_id = self.get_or_create_genre(music_info)
-            album = self.get_or_create_album(music_info)
-            self.get_or_create_attachment(music_info, album)
-            self.update_or_create_track(music_info, album_id=album.id, artist_id=artist_id, genre_id=genre_id)
+            try:
+                music_info = MusicInfo(folder)
+                artist_id = self.get_or_create_artist(music_info)
+                genre_id = self.get_or_create_genre(music_info)
+                album = self.get_or_create_album(music_info)
+                self.get_or_create_attachment(music_info, album)
+                self.update_or_create_track(music_info, album_id=album.id, artist_id=artist_id, genre_id=genre_id)
+                folder.state = "scanned"
+                folder.save()
+            except Exception as e:
+                print(e)
+                continue

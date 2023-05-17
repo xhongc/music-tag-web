@@ -4,4 +4,4 @@ set -o errexit
 set -o nounset
 
 
-exec celery -A dj_flow.celery_app worker -Q default,er_execute,er_schedule -l info
+exec celery -A django_vue_cli.celery_app worker -l info -P gevent --concurrency 10

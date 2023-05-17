@@ -40,6 +40,7 @@ class AlbumAdmin(admin.ModelAdmin):
     )
     search_fields = ('name',)
     date_hierarchy = 'created_at'
+    list_per_page = 10
 
 
 @admin.register(Track)
@@ -65,27 +66,16 @@ class TrackAdmin(admin.ModelAdmin):
         'updated_at',
         'accessed_date',
         'full_text',
-        'comment',
-        'lyrics',
-        'mbz_track_id',
-        'mbz_album_id',
-        'mbz_artist_id',
-        'mbz_album_artist_id',
-        'mbz_album_type',
-        'mbz_album_comment',
-        'mbz_release_track_id',
     )
     list_filter = (
-        'album',
-        'artist',
         'has_cover_art',
-        'genre',
         'created_at',
         'updated_at',
         'accessed_date',
     )
     search_fields = ('name',)
     date_hierarchy = 'created_at'
+    list_per_page = 10
 
 
 @admin.register(Artist)
@@ -105,6 +95,8 @@ class ArtistAdmin(admin.ModelAdmin):
     )
     list_filter = ('attachment_cover', 'external_info_updated_at')
     search_fields = ('name',)
+
+    list_per_page = 10
 
 
 @admin.register(Genre)
@@ -159,7 +151,7 @@ class FolderAdmin(admin.ModelAdmin):
         'uid',
         'parent_id',
     )
-    list_filter = ('created_at', 'last_scan_time')
+    list_filter = ('created_at', 'last_scan_time', "file_type", "state")
     search_fields = ('name',)
     date_hierarchy = 'created_at'
-
+    list_per_page = 10

@@ -16,7 +16,7 @@ urlpatterns = [
     re_path(r"^user/", include(user_router.urls)),
     re_path(r'^api/token/', obtain_jwt_token),
     # nginx 处理了静态文件
-    # re_path(r'^static/(?P<path>.*)$', static.serve,
-    #         {'document_root': settings.STATIC_ROOT}, name='static'),
-    # re_path(r'^media/(?P<path>.*)$', static.serve, {'document_root': settings.MEDIA_ROOT}),
+    re_path(r'^static/(?P<path>.*)$', static.serve,
+            {'document_root': settings.STATIC_ROOT}, name='static'),
+    re_path(r'^media/(?P<path>.*)$', static.serve, {'document_root': settings.MEDIA_ROOT}),
 ]

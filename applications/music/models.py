@@ -201,8 +201,10 @@ class Folder(models.Model):
     path = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     last_scan_time = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(default=datetime.now)
     # 文件格式，例如：folder, music, image
     file_type = models.CharField(max_length=32, default='folder')
     uid = models.UUIDField(default=uuid.uuid4, editable=False)
     parent_id = models.UUIDField(default=uuid.uuid4, editable=False, null=True, blank=True)
+    # none, scanning, scanned, updated
+    state = models.CharField(max_length=32, default='none')

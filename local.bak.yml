@@ -7,7 +7,7 @@ services:
     expose:
       - "8001"
     volumes:
-      - /Users/macbookair/Music/my_music:/app/media:z # 配置本地音乐文件夹
+      - D:\:/app/media:z # 配置本地音乐文件夹
     restart: always
     environment:
       dockerrun: "yes"
@@ -24,12 +24,12 @@ services:
       dockerrun: "yes"
     ports: [ ]
     volumes:
-      - /Users/macbookair/Music/my_music:/app/media:z # 配置本地音乐文件夹
-    networks:
-      - internal
+      - D:\:/app/media:z # 配置本地音乐文件夹
     depends_on:
       - redis
       - db
+    networks:
+      - internal
     command: /start-celeryworker
   celerybeat:
     image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:latest
@@ -37,11 +37,11 @@ services:
     environment:
       dockerrun: "yes"
     ports: [ ]
-    networks:
-      - internal
     depends_on:
       - redis
       - db
+    networks:
+      - internal
     command: /start-celerybeat
   redis:
     image: redis:latest
@@ -72,7 +72,7 @@ services:
     depends_on:
       - django
     volumes:
-      - /Users/macbookair/Music/nginx.conf:/etc/nginx/nginx.conf:ro # 配置nginx.conf
-      - /Users/macbookair/Music/my_music:/app/media:z # 配置本地音乐文件夹
+      - D:\nginx.conf:/etc/nginx/nginx.conf:ro # 配置nginx.conf
+      - D:\:/app/media:z # 配置本地音乐文件夹
 networks:
   internal:

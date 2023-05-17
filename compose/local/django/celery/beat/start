@@ -5,4 +5,4 @@ set -o nounset
 
 
 rm -f './celerybeat.pid'
-exec celery -A dj_flow.celery_app beat -l INFO
+exec celery -A django_vue_cli.celery_app beat -l INFO

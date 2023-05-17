@@ -11,7 +11,9 @@ from applications.task.serialziers import FileListSerializer, Id3Serializer, Upd
     FetchId3ByTitleSerializer, FetchLlyricSerializer, BatchUpdateId3Serializer
 from applications.task.services.music_resource import MusicResource
 from applications.task.services.update_ids import update_music_info
+from applications.task.tasks import full_scan_folder, scan_music_id3, scan, clear_music
 from component.drf.viewsets import GenericViewSet
+from django_vue_cli.celery_app import app as celery_app
 
 
 @method_decorator(gzip_page, name="dispatch")
@@ -38,14 +40,15 @@ class TaskViewSets(GenericViewSet):
         file_path = validate_data['file_path']
         file_path_list = file_path.split('/')
         try:
-            data = os.listdir(file_path)
+            data = os.scandir(file_path)
         except FileNotFoundError:
             return self.failure_response(msg="文件夹不存在")
         children_data = []
         allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
                       "opus", "wma", "dsf", "dff"]
         frc_map = {}
-        for index, each in enumerate(data, 1):
+        for index, entry in enumerate(data, 1):
+            each = entry.name
             file_type = each.split(".")[-1]
             file_name = ".".join(each.split(".")[:-1])
             if os.path.isdir(f"{file_path}/{each}"):
@@ -136,10 +139,11 @@ class TaskViewSets(GenericViewSet):
         for data in select_data:
             if data.get('icon') == 'icon-folder':
                 file_full_path = f"{full_path}/{data.get('name')}"
-                data = os.listdir(file_full_path)
+                data = os.scandir(file_full_path)
                 allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
                               "opus", "wma", "dsf", "dff"]
-                for index, each in enumerate(data, 1):
+                for index, entry in enumerate(data, 1):
+                    each = entry.name
                     file_type = each.split(".")[-1]
                     if file_type not in allow_type:
                         continue
@@ -176,3 +180,39 @@ class TaskViewSets(GenericViewSet):
         title = validate_data["title"]
         songs = MusicResource(resource).fetch_id3_by_title(title)
         return self.success_response(data=songs)
+
+    @action(methods=["get"], detail=False)
+    def clear_celery(self, request, *args, **kwargs):
+        active_tasks = celery_app.control.inspect().active()
+        try:
+            active_tasks_data = list(active_tasks.values())[0]
+        except Exception:
+            return self.success_response()
+        for task in active_tasks_data:
+            celery_app.control.revoke(task["id"], terminate=True)
+        celery_app.control.purge()
+        return self.success_response()
+
+    @action(methods=["get"], detail=False)
+    def active_queue(self, request, *args, **kwargs):
+        active_tasks = celery_app.control.inspect().active()
+        try:
+            active_tasks_data = list(active_tasks.values())[0]
+        except Exception:
+            return self.success_response()
+        return self.success_response(data=active_tasks_data)
+
+    @action(methods=['GET'], detail=False)
+    def task1(self, request, *args, **kwargs):
+        scan.delay()
+        return self.success_response()
+
+    @action(methods=['GET'], detail=False)
+    def task2(self, request, *args, **kwargs):
+        clear_music()
+        return self.success_response()
+
+    @action(methods=['GET'], detail=False)
+    def full_scan_folder(self, request, *args, **kwargs):
+        full_scan_folder.delay()
+        return self.success_response()
