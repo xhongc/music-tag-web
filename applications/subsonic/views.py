@@ -5,13 +5,14 @@ import datetime
 import time
 
 from django.conf import settings
+from django.db.models import Count
 from django.utils import timezone
 from rest_framework import exceptions
 from rest_framework import permissions as rest_permissions
 from rest_framework import response, viewsets
 from rest_framework.decorators import action
 
-from applications.music.models import Artist, Album, Attachment, Track, Playlist, TrackFavorite
+from applications.music.models import Artist, Album, Attachment, Track, Playlist, TrackFavorite, Genre
 from . import authentication, negotiation, serializers
 from .filters import AlbumList2FilterSet
 from .utils import handle_serve
@@ -76,11 +77,9 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         url_path="getArtists",
     )
     def get_artists(self, request, *args, **kwargs):
-
         artists = Artist.objects.all()
         data = serializers.GetArtistsSerializer(artists).data
         payload = {"artists": data}
-
         return response.Response(payload, status=200)
 
     @action(
@@ -250,13 +249,10 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         url_path="getGenres",
     )
     def get_genres(self, request, *args, **kwargs):
-
+        queryset = Genre.objects.annotate(_albums_count=Count("albums", distinct=True),
+                                          _tracks_count=Count("tracks", distinct=True)).order_by("name")
         data = {
-            "genres": {"genre": [{
-                "songCount": 0,
-                "albumCount": 0,
-                "value": "Rock",
-            }]}
+            "genres": {"genre": [serializers.get_genre_data(tag) for tag in queryset]}
         }
         return response.Response(data)
 
@@ -269,7 +265,6 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     def get_album_list2(self, request, *args, **kwargs):
         data = request.GET or request.POST
 
-        a = time.time()
         queryset = Album.objects.all()
         al_type = data.get("type", "alphabeticalByArtist")
         if al_type == "alphabeticalByArtist":
@@ -279,7 +274,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         elif al_type == "alphabeticalByName" or not al_type:
             queryset = queryset.order_by("name")
         elif al_type == "recent" or not al_type:
-            # 最近播放的
+            # todo最近播放的
             queryset = queryset.exclude(max_year=0).order_by("-max_year")
         elif al_type == "newest" or not al_type:
             queryset = queryset.order_by("-created_at")
@@ -329,13 +324,8 @@ class SubsonicViewSet(viewsets.GenericViewSet):
 
         size = min(size, 500)
         queryset = queryset[offset: offset + size]
-        print(1, time.time() - a)
-        from django.db import connection
 
         data = {"albumList2": {"album": serializers.get_album_list2_data(queryset)}}
-        print(len(connection.queries))
-
-        print(2, time.time() - a)
         return response.Response(data)
 
     @action(
@@ -347,9 +337,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     def get_album_list(self, request, *args, **kwargs):
         data = request.GET or request.POST
 
-        queryset = Album.objects.order_by("artist__name")
-        filterset = AlbumList2FilterSet(data, queryset=queryset)
-        queryset = filterset.qs
+        queryset = Album.objects.all()
         al_type = data.get("type", "alphabeticalByArtist")
         if al_type == "alphabeticalByArtist":
             queryset = queryset.order_by("artist__name")
@@ -358,7 +346,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         elif al_type == "alphabeticalByName" or not al_type:
             queryset = queryset.order_by("name")
         elif al_type == "recent" or not al_type:
-            # 最近播放的
+            # todo最近播放的
             queryset = queryset.exclude(max_year=0).order_by("-max_year")
         elif al_type == "newest" or not al_type:
             queryset = queryset.order_by("-created_at")
@@ -408,6 +396,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
 
         size = min(size, 500)
         queryset = queryset[offset: offset + size]
+
         data = {"albumList2": {"album": serializers.get_album_list2_data(queryset)}}
         return response.Response(data)
 
