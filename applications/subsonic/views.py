@@ -2,7 +2,6 @@
 Documentation of Subsonic API can be found at http://www.subsonic.org/pages/api.jsp
 """
 import datetime
-import time
 
 from django.conf import settings
 from django.db.models import Count
@@ -14,7 +13,6 @@ from rest_framework.decorators import action
 
 from applications.music.models import Artist, Album, Attachment, Track, Playlist, TrackFavorite, Genre
 from . import authentication, negotiation, serializers
-from .filters import AlbumList2FilterSet
 from .utils import handle_serve
 
 
@@ -489,7 +487,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     )
     def get_starred2(self, request, *args, **kwargs):
         favorites = request.user.track_favorites.all()
-        data = {"starred2": {"song": serializers.get_starred_tracks_data(favorites)}}
+        data = {"starred2": serializers.get_starred_data(favorites)}
         return response.Response(data)
 
     @action(detail=False, methods=["get", "post"], url_name="star", url_path="star")

@@ -3,7 +3,7 @@ import collections
 from django.db.models import Count, functions, Sum
 from rest_framework import serializers
 
-from applications.music.models import Track
+from applications.music.models import Track, Artist, Album
 from applications.subsonic.utils import get_type_from_ext
 
 
@@ -184,19 +184,43 @@ class GetSongSerializer(serializers.Serializer):
         return get_track_data(track)
 
 
-def get_starred_tracks_data(favorites):
-    by_track_id = {f.track_id: f for f in favorites}
-    tracks = (
-        Track.objects.filter(pk__in=by_track_id.keys())
-            .select_related("album__artist")
-    )
-    tracks = tracks.order_by("-created_at")
-    data = []
-    for t in tracks:
-        td = get_track_data(t)
-        td["starred"] = to_subsonic_date(by_track_id[t.pk].created_at)
-        data.append(td)
-    return data
+def get_starred_data(favorites):
+    by_track_id = {}
+    by_album_id = {}
+    by_artist_id = {}
+    song_data = []
+    artist_data = []
+    album_data = []
+    for f in favorites:
+        if f.track_id:
+            by_track_id[f.track_id] = f
+        elif f.album_id:
+            by_album_id[f.album_id] = f
+        elif f.artist_id:
+            by_artist_id[f.artist_id] = f
+    if by_track_id:
+        tracks = (
+            Track.objects.filter(pk__in=by_track_id.keys())
+                .select_related("album__artist")
+        )
+        for t in tracks:
+            td = get_track_data(t)
+            td["starred"] = to_subsonic_date(by_track_id[t.pk].creation_date)
+            song_data.append(td)
+    if by_artist_id:
+        artists = Artist.objects.filter(pk__in=by_artist_id.keys()).annotate(_albums_count=Count("albums")) \
+            .values("id", "name", "_albums_count")
+        for a in artists:
+            ad = get_artist_data(a)
+            ad["starred"] = to_subsonic_date(by_artist_id[a["id"]].creation_date)
+            artist_data.append(ad)
+    if by_album_id:
+        albums = Album.objects.filter(pk__in=by_album_id.keys()).select_related("artist").prefetch_related("tracks")
+        for a in albums:
+            ad = get_album2_data(a)
+            ad["starred"] = to_subsonic_date(by_album_id[a.pk].creation_date)
+            album_data.append(ad)
+    return {"song": song_data, "album": album_data, "artist": artist_data}
 
 
 def get_album_list2_data(albums):
