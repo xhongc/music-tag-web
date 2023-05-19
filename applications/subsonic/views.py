@@ -495,19 +495,56 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     @action(detail=False, methods=["get", "post"], url_name="star", url_path="star")
     def star(self, request, *args, **kwargs):
         req_data = request.GET or request.POST
-        track = Track.objects.filter(id=req_data.get("id")).first()
-        if not track:
-            return response.Response({"error": {"code": 70, "message": "Track not found."}})
-        TrackFavorite.add(user=request.user, track=track)
+        track_id = req_data.get("id")
+        album_id = req_data.get("albumId")
+        artist_id = req_data.get("artistId")
+        if track_id:
+            track = Track.objects.filter(id=track_id).first()
+            if not track:
+                return response.Response({"error": {"code": 70, "message": "Track not found."}})
+            TrackFavorite.add_track(user=request.user, track=track)
+        elif album_id:
+            album = Album.objects.filter(id=album_id).first()
+            if not album:
+                return response.Response({"error": {"code": 70, "message": "Album not found."}})
+            TrackFavorite.add_album(user=request.user, album=album)
+        elif artist_id:
+            artist = Artist.objects.filter(id=artist_id).first()
+            if not artist:
+                return response.Response({"error": {"code": 70, "message": "Artist not found."}})
+            TrackFavorite.add_artist(user=request.user, artist=artist)
+        else:
+            return response.Response(
+                {"error": {"code": 10, "message": "Invalid id or albumId parameter"}}
+            )
+
         return response.Response({"status": "ok"})
 
     @action(detail=False, methods=["get", "post"], url_name="unstar", url_path="unstar")
     def unstar(self, request, *args, **kwargs):
         req_data = request.GET or request.POST
-        track = Track.objects.filter(id=req_data.get("id")).first()
-        if not track:
-            return response.Response({"error": {"code": 70, "message": "Track not found."}})
-        request.user.track_favorites.filter(track=track).delete()
+        track_id = req_data.get("id")
+        album_id = req_data.get("albumId")
+        artist_id = req_data.get("artistId")
+        if track_id:
+            track = Track.objects.filter(id=track_id).first()
+            if not track:
+                return response.Response({"error": {"code": 70, "message": "Track not found."}})
+            request.user.track_favorites.filter(track=track).delete()
+        elif album_id:
+            album = Album.objects.filter(id=album_id).first()
+            if not album:
+                return response.Response({"error": {"code": 70, "message": "Album not found."}})
+            request.user.track_favorites.filter(album=album).delete()
+        elif artist_id:
+            artist = Artist.objects.filter(id=artist_id).first()
+            if not artist:
+                return response.Response({"error": {"code": 70, "message": "Artist not found."}})
+            request.user.track_favorites.filter(artist=artist).delete()
+        else:
+            return response.Response(
+                {"error": {"code": 10, "message": "Invalid id or albumId parameter"}}
+            )
         return response.Response({"status": "ok"})
 
     @action(

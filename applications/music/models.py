@@ -186,18 +186,28 @@ class TrackFavorite(models.Model):
         User, related_name="track_favorites", on_delete=models.CASCADE
     )
     track = models.ForeignKey(
-        Track, related_name="track_favorites", on_delete=models.CASCADE
+        Track, related_name="track_favorites", on_delete=models.CASCADE, null=True, blank=True
     )
+    album = models.ForeignKey(Album, related_name="track_favorites", on_delete=models.CASCADE, null=True, blank=True)
+    artist = models.ForeignKey(Artist, related_name="track_favorites", on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
-        unique_together = ("track", "user")
         ordering = ("-creation_date",)
 
     @classmethod
-    def add(cls, track, user):
+    def add_track(cls, track, user):
         favorite, created = cls.objects.get_or_create(user=user, track=track)
         return favorite
 
+    @classmethod
+    def add_album(cls, album, user):
+        favorite, created = cls.objects.get_or_create(user=user, album=album)
+        return favorite
+
+    @classmethod
+    def add_artist(cls, artist, user):
+        favorite, created = cls.objects.get_or_create(user=user, artist=artist)
+        return favorite
 
 class Folder(models.Model):
     name = models.CharField(max_length=256)
