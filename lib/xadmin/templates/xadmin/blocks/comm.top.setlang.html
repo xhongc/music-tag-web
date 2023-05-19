@@ -1,0 +1,31 @@
+{% load i18n xadmin_tags %}
+
+<li class="dropdown g-setlang">
+  <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+  <i class="fa fa-globe"></i> <span class="hide-sm">
+    {% get_current_language as l %}{{ l.name_local }}
+    <i class="caret"></i></span></a>
+  <form id="setlang-form" action="{% url 'xadmin:set_language' %}" method="post" style="display:none;">
+    {% csrf_token %}
+    <input name="next" type="hidden" value="{{ redirect_to }}" />
+    <input id="setlang-id_language" name="language" type="hidden" value="{{ LANGUAGE_CODE }}" />
+  </form>
+  <ul id="g-setlang-menu" class="dropdown-menu" role="menu">
+    {% get_language_info_list for LANGUAGES as languages %}
+    {% for language in languages %}
+      <li{% if language.code == LANGUAGE_CODE %} class="active"{% endif %}><a data-lang="{{ language.code }}"><i class="fa fa-flag"></i> {{ language.name_local }} ({{ language.code }})</a></li>
+    {% endfor %}
+  </ul>
+</li>
+<script type="text/javascript">
+  $(function(){
+    $('#g-setlang-menu a').click(function(e){
+      var lang = $(this).data('lang');
+      $('#setlang-form #setlang-id_language').attr('value', lang);
+      $('#setlang-form').submit();
+      
+      var topmenu = $('#top-nav .navbar-collapse');
+      if(topmenu.data('bs.collapse')) topmenu.collapse('hide');
+    })
+  })
+</script>

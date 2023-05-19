@@ -1,0 +1,12 @@
+/** Action **/
+.action-checkbox-column {
+  width: 14px;
+}
+
+/** quick-form **/
+.quick-form .modal-body {
+	padding-bottom: 0px;
+}
+.quick-form .modal-footer {
+	margin-top: 0px;
+}

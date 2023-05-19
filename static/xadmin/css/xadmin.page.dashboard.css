@@ -1,0 +1,47 @@
+
+.dashboard.container-fluid {
+    padding-left: 0px;
+}
+.dashboard .column{
+  min-height: 60px;
+}
+
+.widget {
+}
+.widget_options {
+}
+
+/* Quick Buttons
+=================================================================== */
+.qbutton .panel-body {
+  padding-top: 5px;
+}
+.btn-quick {
+    margin-top: 10px;
+    padding: 20px 0px 0px 0px;
+    font-size: 15px;
+    display:block;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+.btn-quick i {
+    font-size: 32px;
+}
+
+/* Quick Buttons Small
+=================================================================== */
+
+.btn-quick-small {
+  border-radius: 3px;
+  padding: 15px 0px 0px 0px;
+  font-size: 10px;
+  display:block;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.btn-quick-small i {
+    font-size: 20px;
+}

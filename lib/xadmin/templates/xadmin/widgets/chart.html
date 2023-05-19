@@ -1,0 +1,19 @@
+{% extends "xadmin/widgets/base.html" %}
+{% load i18n xadmin_tags %}
+
+{% block content_css %}tabs{% endblock content_css %}
+{% block content %}
+{% if not widget.one_chart %}
+  <ul class="nav nav-tabs chart-tab">
+    {% for c in charts %}
+    <li{% if forloop.first%} class="active"{% endif %}><a href="#chart-{{c.name}}" data-toggle="tab">{{c.title}}</a></li>
+    {% endfor %}
+  </ul>
+{% endif %}
+  <div class="tab-content">
+    {% for c in charts %}
+    <div class="chart tab-pane{% if forloop.first%} active{% endif %}{% if widget.one_chart%} init{% endif %}" id="chart-{{c.name}}" data-chart-url="{{c.url}}" 
+      style="height: 300px; margin:0px; overflow: hidden;"></div>
+    {% endfor %}
+  </div>
+{% endblock content %}

@@ -3,6 +3,8 @@ import store from '@/vuex/index'
 import Home from '@/views/home/home'
 import User from '@/views/user/index'
 import Login from '@/views/user/login'
+import Music from '@/views/music/index'
+
 // const _import = require('./router/_import_' + process.env.NODE_ENV) // 获取组件的方法
 
 let getRouter // 用来获取后台拿到的路由
@@ -18,6 +20,14 @@ router.beforeEach((to, from, next) => {
                     'path': '/',
                     'name': 'home',
                     'component': 'Home',
+                    'meta': {
+                        'title': '音乐标签Web版'
+                    }
+                },
+                {
+                    'path': '/music',
+                    'name': 'music',
+                    'component': 'Music',
                     'meta': {
                         'title': '音乐标签Web版'
                     }
@@ -73,7 +83,8 @@ function getObjArr(name) { // localStorage 获取数组对象的方法
 const ROUTER_MAP = {
     'Home': Home,
     'User': User,
-    'Login': Login
+    'Login': Login,
+    'Music': Music
 }
 
 function filterAsyncRouter(asyncRouterMap) { // 遍历后台传来的路由字符串，转换为组件对象

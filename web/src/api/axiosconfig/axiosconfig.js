@@ -1,5 +1,6 @@
 // axios基础配置
 import axios from 'axios'
+import self from '@/main'
 
 axios.defaults.baseURL = window.siteUrl
 axios.defaults.withCredentials = true
@@ -8,20 +9,9 @@ axios.defaults.crossDomain = true
 
 axios.interceptors.request.use((config) => {
     config.headers['X-Requested-With'] = 'XMLHttpRequest'
-    const name = 'AUTHORIZATION'
-    let cookieValue = 'NOTPROVIDED'
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';')
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim()
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
-                break
-            }
-        }
-    }
-    config.headers['AUTHORIZATION'] = cookieValue
-
+    const name = window.CSRF_COOKIE_NAME || 'csrftoken'
+    config.headers['X-CSRFToken'] = self.getCookie(name) || 'NOTPROVIDED'
+    config.headers['AUTHORIZATION'] = self.getCookie('AUTHORIZATION')
     return config
 })
 

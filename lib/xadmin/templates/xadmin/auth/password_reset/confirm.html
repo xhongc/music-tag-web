@@ -1,0 +1,33 @@
+{% extends base_template %}
+{% load i18n xadmin_tags %}
+
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="container">
+
+  <div class="panel panel-default panel-single" style="max-width: 500px;">
+    {% if validlink %}
+    <div class="panel-heading">
+      <h3 class="form-signin-heading">{% trans 'Enter new password' %}</h3>
+    </div>
+    <form action="" method="post" id="password-reset-confirm" class="form-horizontal">
+    <div class="panel-body">
+      {% csrf_token %}
+      <p class="text-info">{% trans "Please enter your new password twice so we can verify you typed it in correctly." %}</p>
+      {% crispy form %}
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans 'Change my password' %}</button>
+    </div>
+    </form>
+    {% else %}
+    <div class="panel-heading">
+      <h2 class="form-signin-heading">{% trans 'Password reset unsuccessful' %}</h2>
+    </div>
+    <div class="panel-body">
+      <p class="text-danger">{% trans "The password reset link was invalid, possibly because it has already been used.  Please request a new password reset." %}</p>
+    </div>
+    {% endif %}
+  </div>
+
+</div> <!-- /container -->
+{% endblock %}

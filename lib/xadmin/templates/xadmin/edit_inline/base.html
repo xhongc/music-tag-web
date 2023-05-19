@@ -1,0 +1,38 @@
+{% extends "xadmin/includes/box.html" %}
+{% load i18n xadmin_tags crispy_forms_tags %}
+
+{% block box_class %}formset fieldset{% if formset.css_class or inline_style %} {{ formset.css_class }} {{ inline_style }}{% endif %}{% endblock box_class %}
+{% block box_attrs %}id="{{ formset.css_id }}" {{ formset.flat_attrs|safe }}{% endblock box_attrs %}
+
+{% block box_title %}
+  {% if not formset.formset.detail_page %}
+  {% if has_add_permission %}
+  <a class="add-row" id="{{ prefix }}-add-row" href="javascript:void(0)"><i class="icon fa fa-plus"></i></a>
+  {% endif %}
+  {% endif %}
+  {{ formset.opts.verbose_name_plural|title }}
+{% endblock box_title %}
+
+{% block box_content_class %}{{inline_style}} formset-content{% endblock box_content_class %}
+{% block box_content_attrs %}id="{{ formset.css_id }}-{{inline_style}}" data-prefix="{{ prefix }}" data-style="{{inline_style}}"{% endblock box_content_attrs %}
+
+{% block box_content %}
+  {% if not formset.formset.detail_page %}
+  {{ formset.formset.management_form }}
+  {{ formset.formset.non_form_errors }}
+  {% endif %}
+  {% block formset_content %}
+    {% for fs in formset.formset %}
+      {% block formset_form %}{% endblock formset_form %}
+    {% endfor %}
+  {% endblock formset_content %}
+{% endblock box_content %}
+
+{% block box_extra %}
+{% if not formset.formset.detail_page %}
+<span style="display: none" id="{{ prefix }}-empty">
+{% blockcapture inline_html %}{% block formset_empty %}{% endblock formset_empty %}{% endblockcapture %}
+{{inline_html}} {# html escaped #}
+</span>
+{% endif %}
+{% endblock box_extra %}

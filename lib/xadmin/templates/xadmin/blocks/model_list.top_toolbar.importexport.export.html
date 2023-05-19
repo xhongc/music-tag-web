@@ -1,0 +1,47 @@
+{% load i18n %}
+<div class="btn-group export">
+    <a id="export-menu" class="dropdown-toggle btn btn-default btn-sm" data-toggle="modal" data-target="#export-modal" href="#">
+        <i class="glyphicon glyphicon-export"></i> {% trans "Export" %}
+    </a>
+    <div id="export-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="get" action="">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">{% trans "Export" %} {{ opts.verbose_name_plural|capfirst }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_params|safe }}
+                        <input type="hidden" name="_selected_actions" value=""/>
+                        <input type="hidden" name="_select_across" value=""/>
+                        <fieldset class="module aligned">
+                            {% for field in form %}
+                                <div class="form-row">
+                                    {{ field.errors }}
+
+                                    {{ field.label_tag }}
+
+                                    {{ field }}
+
+                                    {% if field.field.help_text %}
+                                        <p class="help">{{ field.field.help_text|safe }}</p>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </fieldset>
+                        <label><input name="scope" type="radio" value="current" checked="checked"/> {% trans "Export current page data." %} </label>
+                        <label><input name="scope" type="radio" value="selected"/> {% trans "Export selected data." %} </label>
+                        <label><input name="scope" type="radio" value="all"/> {% trans "Export all data." %} </label>
+                        <label><input name="scope" type="radio" value="header_only"/> {% trans "Export header only." %} </label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                        <button class="btn btn-success" type="submit"><i
+                                class="glyphicon glyphicon-export"></i> {% trans "Export" %}</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dalog -->
+    </div><!-- /.modal -->
+</div>

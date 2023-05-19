@@ -1,0 +1,41 @@
+{% extends base_template %}
+{% load i18n l10n %}
+
+{% load xadmin_tags %}
+{% load crispy_forms_tags %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+    <li><a href="{% url 'xadmin:index' %}">{% trans 'Home' %}</a></li>
+    <li><a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a></li>
+    <li>{% trans 'Change multiple objects' %}</li>
+</ul>
+{% endblock %}
+
+{% block nav_title %}{% if model_icon %}<i class="{{model_icon}}"><sub class="fa fa-pencil"></sub></i> {% endif %}
+  {% blocktrans count counter=count %}Change one {{ objects_name }}{% plural %}Batch change {{ counter }} {{ objects_name }}{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+<form class="exform" {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="" method="post" id="{{ opts.model_name }}_form">{% csrf_token %}
+  {% if errors %}
+      <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {% blocktrans count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+      </div>
+      {{ form.non_field_errors }}
+  {% endif %}
+
+  {% for obj in queryset %}
+  <input type="hidden" name="{{ action_checkbox_name }}" value="{{ obj.pk|unlocalize }}" />
+  {% endfor %}
+  <input type="hidden" name="action" value="change_selected" />
+  <input type="hidden" name="post" value="yes" />
+
+  {% crispy form %}
+
+  <div class="form-actions well well-sm">
+    <input type="submit" value="{% trans 'Change Multiple' %}" class="default btn btn-primary" name="_save"/>
+  </div>
+</form>
+{% endblock %}

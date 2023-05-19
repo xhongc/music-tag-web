@@ -1,0 +1,1481 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django-xadmin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-07-20 13:28+0800\n"
+"PO-Revision-Date: 2014-08-12 21:08+0100\n"
+"Last-Translator: Michał Szpadzik <mszpadzik@gmail.com>\n"
+"Language-Team: Polish translators <mszpadzik@gmail.com>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: adminx.py:19
+msgid "Admin Object"
+msgstr ""
+
+#: apps.py:11
+msgid "Administration"
+msgstr ""
+
+#: filters.py:159 filters.py:191 filters.py:407 filters.py:493 filters.py:531
+msgid "All"
+msgstr "Wszystko"
+
+#: filters.py:160 plugins/export.py:165
+msgid "Yes"
+msgstr "Tak"
+
+#: filters.py:161 plugins/export.py:165
+msgid "No"
+msgstr "Nie"
+
+#: filters.py:175
+msgid "Unknown"
+msgstr "Nieznany"
+
+#: filters.py:267
+msgid "Any date"
+msgstr "Dowolna data"
+
+#: filters.py:268
+msgid "Has date"
+msgstr "Ma datę"
+
+#: filters.py:271
+msgid "Has no date"
+msgstr "Nie ma daty"
+
+#: filters.py:274 widgets.py:30
+msgid "Today"
+msgstr "Dzisiaj"
+
+#: filters.py:278
+msgid "Past 7 days"
+msgstr "Ostatnie 7 dni"
+
+#: filters.py:282
+msgid "This month"
+msgstr "Ten miesiąc"
+
+#: filters.py:286
+msgid "This year"
+msgstr "Ten rok"
+
+#: forms.py:10
+msgid ""
+"Please enter the correct username and password for a staff account. Note "
+"that both fields are case-sensitive."
+msgstr ""
+"Proszę wpisz prawidłową nazwę użytkownika i hasło do konta. Pamiętaj, że oba "
+"pola są wrażliwe na wielkość znaków."
+
+#: forms.py:21
+msgid "Please log in again, because your session has expired."
+msgstr "Proszę, zaloguj się ponownie, ponieważ Twoja sesja wygasła."
+
+#: forms.py:41
+#, python-format
+msgid "Your e-mail address is not your username. Try '%s' instead."
+msgstr ""
+"Twój adres e-mail nie jest Twoją nazwą użytkownika. Zamiast tego spróbuj "
+"'%s'."
+
+#: models.py:48
+msgid "Title"
+msgstr "Tytuł"
+
+#: models.py:49 models.py:88 models.py:107 models.py:149
+msgid "user"
+msgstr "użytkownik"
+
+#: models.py:50
+msgid "Url Name"
+msgstr "Nazwa Url"
+
+#: models.py:52
+msgid "Query String"
+msgstr "Tekst wyszukiwania"
+
+#: models.py:53
+msgid "Is Shared"
+msgstr "Jest współdzielony"
+
+#: models.py:66 plugins/bookmark.py:50 plugins/bookmark.py:180
+msgid "Bookmark"
+msgstr "Zakładka"
+
+#: models.py:67
+msgid "Bookmarks"
+msgstr "Zakładki"
+
+#: models.py:89
+msgid "Settings Key"
+msgstr "Klucz ustawień"
+
+#: models.py:90
+msgid "Settings Content"
+msgstr "Treść ustawień"
+
+#: models.py:102
+msgid "User Setting"
+msgstr "Ustawienie użytkownika"
+
+#: models.py:103
+msgid "User Settings"
+msgstr "Ustawienia użytkownika"
+
+#: models.py:108
+msgid "Page"
+msgstr "Strona"
+
+#: models.py:109 views/dashboard.py:82 views/dashboard.py:92
+msgid "Widget Type"
+msgstr "Typ Widgetu"
+
+#: models.py:110 views/dashboard.py:83
+msgid "Widget Params"
+msgstr "Parametry Widgetu"
+
+#: models.py:137
+msgid "User Widget"
+msgstr "Widget użytkownika"
+
+#: models.py:138
+msgid "User Widgets"
+msgstr "Widgety użytkownika"
+
+#: models.py:142
+#, fuzzy
+#| msgid "Date/time"
+msgid "action time"
+msgstr "Data/czas"
+
+#: models.py:151
+msgid "action ip"
+msgstr ""
+
+#: models.py:155
+msgid "content type"
+msgstr ""
+
+#: models.py:158
+msgid "object id"
+msgstr ""
+
+#: models.py:159
+msgid "object repr"
+msgstr ""
+
+#: models.py:160
+msgid "action flag"
+msgstr ""
+
+#: models.py:161
+#, fuzzy
+#| msgid "Change %s"
+msgid "change message"
+msgstr "Zmień %s"
+
+#: models.py:164
+#, fuzzy
+#| msgid "log in"
+msgid "log entry"
+msgstr "zaloguj się"
+
+#: models.py:165
+msgid "log entries"
+msgstr ""
+
+#: models.py:173
+#, python-format
+msgid "Added \"%(object)s\"."
+msgstr ""
+
+#: models.py:175
+#, fuzzy, python-format
+#| msgid "Change one %(objects_name)s"
+#| msgid_plural "Batch change %(counter)s %(objects_name)s"
+msgid "Changed \"%(object)s\" - %(changes)s"
+msgstr "Zmień %(objects_name)s"
+
+#: models.py:180
+#, fuzzy, python-format
+#| msgid "Related Objects"
+msgid "Deleted \"%(object)s.\""
+msgstr "Powiązane obiekty"
+
+#: plugins/actions.py:57
+#, python-format
+msgid "Delete selected %(verbose_name_plural)s"
+msgstr "Usuń zaznaczone %(verbose_name_plural)s"
+
+#: plugins/actions.py:72
+#, fuzzy, python-format
+#| msgid "Successfully deleted %(count)d %(items)s."
+msgid "Batch delete %(count)d %(items)s."
+msgstr "Z powodzieniem usunięto %(count)d %(items)s."
+
+#: plugins/actions.py:78
+#, python-format
+msgid "Successfully deleted %(count)d %(items)s."
+msgstr "Z powodzieniem usunięto %(count)d %(items)s."
+
+#: plugins/actions.py:110 views/delete.py:70
+#, python-format
+msgid "Cannot delete %(name)s"
+msgstr "Nie można usunąć %(name)s"
+
+#: plugins/actions.py:112 views/delete.py:73
+msgid "Are you sure?"
+msgstr "Jesteś pewny ?"
+
+#: plugins/actions.py:158
+#, python-format
+msgid "%(total_count)s selected"
+msgid_plural "All %(total_count)s selected"
+msgstr[0] "%(total_count)s zaznaczony"
+msgstr[1] "%(total_count)s zaznaczone"
+msgstr[2] "%(total_count)s zaznaczonych"
+
+#: plugins/actions.py:162
+#, python-format
+msgid "0 of %(cnt)s selected"
+msgstr "0 z %(cnt)s zaznaczonych"
+
+#: plugins/actions.py:179 plugins/actions.py:189
+msgid ""
+"Items must be selected in order to perform actions on them. No items have "
+"been changed."
+msgstr ""
+"Elementy muszą być zaznaczone, by wykonać akcję na nich. Żaden element nie "
+"został zmienony."
+
+#: plugins/aggregation.py:14
+msgid "Min"
+msgstr "Min"
+
+#: plugins/aggregation.py:14
+msgid "Max"
+msgstr "Max"
+
+#: plugins/aggregation.py:14
+msgid "Avg"
+msgstr "Śred"
+
+#: plugins/aggregation.py:14
+msgid "Sum"
+msgstr "Sum"
+
+#: plugins/aggregation.py:14
+msgid "Count"
+msgstr "Liczba"
+
+#: plugins/auth.py:21
+#, python-format
+msgid "Can add %s"
+msgstr "Może dodawać %s"
+
+#: plugins/auth.py:22
+#, python-format
+msgid "Can change %s"
+msgstr "Może zmieniać %s"
+
+#: plugins/auth.py:23
+#, python-format
+msgid "Can edit %s"
+msgstr "Może edytować %s"
+
+#: plugins/auth.py:24
+#, python-format
+msgid "Can delete %s"
+msgstr "Może usuwać %s"
+
+#: plugins/auth.py:25
+#, python-format
+msgid "Can view %s"
+msgstr "Może oglądać %s"
+
+#: plugins/auth.py:87
+msgid "Personal info"
+msgstr "Informacje osobiste"
+
+#: plugins/auth.py:91
+msgid "Permissions"
+msgstr "Uprawnienia"
+
+#: plugins/auth.py:94
+msgid "Important dates"
+msgstr "Ważne daty"
+
+#: plugins/auth.py:99
+msgid "Status"
+msgstr "Status"
+
+#: plugins/auth.py:111
+msgid "Permission Name"
+msgstr "Nazwa uprawnienia"
+
+#: plugins/auth.py:167
+msgid "Change Password"
+msgstr "Zmień hasło"
+
+#: plugins/auth.py:198
+#, python-format
+msgid "Change password: %s"
+msgstr "Zmień hasło: %s"
+
+#: plugins/auth.py:223 plugins/auth.py:255
+msgid "Password changed successfully."
+msgstr "Zmiana hasła zakończona powodzieniem"
+
+#: plugins/auth.py:242 templates/xadmin/auth/user/change_password.html:11
+#: templates/xadmin/auth/user/change_password.html:22
+#: templates/xadmin/auth/user/change_password.html:55
+msgid "Change password"
+msgstr "Zmień hasło"
+
+#: plugins/batch.py:44
+msgid "Change this field"
+msgstr "Zmień to pole"
+
+#: plugins/batch.py:65
+#, python-format
+msgid "Batch Change selected %(verbose_name_plural)s"
+msgstr "Zmiana grupowa wybrana %(verbose_name_plural)s"
+
+#: plugins/batch.py:89
+#, python-format
+msgid "Successfully change %(count)d %(items)s."
+msgstr "Z powodzeniem zmieniono %(count)d %(items)s."
+
+#: plugins/batch.py:138
+#, python-format
+msgid "Batch change %s"
+msgstr "Zmiana grupowa %s"
+
+#: plugins/bookmark.py:173
+msgid "bookmark"
+msgstr "zakładka"
+
+#: plugins/bookmark.py:176
+msgid "Bookmark Widget, can show user's bookmark list data in widget."
+msgstr "Widget zakładek, pozwala pokazać dane dla zakładki w widgecie."
+
+#: plugins/chart.py:25
+msgid "Show models simple chart."
+msgstr "Pokaż prosty wykres dla modelu."
+
+#: plugins/chart.py:51
+#, python-format
+msgid "%s Charts"
+msgstr "%s Wykresy"
+
+#: plugins/comments.py:33
+msgid "Metadata"
+msgstr "Metadane"
+
+#: plugins/comments.py:60
+msgid "flagged"
+msgid_plural "flagged"
+msgstr[0] "oflagowany"
+msgstr[1] "oflagowane"
+msgstr[2] "oflagowanych"
+
+#: plugins/comments.py:61
+msgid "Flag selected comments"
+msgstr "Oflaguj zaznaczony komentarz"
+
+#: plugins/comments.py:66
+msgid "approved"
+msgid_plural "approved"
+msgstr[0] "zatwierdzony"
+msgstr[1] "zatwierdzone"
+msgstr[2] "zatwierdzonych"
+
+#: plugins/comments.py:67
+msgid "Approve selected comments"
+msgstr "Zatwierdź zaznaczony komentarz"
+
+#: plugins/comments.py:72
+msgid "removed"
+msgid_plural "removed"
+msgstr[0] "usunięty"
+msgstr[1] "usunięte"
+msgstr[2] "usuniętych"
+
+#: plugins/comments.py:73
+msgid "Remove selected comments"
+msgstr "Usuń zaznaczone komentarze"
+
+#: plugins/comments.py:86
+#, python-format
+msgid "1 comment was successfully %(action)s."
+msgid_plural "%(count)s comments were successfully %(action)s."
+msgstr[0] "1 komentarz został z powodzeniem %(action)s."
+msgstr[1] "%(count)s komentarze zostało z powodzeniem %(action)s."
+msgstr[2] "%(count)s komentarzy zostało z powodzeniem %(action)s."
+
+#: plugins/details.py:52 views/list.py:578
+#, python-format
+msgid "Details of %s"
+msgstr "Szczegóły %s"
+
+#: plugins/editable.py:46
+#, python-format
+msgid "Enter %s"
+msgstr "Wejdz w %s"
+
+#: plugins/editable.py:73 views/dashboard.py:649 views/delete.py:27
+#: views/detail.py:145 views/edit.py:454
+#, python-format
+msgid "%(name)s object with primary key %(key)r does not exist."
+msgstr "Obiekt %(name)s z kluczem głównym %(key)r nie istnieje."
+
+#: plugins/export.py:98 plugins/export.py:135
+msgid "Sheet"
+msgstr "Arkusz"
+
+#: plugins/filters.py:133 plugins/quickfilter.py:141
+#, python-format
+msgid "<b>Filtering error:</b> %s"
+msgstr "<b>Błąd filtracji:</b> %s"
+
+#: plugins/images.py:29
+msgid "Previous"
+msgstr "Poprzedni"
+
+#: plugins/images.py:29
+msgid "Next"
+msgstr "Następny"
+
+#: plugins/images.py:29
+msgid "Slideshow"
+msgstr "Pokaz slajdów"
+
+#: plugins/images.py:29
+msgid "Download"
+msgstr "Ściągnij"
+
+#: plugins/images.py:50
+msgid "Change:"
+msgstr "Zmień:"
+
+#: plugins/layout.py:16
+msgid "Table"
+msgstr "Tabela"
+
+#: plugins/layout.py:22
+msgid "Thumbnails"
+msgstr "Miniaturki"
+
+#: plugins/passwords.py:64
+msgid "Forgotten your password or username?"
+msgstr "Zapomniałeś swojego hasła lub loginu ?"
+
+#: plugins/quickform.py:79
+#, python-format
+msgid "Create New %s"
+msgstr "Utwórz nowy %s"
+
+#: plugins/relate.py:104
+msgid "Related Objects"
+msgstr "Powiązane obiekty"
+
+#: plugins/relfield.py:29 plugins/topnav.py:38
+#, python-format
+msgid "Search %s"
+msgstr "Szukaj %s"
+
+#: plugins/relfield.py:67
+#, fuzzy, python-format
+#| msgid "Select Date"
+msgid "Select %s"
+msgstr "Wybierz datę"
+
+#: plugins/themes.py:47
+msgid "Default"
+msgstr "Domyślny"
+
+#: plugins/themes.py:48
+msgid "Default bootstrap theme"
+msgstr "Domyślny temat bootstrapa"
+
+#: plugins/themes.py:49
+msgid "Bootstrap2"
+msgstr "Bootstrap2"
+
+#: plugins/themes.py:49
+msgid "Bootstrap 2.x theme"
+msgstr "Tematy Bootstrap 2.x"
+
+#: plugins/topnav.py:62 views/dashboard.py:465 views/edit.py:387
+#: views/edit.py:396
+#, python-format
+msgid "Add %s"
+msgstr "Dodaj %s"
+
+#: plugins/xversion.py:106
+msgid "Initial version."
+msgstr "Wersja startowa."
+
+#: plugins/xversion.py:108
+msgid "Change version."
+msgstr "Zmień wersję."
+
+#: plugins/xversion.py:110
+msgid "Revert version."
+msgstr "Przywróć wersję."
+
+#: plugins/xversion.py:112
+msgid "Rercover version."
+msgstr "Odzyskaj wersję."
+
+#: plugins/xversion.py:114
+#, python-format
+msgid "Deleted %(verbose_name)s."
+msgstr "Usunięte %(verbose_name)s."
+
+#: plugins/xversion.py:127 templates/xadmin/views/recover_form.html:26
+msgid "Recover"
+msgstr "Odzyskaj"
+
+#: plugins/xversion.py:143 templates/xadmin/views/model_history.html:11
+#: templates/xadmin/views/revision_diff.html:11
+#: templates/xadmin/views/revision_form.html:15
+msgid "History"
+msgstr "Historia"
+
+#: plugins/xversion.py:194 templates/xadmin/views/recover_form.html:14
+#: templates/xadmin/views/recover_list.html:10
+#, python-format
+msgid "Recover deleted %(name)s"
+msgstr "Odzyskaj usunięte %(name)s"
+
+#: plugins/xversion.py:238
+#, python-format
+msgid "Change history: %s"
+msgstr "Zmień historię: %s"
+
+#: plugins/xversion.py:288
+msgid "Must select two versions."
+msgstr "Musisz wybrać dwie wersje."
+
+#: plugins/xversion.py:296
+msgid "Please select two different versions."
+msgstr "Proszę, wybierz dwie różne wersje."
+
+#: plugins/xversion.py:383 plugins/xversion.py:500
+#, python-format
+msgid "Current: %s"
+msgstr "Obecny: %s"
+
+#: plugins/xversion.py:424
+#, python-format
+msgid "Revert %s"
+msgstr "Przywróć %s"
+
+#: plugins/xversion.py:440
+#, python-format
+msgid ""
+"The %(model)s \"%(name)s\" was reverted successfully. You may edit it again "
+"below."
+msgstr ""
+"%(model)s \"%(name)s\" został przywrócony z powodzeniem. Możesz edytować go "
+"ponownie poniżej."
+
+#: plugins/xversion.py:461
+#, python-format
+msgid "Recover %s"
+msgstr "Odzyskaj %s"
+
+#: plugins/xversion.py:477
+#, python-format
+msgid ""
+"The %(model)s \"%(name)s\" was recovered successfully. You may edit it again "
+"below."
+msgstr ""
+"%(model)s \"%(name)s\" został z powodzeniem odzyskany. Możesz edytować go "
+"ponownie poniżej."
+
+#: templates/xadmin/404.html:4 templates/xadmin/404.html:8
+msgid "Page not found"
+msgstr "Strona nie została odnaleziona"
+
+#: templates/xadmin/404.html:10
+msgid "We're sorry, but the requested page could not be found."
+msgstr "Przepraszamy, ale żądana strona nie została odnaleziona."
+
+#: templates/xadmin/500.html:7
+#: templates/xadmin/auth/user/change_password.html:10
+#: templates/xadmin/auth/user/change_password.html:15
+#: templates/xadmin/base_site.html:53
+#: templates/xadmin/includes/sitemenu_default.html:7
+#: templates/xadmin/views/app_index.html:9
+#: templates/xadmin/views/batch_change_form.html:9
+#: templates/xadmin/views/invalid_setup.html:7
+#: templates/xadmin/views/model_dashboard.html:7
+#: templates/xadmin/views/model_delete_selected_confirm.html:8
+#: templates/xadmin/views/model_history.html:8
+#: templates/xadmin/views/recover_form.html:8
+#: templates/xadmin/views/recover_list.html:8
+#: templates/xadmin/views/revision_diff.html:8
+#: templates/xadmin/views/revision_form.html:8 views/base.py:473
+msgid "Home"
+msgstr "Home"
+
+#: templates/xadmin/500.html:8
+msgid "Server error"
+msgstr "Błąd serwera"
+
+#: templates/xadmin/500.html:12
+msgid "Server error (500)"
+msgstr "Błąd serwera (500)"
+
+#: templates/xadmin/500.html:15
+msgid "Server Error <em>(500)</em>"
+msgstr "Błąd Serwera <em>(500)</em>"
+
+#: templates/xadmin/500.html:16
+msgid ""
+"There's been an error. It's been reported to the site administrators via e-"
+"mail and should be fixed shortly. Thanks for your patience."
+msgstr ""
+"Wystąpił błąd. Został zaraportowany do administratorów strony przez e-mail i "
+"wkrótce powienien zostać naprawiony. Dziękujemy za wyrozumiałość i "
+"cierpliwość."
+
+#: templates/xadmin/auth/password_reset/complete.html:11
+#: templates/xadmin/auth/password_reset/done.html:11
+msgid "Password reset successful"
+msgstr "Reset hasła zakończony powodzeniem"
+
+#: templates/xadmin/auth/password_reset/complete.html:14
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+"Twoje hasło zostało ustawione. Możesz teraz przejść dalej i zalogować się."
+
+#: templates/xadmin/auth/password_reset/complete.html:15
+msgid "Log in"
+msgstr "Zaloguj się"
+
+#: templates/xadmin/auth/password_reset/confirm.html:12
+msgid "Enter new password"
+msgstr "Wpisz nowe hasło"
+
+#: templates/xadmin/auth/password_reset/confirm.html:17
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+"Proszę wpisać Twoje nowe hasło dwukrotnie, aby zweryfikować, czy wpisałeś je "
+"poprawnie."
+
+#: templates/xadmin/auth/password_reset/confirm.html:19
+msgid "Change my password"
+msgstr "Zmień moje hasło"
+
+#: templates/xadmin/auth/password_reset/confirm.html:24
+msgid "Password reset unsuccessful"
+msgstr "Resetowanie hasło zakończone niepowodzeniem"
+
+#: templates/xadmin/auth/password_reset/confirm.html:27
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+"Twój link do resetowania hasła jest niepoprawny, prawdopodobnie został już "
+"użyty. Proszę, zażądaj nowego linku (wykonaj raz jeszcze reset hasła)."
+
+#: templates/xadmin/auth/password_reset/done.html:14
+msgid ""
+"We've e-mailed you instructions for setting your password to the e-mail "
+"address you submitted. You should be receiving it shortly."
+msgstr ""
+"Wysłaliśmy Ci e-mailem instrukcję ustawienia Twojego hasła na adres, który "
+"podałeś. Powinieneś go wkrótce otrzymać."
+
+#: templates/xadmin/auth/password_reset/email.html:2
+#, python-format
+msgid ""
+"You're receiving this e-mail because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+"Otrzymałeś tego e-maila, ponieważ zarządałeś zresetowania hasła do twojego "
+"konta na maszynie %(site_name)s."
+
+#: templates/xadmin/auth/password_reset/email.html:4
+msgid "Please go to the following page and choose a new password:"
+msgstr "Przejdź proszę do podanej strony i wybierz nowe hasło: "
+
+#: templates/xadmin/auth/password_reset/email.html:8
+msgid "Your username, in case you've forgotten:"
+msgstr "Twoja nazwa użytkownika, gdybyś ją zapomniał: "
+
+#: templates/xadmin/auth/password_reset/email.html:10
+msgid "Thanks for using our site!"
+msgstr "Dziękujemy za skorzystanie z naszej strony !"
+
+#: templates/xadmin/auth/password_reset/email.html:12
+#, python-format
+msgid "The %(site_name)s team"
+msgstr "%(site_name)s team"
+
+#: templates/xadmin/auth/password_reset/form.html:13
+msgid "Password reset"
+msgstr "Reset hasła"
+
+#: templates/xadmin/auth/password_reset/form.html:17
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll e-mail "
+"instructions for setting a new one."
+msgstr ""
+"Zapomiałeś swoje hasło ? Wpisz Twój adres e-mail poniżej, a my prześlemy Ci "
+"maila z instrukcjami, jak ustawić nowe."
+
+#: templates/xadmin/auth/password_reset/form.html:25
+msgid "E-mail address:"
+msgstr "Adres e-mail:"
+
+#: templates/xadmin/auth/password_reset/form.html:33
+msgid "Reset my password"
+msgstr "Zresetuj moje hasło"
+
+#: templates/xadmin/auth/user/add_form.html:6
+msgid ""
+"First, enter a username and password. Then, you'll be able to edit more user "
+"options."
+msgstr ""
+"Po pierwsze, wpisz nazwę użytkownika i hasło. Potem bedziesz mógł edytować "
+"pozostałe opcje użytkownika."
+
+#: templates/xadmin/auth/user/add_form.html:8
+msgid "Enter a username and password."
+msgstr "Wpisz nazwę użytkownika i hasło."
+
+#: templates/xadmin/auth/user/change_password.html:31
+#: templates/xadmin/views/batch_change_form.html:24
+#: templates/xadmin/views/form.html:18
+#: templates/xadmin/views/model_form.html:20
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] "Proszę napraw poniższy błąd."
+msgstr[1] "Proszę napraw poniższe błędy."
+msgstr[2] "Proszę napraw poniższe błędy."
+
+#: templates/xadmin/auth/user/change_password.html:38
+msgid "Enter your new password."
+msgstr "Wpisz Twoje nowe hasło."
+
+#: templates/xadmin/auth/user/change_password.html:40
+#, python-format
+msgid "Enter a new password for the user <strong>%(username)s</strong>."
+msgstr "Wpisz nowe hasło dla użytkownika <strong>%(username)s</strong>."
+
+#: templates/xadmin/base_site.html:18
+msgid "Welcome,"
+msgstr "Witaj, "
+
+#: templates/xadmin/base_site.html:24
+msgid "Log out"
+msgstr "Wyloguj"
+
+#: templates/xadmin/base_site.html:36
+msgid "You don't have permission to edit anything."
+msgstr "Nie masz uprawnień by edytować cokolwiek."
+
+#: templates/xadmin/blocks/comm.top.theme.html:4
+msgid "Themes"
+msgstr "Tematy"
+
+#: templates/xadmin/blocks/comm.top.topnav.html:9
+#: templates/xadmin/blocks/model_list.nav_form.search_form.html:8
+#: templates/xadmin/filters/char.html:7
+#: templates/xadmin/filters/fk_search.html:7
+#: templates/xadmin/filters/fk_search.html:16
+#: templates/xadmin/filters/number.html:7
+msgid "Search"
+msgstr "Szukaj"
+
+#: templates/xadmin/blocks/comm.top.topnav.html:23
+msgid "Add"
+msgstr "Dodaj"
+
+#: templates/xadmin/blocks/model_form.submit_line.wizard.html:9
+#: templates/xadmin/blocks/model_form.submit_line.wizard.html:26
+msgid "Prev step"
+msgstr "Poprzedni krok"
+
+#: templates/xadmin/blocks/model_form.submit_line.wizard.html:13
+#: templates/xadmin/blocks/model_form.submit_line.wizard.html:29
+msgid "Next step"
+msgstr "Następny krok"
+
+#: templates/xadmin/blocks/model_form.submit_line.wizard.html:15
+#: templates/xadmin/blocks/model_form.submit_line.wizard.html:31
+#: templates/xadmin/includes/submit_line.html:10
+#: templates/xadmin/includes/submit_line.html:13
+#: templates/xadmin/views/form.html:30 templates/xadmin/views/form.html:31
+msgid "Save"
+msgstr "Zapisz"
+
+#: templates/xadmin/blocks/model_list.nav_menu.bookmarks.html:7
+msgid "Clean Bookmarks"
+msgstr "Wyczyść zakłądki"
+
+#: templates/xadmin/blocks/model_list.nav_menu.bookmarks.html:18
+msgid "No Bookmarks"
+msgstr "Brak zakładek"
+
+#: templates/xadmin/blocks/model_list.nav_menu.bookmarks.html:22
+msgid "New Bookmark"
+msgstr "Nowa zakładka"
+
+#: templates/xadmin/blocks/model_list.nav_menu.bookmarks.html:26
+msgid "Save current page as Bookmark"
+msgstr "Zapisz obecną stronę jako zakładkę"
+
+#: templates/xadmin/blocks/model_list.nav_menu.bookmarks.html:32
+msgid "Enter bookmark title"
+msgstr "Wprowadź tytuł zakładki"
+
+#: templates/xadmin/blocks/model_list.nav_menu.bookmarks.html:33
+msgid "Waiting"
+msgstr "Oczekuje"
+
+#: templates/xadmin/blocks/model_list.nav_menu.bookmarks.html:33
+msgid "Save Bookmark"
+msgstr "Zapisz zakładkę"
+
+#: templates/xadmin/blocks/model_list.nav_menu.filters.html:4
+msgid "Filters"
+msgstr "Filtry"
+
+#: templates/xadmin/blocks/model_list.nav_menu.filters.html:8
+msgid "Clean Filters"
+msgstr "Wyczyść filtry"
+
+#: templates/xadmin/blocks/model_list.results_bottom.actions.html:19
+msgid "Click here to select the objects across all pages"
+msgstr "Kliknij tutaj, aby wybrać wszystkie obiekty na wszystkich stronach"
+
+#: templates/xadmin/blocks/model_list.results_bottom.actions.html:19
+#, python-format
+msgid "Select all %(total_count)s %(model_name)s"
+msgstr "Wybierz wszystkie %(total_count)s %(model_name)s"
+
+#: templates/xadmin/blocks/model_list.results_bottom.actions.html:20
+msgid "Clear selection"
+msgstr "Wyczyść wybór"
+
+#: templates/xadmin/blocks/model_list.results_top.charts.html:4
+msgid "Charts"
+msgstr "Wykresy"
+
+#: templates/xadmin/blocks/model_list.top_toolbar.exports.html:4
+#: templates/xadmin/blocks/model_list.top_toolbar.exports.html:8
+#: templates/xadmin/blocks/model_list.top_toolbar.exports.html:19
+#: templates/xadmin/blocks/model_list.top_toolbar.exports.html:47
+msgid "Export"
+msgstr "Eksportuj"
+
+#: templates/xadmin/blocks/model_list.top_toolbar.exports.html:26
+#: templates/xadmin/blocks/model_list.top_toolbar.exports.html:29
+#: templates/xadmin/blocks/model_list.top_toolbar.exports.html:32
+msgid "Export with table header."
+msgstr "Eksportuj wraz z nagłówkiem tabeli."
+
+#: templates/xadmin/blocks/model_list.top_toolbar.exports.html:35
+#: templates/xadmin/blocks/model_list.top_toolbar.exports.html:38
+msgid "Export with format."
+msgstr "Exportuj do formatu."
+
+#: templates/xadmin/blocks/model_list.top_toolbar.exports.html:42
+msgid "Export all data."
+msgstr "Eksportuj wszystkie dane."
+
+#: templates/xadmin/blocks/model_list.top_toolbar.exports.html:46
+#: templates/xadmin/widgets/base.html:41
+msgid "Close"
+msgstr "Zamknij"
+
+#: templates/xadmin/blocks/model_list.top_toolbar.layouts.html:4
+msgid "Layout"
+msgstr "Układ graficzny"
+
+#: templates/xadmin/blocks/model_list.top_toolbar.refresh.html:8
+msgid "Clean Refresh"
+msgstr "Wyczyść odświeżanie"
+
+#: templates/xadmin/blocks/model_list.top_toolbar.refresh.html:14
+#, python-format
+msgid "Every %(t)s seconds"
+msgstr "Co każde %(t)s sekund"
+
+#: templates/xadmin/blocks/model_list.top_toolbar.saveorder.html:4
+msgid "Save Order"
+msgstr ""
+
+#: templates/xadmin/edit_inline/blank.html:5 views/detail.py:23
+#: views/edit.py:102 views/list.py:29
+msgid "Null"
+msgstr "Null"
+
+#: templates/xadmin/filters/char.html:13
+msgid "Enter"
+msgstr "Wejdź"
+
+#: templates/xadmin/filters/date.html:10 templates/xadmin/filters/date.html:13
+msgid "Choice Date"
+msgstr "Data wyboru"
+
+#: templates/xadmin/filters/date.html:18
+msgid "YY"
+msgstr "YY"
+
+#: templates/xadmin/filters/date.html:19
+msgid "year"
+msgstr "rok"
+
+#: templates/xadmin/filters/date.html:22
+msgid "MM"
+msgstr "MM"
+
+#: templates/xadmin/filters/date.html:23
+msgid "month"
+msgstr "miesiąc"
+
+#: templates/xadmin/filters/date.html:26
+msgid "DD"
+msgstr "DD"
+
+#: templates/xadmin/filters/date.html:27
+msgid "day"
+msgstr "dzień"
+
+#: templates/xadmin/filters/date.html:29 templates/xadmin/filters/date.html:46
+#: templates/xadmin/filters/date.html:54
+#: templates/xadmin/filters/fk_search.html:24
+#: templates/xadmin/filters/number.html:37
+msgid "Apply"
+msgstr "Zatwierdź"
+
+#: templates/xadmin/filters/date.html:34
+msgid "Date Range"
+msgstr "Zakres dat"
+
+#: templates/xadmin/filters/date.html:41
+msgid "Select Date"
+msgstr "Wybierz datę"
+
+#: templates/xadmin/filters/date.html:42
+msgid "From"
+msgstr "Od"
+
+#: templates/xadmin/filters/date.html:44
+msgid "To"
+msgstr "Do"
+
+#: templates/xadmin/filters/fk_search.html:14
+#, fuzzy
+#| msgid "Select Date"
+msgid "Select"
+msgstr "Wybierz datę"
+
+#: templates/xadmin/filters/fk_search.html:26
+#: templates/xadmin/filters/number.html:39
+msgid "Clean"
+msgstr "Wyczyść"
+
+#: templates/xadmin/filters/number.html:17
+#: templates/xadmin/filters/number.html:25
+#: templates/xadmin/filters/number.html:33
+msgid "Enter Number"
+msgstr "Wpisz numer"
+
+#: templates/xadmin/filters/rel.html:3
+#, python-format
+msgid " By %(filter_title)s "
+msgstr " po %(filter_title)s"
+
+#: templates/xadmin/forms/transfer.html:4
+msgid "Available"
+msgstr "Dostępny"
+
+#: templates/xadmin/forms/transfer.html:12
+msgid "Click to choose all at once."
+msgstr "Kliknij by wybrać wszystkie za jednym razem."
+
+#: templates/xadmin/forms/transfer.html:12
+msgid "Choose all"
+msgstr "Wybierz wszystkie"
+
+#: templates/xadmin/forms/transfer.html:16
+msgid "Choose"
+msgstr "Wybierz"
+
+#: templates/xadmin/forms/transfer.html:19
+#: templates/xadmin/widgets/base.html:40
+msgid "Remove"
+msgstr "Usuń"
+
+#: templates/xadmin/forms/transfer.html:23
+msgid "Chosen"
+msgstr "Wybrane"
+
+#: templates/xadmin/forms/transfer.html:27
+msgid "Click to remove all chosen at once."
+msgstr "Kliknij, by usunąć za jednym razem wszystkie wybrane."
+
+#: templates/xadmin/forms/transfer.html:27
+msgid "Remove all"
+msgstr "Usuń wszystkie"
+
+#: templates/xadmin/includes/pagination.html:9
+msgid "Show all"
+msgstr "Pokaż wszystkie"
+
+#: templates/xadmin/includes/submit_line.html:10
+#: templates/xadmin/includes/submit_line.html:13
+#: templates/xadmin/views/form.html:30 templates/xadmin/views/form.html:31
+msgid "Saving.."
+msgstr "Zapisuję.."
+
+#: templates/xadmin/includes/submit_line.html:17
+msgid "Save as new"
+msgstr "Zapisz jako nowe"
+
+#: templates/xadmin/includes/submit_line.html:18
+msgid "Save and add another"
+msgstr "Zapisz i dodaj kolejne"
+
+#: templates/xadmin/includes/submit_line.html:19
+msgid "Save and continue editing"
+msgstr "Zapisz i kontynuuj edycję"
+
+#: templates/xadmin/includes/submit_line.html:24
+#: templates/xadmin/views/model_detail.html:28 views/delete.py:93
+msgid "Delete"
+msgstr "Usuń"
+
+#: templates/xadmin/views/app_index.html:13
+#, python-format
+msgid "%(name)s"
+msgstr "%(name)s"
+
+#: templates/xadmin/views/batch_change_form.html:11
+msgid "Change multiple objects"
+msgstr "Zmień wiele obiektów"
+
+#: templates/xadmin/views/batch_change_form.html:16
+#, python-format
+msgid "Change one %(objects_name)s"
+msgid_plural "Batch change %(counter)s %(objects_name)s"
+msgstr[0] "Zmień %(objects_name)s"
+msgstr[1] "Grupowa zmiana %(counter)s %(objects_name)s"
+msgstr[2] "Grupowa zmiana %(counter)s %(objects_name)s"
+
+#: templates/xadmin/views/batch_change_form.html:38
+msgid "Change Multiple"
+msgstr "Zmień wiele"
+
+#: templates/xadmin/views/dashboard.html:15
+#: templates/xadmin/views/dashboard.html:22
+#: templates/xadmin/views/dashboard.html:23
+msgid "Add Widget"
+msgstr "Dodaj widget"
+
+#: templates/xadmin/views/invalid_setup.html:13
+msgid ""
+"Something's wrong with your database installation. Make sure the appropriate "
+"database tables have been created, and make sure the database is readable by "
+"the appropriate user."
+msgstr ""
+"Coś złego dzieje się z Twoją bazą danych. Upewnij się, że konieczne tabele w "
+"Twojej bazie danych zostały skreowane i mogą być czytane przez właściwych "
+"użytkowników."
+
+#: templates/xadmin/views/logged_out.html:16
+msgid "Logout Success"
+msgstr "Wylogowanie zakończone sukcesem"
+
+#: templates/xadmin/views/logged_out.html:17
+msgid "Thanks for spending some quality time with the Web site today."
+msgstr "Dzięki za spędzenie dzisiaj cennego czasu na naszej stronie."
+
+#: templates/xadmin/views/logged_out.html:19
+msgid "Close Window"
+msgstr "Zamknij okno"
+
+#: templates/xadmin/views/logged_out.html:20
+msgid "Log in again"
+msgstr "Zaloguj się ponownie"
+
+#: templates/xadmin/views/login.html:39 views/website.py:38
+msgid "Please Login"
+msgstr "Proszę, zaloguj się"
+
+#: templates/xadmin/views/login.html:52
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: templates/xadmin/views/login.html:64
+msgid "Password"
+msgstr "Hasło"
+
+#: templates/xadmin/views/login.html:75
+msgid "log in"
+msgstr "zaloguj się"
+
+#: templates/xadmin/views/model_dashboard.html:26
+#: templates/xadmin/views/model_detail.html:25
+msgid "Edit"
+msgstr "Edytuj"
+
+#: templates/xadmin/views/model_delete_confirm.html:11
+#, python-format
+msgid ""
+"Deleting the %(verbose_name)s '%(escaped_object)s' would result in deleting "
+"related objects, but your account doesn't have permission to delete the "
+"following types of objects:"
+msgstr ""
+"Usunięcie %(verbose_name)s '%(escaped_object)s' spowoduje usunięcie "
+"powiązanych obiektów, ale Twoje konto nie ma uprawnień do usunięcia "
+"następujących typów obiektów:"
+
+#: templates/xadmin/views/model_delete_confirm.html:19
+#, python-format
+msgid ""
+"Deleting the %(verbose_name)s '%(escaped_object)s' would require deleting "
+"the following protected related objects:"
+msgstr ""
+"Usunięcie %(verbose_name)s '%(escaped_object)s' będzie wymagać usunięcia "
+"następujących, chronionych obiektów powiązanych:"
+
+#: templates/xadmin/views/model_delete_confirm.html:27
+#, python-format
+msgid ""
+"Are you sure you want to delete the %(verbose_name)s \"%(escaped_object)s\"? "
+"All of the following related items will be deleted:"
+msgstr ""
+"Czy jesteś pewien, że chcesz usunąć %(verbose_name)s \"%(escaped_object)s"
+"\" ? Wszystkie następujące powiązane obiekty zostaną usunięte:"
+
+#: templates/xadmin/views/model_delete_confirm.html:34
+#: templates/xadmin/views/model_delete_selected_confirm.html:49
+msgid "Yes, I'm sure"
+msgstr "Tak, jestem pewny"
+
+#: templates/xadmin/views/model_delete_confirm.html:35
+#: templates/xadmin/views/model_delete_selected_confirm.html:50
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: templates/xadmin/views/model_delete_selected_confirm.html:10
+msgid "Delete multiple objects"
+msgstr "Usuń wiele obiektów"
+
+#: templates/xadmin/views/model_delete_selected_confirm.html:18
+#, python-format
+msgid ""
+"Deleting the selected %(objects_name)s would result in deleting related "
+"objects, but your account doesn't have permission to delete the following "
+"types of objects:"
+msgstr ""
+"Usunięcie wybranego obiektów %(objects_name)s będzie skutkowało usunięciem "
+"powiązanych obiektów, ale Twoje konto nie posiada uprawnień do usunięcia "
+"następujących obiektów:"
+
+#: templates/xadmin/views/model_delete_selected_confirm.html:26
+#, python-format
+msgid ""
+"Deleting the selected %(objects_name)s would require deleting the following "
+"protected related objects:"
+msgstr ""
+"Usunięcie zaznaczonych obiektów %(objects_name)s będzie wymagało usunięcia "
+"następujących zabezpieczonych powiązanych obiektów:"
+
+#: templates/xadmin/views/model_delete_selected_confirm.html:34
+#, python-format
+msgid ""
+"Are you sure you want to delete the selected %(objects_name)s? All of the "
+"following objects and their related items will be deleted:"
+msgstr ""
+"Jesteś pewny, że chcesz usunąc zaznaczone obiekty %(objects_name)s ? "
+"Wszystkie następujące obiekty i ich powiązania zostaną usunięte:"
+
+#: templates/xadmin/views/model_history.html:26
+msgid "Diff"
+msgstr "Różnica"
+
+#: templates/xadmin/views/model_history.html:27
+#: templates/xadmin/views/recover_list.html:25
+msgid "Date/time"
+msgstr "Data/czas"
+
+#: templates/xadmin/views/model_history.html:28
+msgid "User"
+msgstr "Użytkownik"
+
+#: templates/xadmin/views/model_history.html:29
+msgid "Comment"
+msgstr "Komentarz"
+
+#: templates/xadmin/views/model_history.html:54
+msgid "Diff Select Versions"
+msgstr "Róznica w wybranych wersjach"
+
+#: templates/xadmin/views/model_history.html:58
+msgid ""
+"This object doesn't have a change history. It probably wasn't added via this "
+"admin site."
+msgstr ""
+"Ten obiekt nie posiada historii zmian. Prawdopodobnie nie został on dodany "
+"przez panel administratora."
+
+#: templates/xadmin/views/model_list.html:29
+#, python-format
+msgid "Add %(name)s"
+msgstr "Dodaj %(name)s"
+
+#: templates/xadmin/views/model_list.html:39
+msgid "Columns"
+msgstr "Kolumny"
+
+#: templates/xadmin/views/model_list.html:42
+msgid "Restore Selected"
+msgstr "Odzyskaj wybrane"
+
+#: templates/xadmin/views/model_list.html:147
+#: templates/xadmin/widgets/list.html:33
+msgid "Empty list"
+msgstr "Pusta lista"
+
+#: templates/xadmin/views/recover_form.html:20
+msgid "Press the recover button below to recover this version of the object."
+msgstr "Naciśnij przycisk odzyskiwania poniżej, by odzyskać tę wersję obiektu."
+
+#: templates/xadmin/views/recover_list.html:19
+msgid ""
+"Choose a date from the list below to recover a deleted version of an object."
+msgstr ""
+"Wybierz datę z poniższej listy aby odzyskać usuniętą wersję danego obiektu."
+
+#: templates/xadmin/views/recover_list.html:39
+msgid "There are no deleted objects to recover."
+msgstr "Nie ma usuniętych obiektów, które można odzyskać."
+
+#: templates/xadmin/views/revision_diff.html:12
+#: templates/xadmin/views/revision_diff.html:17
+#, python-format
+msgid "Diff %(verbose_name)s"
+msgstr "Róznice %(verbose_name)s"
+
+#: templates/xadmin/views/revision_diff.html:25
+msgid "Field"
+msgstr "Pole"
+
+#: templates/xadmin/views/revision_diff.html:26
+msgid "Version A"
+msgstr "Wersja A"
+
+#: templates/xadmin/views/revision_diff.html:27
+msgid "Version B"
+msgstr "Wersja B"
+
+#: templates/xadmin/views/revision_diff.html:39
+msgid "Revert to"
+msgstr "Przywróć do"
+
+#: templates/xadmin/views/revision_diff.html:40
+#: templates/xadmin/views/revision_diff.html:41
+msgid "Revert"
+msgstr "Przywróć"
+
+#: templates/xadmin/views/revision_form.html:16
+#, python-format
+msgid "Revert %(verbose_name)s"
+msgstr "Przywróć %(verbose_name)s"
+
+#: templates/xadmin/views/revision_form.html:21
+msgid "Press the revert button below to revert to this version of the object."
+msgstr ""
+"Naciśnij przycisk przywracania poniżej, aby przywrócić obiekt do tej wersji."
+
+#: templates/xadmin/views/revision_form.html:27
+msgid "Revert this revision"
+msgstr "Przywróć tę rewizję"
+
+#: templates/xadmin/widgets/addform.html:14
+msgid "Success"
+msgstr "Sukces"
+
+#: templates/xadmin/widgets/addform.html:14
+msgid "Add success, click <a id='change-link'>edit</a> to edit."
+msgstr "Dodawanie udane, kliknij <a id='change-link'>edytuj</a> aby edytować."
+
+#: templates/xadmin/widgets/addform.html:17
+msgid "Quick Add"
+msgstr "Szybkie dodaj"
+
+#: templates/xadmin/widgets/base.html:31
+msgid "Widget Options"
+msgstr "Opcje widgetów"
+
+#: templates/xadmin/widgets/base.html:42
+msgid "Save changes"
+msgstr "Zapisz zmiany"
+
+#: views/base.py:315
+msgid "Django Xadmin"
+msgstr "Django Xadmin"
+
+#: views/base.py:316
+#, fuzzy
+#| msgid "my-company.inc 2013"
+msgid "my-company.inc"
+msgstr "moja-firma.inc 2013"
+
+#: views/dashboard.py:186
+msgid "Widget ID"
+msgstr "ID widgetu"
+
+#: views/dashboard.py:187
+msgid "Widget Title"
+msgstr "Tytuł widgetu"
+
+#: views/dashboard.py:252
+msgid "Html Content Widget, can write any html content in widget."
+msgstr "Widget treści HTML, możesz wpisać dowolną treść HTMLową w ten widget."
+
+#: views/dashboard.py:255
+msgid "Html Content"
+msgstr "Treść HTML"
+
+#: views/dashboard.py:318
+msgid "Target Model"
+msgstr "Model docelowy"
+
+#: views/dashboard.py:369
+msgid "Quick button Widget, quickly open any page."
+msgstr "Widget szybkich przycisków, pozwala szybko otworzyć dowolna stronę."
+
+#: views/dashboard.py:371
+msgid "Quick Buttons"
+msgstr "Szybkie przyciski"
+
+#: views/dashboard.py:416
+msgid "Any Objects list Widget."
+msgstr "Dowolny widget listy obiektów."
+
+#: views/dashboard.py:456
+msgid "Add any model object Widget."
+msgstr "Dodaj dowolny widget modelu obiektu."
+
+#: views/dashboard.py:492
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: views/dashboard.py:633
+#, python-format
+msgid "%s Dashboard"
+msgstr "%s Dashboard"
+
+#: views/delete.py:103
+#, python-format
+msgid "The %(name)s \"%(obj)s\" was deleted successfully."
+msgstr "%(name)s \"%(obj)s\" został usunięty z powodzeniem."
+
+#: views/detail.py:173 views/edit.py:211 views/form.py:72
+msgid "Other Fields"
+msgstr "Inne pola"
+
+#: views/detail.py:235
+#, python-format
+msgid "%s Detail"
+msgstr "Szczegóły %s"
+
+#: views/edit.py:253
+msgid "Added."
+msgstr ""
+
+#: views/edit.py:255
+#, fuzzy, python-format
+#| msgid "Change %s"
+msgid "Changed %s."
+msgstr "Zmień %s"
+
+#: views/edit.py:255
+msgid "and"
+msgstr ""
+
+#: views/edit.py:258
+msgid "No fields changed."
+msgstr ""
+
+#: views/edit.py:420
+#, python-format
+msgid "The %(name)s \"%(obj)s\" was added successfully."
+msgstr "%(name)s \"%(obj)s\" został dodany z sukcesem."
+
+#: views/edit.py:425 views/edit.py:520
+msgid "You may edit it again below."
+msgstr "Możesz edytować to powtórnie poniżej."
+
+#: views/edit.py:429 views/edit.py:523
+#, python-format
+msgid "You may add another %s below."
+msgstr "Możesz dodać kolejny %s poniżej."
+
+#: views/edit.py:471
+#, python-format
+msgid "Change %s"
+msgstr "Zmień %s"
+
+#: views/edit.py:516
+#, python-format
+msgid "The %(name)s \"%(obj)s\" was changed successfully."
+msgstr "%(name)s \"%(obj)s\" został zmieniony z powodzeniem."
+
+#: views/form.py:165
+#, python-format
+msgid "The %s was changed successfully."
+msgstr "%s został z sukcesem zmieniony."
+
+#: views/list.py:199
+msgid "Database error"
+msgstr "Błąd bazy danych"
+
+#: views/list.py:373
+#, python-format
+msgid "%s List"
+msgstr "Lista %s"
+
+#: views/list.py:499
+msgid "Sort ASC"
+msgstr "Sortuj ASC"
+
+#: views/list.py:500
+msgid "Sort DESC"
+msgstr "Sortuj DESC"
+
+#: views/list.py:504
+msgid "Cancel Sort"
+msgstr "Anuluj sortowanie"
+
+#: views/website.py:16
+msgid "Main Dashboard"
+msgstr "Główny Dashboard"
+
+#: widgets.py:48
+msgid "Now"
+msgstr "Teraz"

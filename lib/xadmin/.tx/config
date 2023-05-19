@@ -1,0 +1,14 @@
+[main]
+host = https://www.transifex.com
+
+[xadmin-core.django]
+file_filter = locale/<lang>/LC_MESSAGES/django.po
+source_file = locale/en/LC_MESSAGES/django.po
+source_lang = en
+type = PO
+
+[xadmin-core.djangojs]
+file_filter = locale/<lang>/LC_MESSAGES/djangojs.po
+source_file = locale/en/LC_MESSAGES/djangojs.po
+source_lang = en
+type = PO

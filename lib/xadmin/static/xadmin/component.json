@@ -1,0 +1,20 @@
+{
+  "name": "xadmin",
+  "version": "0.1.0",
+  "dependencies": {
+    "jquery": ">=1.8.3",
+    "jquery-ui": ">=1.10.0",
+    "bootstrap": "http://twitter.github.io/bootstrap/assets/bootstrap.zip",
+    "bootstrap-timepicker": ">=0.2.3",
+    "bootstrap-datepicker": ">=1.0.0",
+    "bootstrap-modal": ">=2.1",
+    "flot": ">=0.8",
+    "font-awesome": ">=3.0.2",
+    "load-image": "blueimp/JavaScript-Load-Image",
+    "bootstrap-image-gallery": "blueimp/Bootstrap-Image-Gallery",
+    "select2": ">=3.3.2",
+    "selectize": ">=0.8.4",
+    "datejs": "datejs/Datejs",
+    "bootstrap-multiselect": "davidstutz/bootstrap-multiselect"
+  }
+}

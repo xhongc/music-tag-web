@@ -1,0 +1,28 @@
+{% extends 'xadmin/views/dashboard.html' %}
+{% load i18n xadmin_tags %}
+
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+  <li><a href="{% url 'xadmin:index' %}">{% trans 'Home' %}</a></li>
+  <li>
+    <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+  </li>
+  <li class="active">
+    {{ object|truncatewords:"18" }}
+  </li>
+</ul>
+{% endblock %}
+
+{% block nav_toggles %}
+{% include "xadmin/includes/toggle_back.html" %}
+{% if has_change_permission %}
+  <a href="{% url opts|admin_urlname:'change' object.pk %}" class="navbar-toggle pull-right"><i class="fa fa-pencil"></i></a>
+{% endif %}
+{% endblock %}
+
+{% block nav_btns %}
+  {% if has_change_permission %}
+  <a href="{% url opts|admin_urlname:'change' object.pk %}" class="btn btn-primary"><i class="fa fa-pencil"></i> <span>{% trans "Edit" %}</span></a>
+  {% endif %}
+{% endblock %}

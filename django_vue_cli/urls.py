@@ -1,3 +1,5 @@
+import xadmin
+
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include, re_path
@@ -10,6 +12,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('xadmin/', xadmin.site.urls),
     path('', index),
     re_path(r"^api/", include(task_router.urls)),
     re_path(r"^rest/", include(subsonic_router.urls)),

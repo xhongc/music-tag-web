@@ -1,0 +1,35 @@
+{% extends "xadmin/widgets/base.html" %}
+{% load i18n xadmin_tags %}
+
+{% block title %}
+  <a href="{{page_url}}" class="pull-right"><span class="badge badge-info">{{ result_count }}</span></a>
+  {{ block.super }}
+{% endblock title %}
+
+{% block box_content_class %}{% if results %}nopadding x-scroll{% endif %}{% endblock box_content_class %}
+
+{% block content %}
+{% if results %}
+<table class="table table-hover table-striped">
+  <thead>
+    <tr>
+      {% for o in result_headers %}
+      <th>{{ o.text }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+  {% for row in results %}
+    <tr>{% for o in row %}
+      <td>
+          {{ o.label }}
+      </td>
+    {% endfor %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <span class="text-muted">{% trans "Empty list" %}</span>
+{% endif %}
+{% endblock content %}

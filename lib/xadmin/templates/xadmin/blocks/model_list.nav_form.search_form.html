@@ -1,0 +1,13 @@
+{% load i18n %}
+{% if cl.search_fields %}
+<form class="navbar-form navbar-left" action="" method="get">
+    <div class="input-group search-group">
+    {% if cl.search_query %}
+      <span class="input-group-btn"><a class="btn btn-default" href="{{remove_search_url}}">x</a></span>
+    {% endif %}
+    <input id="searchbar" class="form-control" type="text" name="{{ search_var }}" value="{{ cl.search_query }}" placeholder="{% trans 'Search' %} {{cl.opts.verbose_name}}">
+    <span class="input-group-btn"><button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button></span>
+    </div>
+    {{ search_form_params|safe }}
+</form>
+{% endif %}

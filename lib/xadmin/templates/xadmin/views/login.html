@@ -1,0 +1,88 @@
+{% extends base_template %}
+{% load i18n xadmin_tags %}
+
+{% load crispy_forms_tags %}
+
+{% block extrastyle %}{{ block.super }}
+<style type="text/css">
+  #panel-login {
+    max-width: 350px;
+  }
+  #panel-login .controls{
+    padding: 0px 15px 15px !important;
+  }
+
+  #panel-login .alert-block{
+    padding: 0px;
+  }
+  #panel-login .alert-block ul{
+    margin: 10px 15px;
+    padding-left: 0px;
+  }
+  #panel-login .alert-block ul li{
+    list-style-type: none;
+  }
+</style>
+{% endblock %}
+
+{% block bodyclass %}login{% endblock %}
+
+{% block body %}
+<div class="container">
+
+  <form action="" method="post" id="login-form">
+    <div class="panel panel-default panel-single" id="panel-login">
+    {% csrf_token %}
+    {% block login_form %}
+      <div class="panel-heading">
+        {% block login_heading %}
+        <h2 class="form-signin-heading">{% if title %}{{title}}{% else %}{% trans "Please Login" %}{% endif %}</h2>
+        {% endblock %}
+      </div>
+      <div class="panel-body">
+
+      {% view_block 'form_top' %}
+      
+      {% include 'bootstrap3/errors.html' %}
+
+      <div id="div_id_username" class="row{% if form.username.errors %} has-error{% endif %}">
+        <div class="controls clearfix">
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+          <input class="form-control input-lg" id="id_username" maxlength="254" name="username" type="text" placeholder="{% trans "Username" %}">
+        </div>
+        {% for error in form.username.errors %}
+            <p id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="text-danger help-block">{{ error }}</p>
+        {% endfor %}
+        </div>
+      </div>
+
+      <div id="div_id_password" class="row{% if form.password.errors %} has-error{% endif %}">
+        <div class="controls clearfix">
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
+          <input class="form-control input-lg" id="id_password" name="password" type="password" placeholder="{% trans "Password" %}"> 
+        </div>
+        {% for error in form.password.errors %}
+            <p id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="text-danger help-block">{{ error }}</p>
+        {% endfor %}
+        </div>
+      </div>
+
+      <input type="hidden" name="this_is_the_login_form" value="1" />
+      <input type="hidden" name="next" value="{{ next }}" />
+
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans 'log in' %}</button>
+
+      {% view_block 'form_bottom' %}
+      </div>
+    {% endblock %}
+    </div>
+  </form>
+
+</div> <!-- /container -->
+
+<script type="text/javascript">
+document.getElementById('id_username').focus()
+</script>
+{% endblock %}

@@ -3,12 +3,14 @@ import copy
 import os
 
 import music_tag
+from django.db import transaction
 from django.utils.decorators import method_decorator
 from django.views.decorators.gzip import gzip_page
 from rest_framework.decorators import action
 
+from applications.music.models import Artist, Track, Album
 from applications.task.serialziers import FileListSerializer, Id3Serializer, UpdateId3Serializer, \
-    FetchId3ByTitleSerializer, FetchLlyricSerializer, BatchUpdateId3Serializer
+    FetchId3ByTitleSerializer, FetchLlyricSerializer, BatchUpdateId3Serializer, MergeArtistSerializer
 from applications.task.services.music_resource import MusicResource
 from applications.task.services.update_ids import update_music_info
 from applications.task.tasks import full_scan_folder, scan_music_id3, scan, clear_music
@@ -31,6 +33,8 @@ class TaskViewSets(GenericViewSet):
             return FetchLlyricSerializer
         elif self.action == "batch_update_id3":
             return BatchUpdateId3Serializer
+        elif self.action in ["merge_artist", "merge_album"]:
+            return MergeArtistSerializer
         return FileListSerializer
 
     @action(methods=['POST'], detail=False)
@@ -215,4 +219,33 @@ class TaskViewSets(GenericViewSet):
     @action(methods=['GET'], detail=False)
     def full_scan_folder(self, request, *args, **kwargs):
         full_scan_folder.delay()
+        return self.success_response()
+
+    @action(methods=['POST'], detail=False)
+    def merge_artist(self, request, *args, **kwargs):
+        validate_data = self.is_validated_data(request.data)
+        full_text = validate_data["full_text"]
+        artist_list = Artist.objects.filter(full_text=full_text).all()
+        first_artist = artist_list[0]
+        first_artist.name = full_text
+        first_artist.save()
+        with transaction.atomic():
+            for artist in artist_list[1:]:
+                Track.objects.filter(artist=artist).update(artist=first_artist)
+                Album.objects.filter(artist=artist).update(artist=first_artist)
+                Artist.objects.filter(id=artist.id).delete()
+        return self.success_response()
+
+    @action(methods=['POST'], detail=False)
+    def merge_album(self, request, *args, **kwargs):
+        validate_data = self.is_validated_data(request.data)
+        full_text = validate_data["full_text"]
+        album_list = Album.objects.filter(full_text=full_text).all()
+        first_album = album_list[0]
+        first_album.name = full_text
+        first_album.save()
+        with transaction.atomic():
+            for album in album_list[1:]:
+                Track.objects.filter(album=album).update(album=first_album)
+                Album.objects.filter(id=album.id).delete()
         return self.success_response()

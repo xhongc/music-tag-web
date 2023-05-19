@@ -1,0 +1,63 @@
+
+.empty-form {
+    display: none;
+}
+.formset:not(.one) > .panel-body {
+    padding-top: 0px !important;
+}
+.formset .row-deleted{
+    background: #fff0f0  !important;
+}
+.formset .row-added {
+    background: #d1ffdd !important;
+}
+.formset .formset-heading{
+    padding: 10px;
+    border-bottom: 1px solid #EEE;
+}
+.formset .row-deleted .formset-form {
+    display: none;
+}
+.formset .box-content.accordion {
+    margin: 0px;
+    padding: 5px 5px 3px; 
+}
+.formset .formset-form {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.formset .accordion-heading .delete-row {
+    float: right;
+    margin: 8px;
+}
+.formset .nav{
+    margin-bottom: 5px;
+}
+.formset .nav.nav-tabs{
+    padding: 10px 10px 0px;
+}
+.formset .panel-body.tabs {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.formset .box-content.tabs{
+    padding: 5px 0px 0px;
+}
+.formset .tabs .tab-content{
+    overflow: hidden;
+}
+.formset .tabs .delete-row{
+    float: right;
+    margin: 8px 8px;
+}
+.formset .table{
+    margin-bottom: 0px;
+}
+.formset .table td{
+    padding: 4px;
+}
+
+.formset .table td .delete-row{
+    margin-top: 4px;
+    display: block;
+}

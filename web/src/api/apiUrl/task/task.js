@@ -27,5 +27,11 @@ export default {
     },
     fetchLyric: function(params) {
         return POST(reUrl + '/api/fetch_lyric/', params)
+    },
+    mergeArtist: function(params) {
+        return POST(reUrl + '/api/merge_artist/', params)
+    },
+    mergeAlbum: function(params) {
+        return POST(reUrl + '/api/merge_album/', params)
     }
 }

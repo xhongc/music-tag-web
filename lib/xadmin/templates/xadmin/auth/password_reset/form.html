@@ -1,0 +1,44 @@
+{% extends base_template %}
+{% load i18n xadmin_tags %}
+
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="container">
+
+  <form action="" method="post" id="password-reset-form">
+    <div class="panel panel-default panel-single" style="max-width: 500px;">
+      {% csrf_token %}
+      <div class="panel-heading">
+        <h3 class="form-signin-heading">{% trans "Password reset" %}</h3>
+      </div>
+      <div class="panel-body">
+      
+			<p class="text-default">{% trans "Forgotten your password? Enter your e-mail address below, and we'll e-mail instructions for setting a new one." %}</p>
+
+      {% include 'bootstrap3/errors.html' %}
+
+      <div id="div_id_email" class="row{% if form.email.errors %} has-error{% endif %}">
+        <div class="controls clearfix">
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+          <input class="form-control input-lg" id="id_email" name="email" type="text" placeholder="{% trans 'E-mail address:' %}">
+        </div>
+        {% for error in form.email.errors %}
+            <p id="error_{{ forloop.counter }}_{{ field.auto_id }}" class="text-danger help-block">{{ error }}</p>
+        {% endfor %}
+        </div>
+      </div>
+
+      <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans 'Reset my password' %}</button>
+
+      </div>
+    </div>
+  </form>
+
+</div> <!-- /container -->
+
+<script type="text/javascript">
+document.getElementById('id_email').focus()
+</script>
+{% endblock %}

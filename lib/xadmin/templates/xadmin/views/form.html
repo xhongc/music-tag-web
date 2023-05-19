@@ -1,0 +1,35 @@
+{% extends base_template %}
+{% load i18n %}
+
+{% load xadmin_tags %}
+{% load crispy_forms_tags %}
+
+{% block nav_title %}{% if model_icon %}<i class="{{model_icon}}"><sub class="fa fa-{% if add%}plus{%else%}pencil{%endif%}"></sub></i> {% endif %}
+{{ title }}{% endblock %}
+
+{% block content %}
+<form class="exform" {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form">{% csrf_token %}
+  {% block form_top %}{% endblock %}
+  {% view_block 'form_top' %}
+
+  {% if errors %}
+      <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {% blocktrans count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+      </div>
+      {{ form.non_field_errors }}
+  {% endif %}
+
+  {% view_block 'before_fieldsets' %}
+
+  {% crispy form %}
+
+  {% view_block 'after_fieldsets' %}
+
+  <div class="form-actions well well-sm clearfix">
+  <button type="submit" class="default btn btn-primary show-xs col-xs-12" name="_save" data-loading-text="{% trans "Saving.." %}"/><i class="fa fa-save"></i> {% trans 'Save' %}</button>
+  <button type="submit" class="default btn btn-primary hide-xs" name="_save" data-loading-text="{% trans "Saving.." %}"/><i class="fa fa-save"></i> {% trans 'Save' %}</button>
+  </div>
+
+</form>
+{% endblock %}

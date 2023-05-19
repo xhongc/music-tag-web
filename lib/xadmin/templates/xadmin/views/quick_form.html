@@ -1,0 +1,8 @@
+{% load i18n %}
+{% load xadmin_tags %}
+{% load crispy_forms_tags %}
+<form class="exform quick-form" {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form">{% csrf_token %}
+  {% crispy form %}
+</form>
+{{ media.css }}
+{{ media.js }}

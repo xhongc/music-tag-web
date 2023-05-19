@@ -1,0 +1,55 @@
+{% load i18n %}
+<div class="btn-group export">
+  <a class="dropdown-toggle btn btn-default btn-sm" data-toggle="dropdown" href="#">
+    <i class="fa fa-share"></i> {% trans "Export" %} <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+    {% for et in export_types %}
+      <li><a data-toggle="modal" data-target="#export-modal-{{et.type}}"><i class="fa fa-arrow-circle-down"></i> {% trans "Export" %} {{et.name}}</a></li>
+    {% endfor %}
+  </ul>
+
+  {% for et in export_types %}
+    <div id="export-modal-{{et.type}}" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form method="get" action="">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">{% trans "Export" %} {{et.name}}</h4>
+          </div>
+          <div class="modal-body">
+            {{ form_params|safe }}
+            <input type="hidden" name="export_type" value="{{et.type}}">
+              <label class="checkbox">
+                {% if et.type == "xlsx" %}
+                <input type="checkbox" name="export_xlsx_header" checked="checked" value="on"> {% trans "Export with table header." %}
+                {% endif %}
+                {% if et.type == "xls" %}
+                <input type="checkbox" name="export_xls_header" checked="checked" value="on"> {% trans "Export with table header." %}
+                {% endif %}
+                {% if et.type == "csv" %}
+                <input type="checkbox" name="export_csv_header" checked="checked" value="on"> {% trans "Export with table header." %}
+                {% endif %}
+                {% if et.type == "xml" %}
+                <input type="checkbox" name="export_xml_format" checked="checked" value="on"> {% trans "Export with format." %}
+                {% endif %}
+                {% if et.type == "json" %}
+                <input type="checkbox" name="export_json_format" checked="checked" value="on"> {% trans "Export with format." %}
+                {% endif %}
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" name="all" value="on"> {% trans "Export all data." %}
+              </label>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+            <button class="btn btn-success" type="submit"><i class="fa fa-share"></i> {% trans "Export" %}</button>
+          </div>
+          </form>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dalog -->
+    </div><!-- /.modal -->
+  {% endfor %}
+
+</div>

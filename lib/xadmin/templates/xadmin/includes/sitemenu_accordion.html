@@ -1,0 +1,33 @@
+{% extends 'xadmin/includes/sitemenu_default.html' %}
+{% load i18n xadmin_tags %}
+
+
+{% block navbar_md %}
+<div class="panel-group hide-sm nav-sitemenu col-md-2" id="nav-accordion">
+  {% for item in nav_menu %}
+  <div class="panel panel-{% if item.selected %}info{%else%}default{% endif %}">
+    <div class="panel-heading">
+      <h6 class="panel-title">
+        <span class="badge badge-info">{{ item.menus|length }}</span>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion" href="#nav-panel-{{forloop.counter}}">
+          {% if item.url %}<a href="{{ item.url }}" class="section">{% endif %}
+          {% if item.icon %}<i class="fa-fw {{item.icon}}"></i>
+          {% elif item.first_icon %}<i class="fa-fw {{item.first_icon}}"></i>
+          {%else%}<i class="fa-fw fa fa-circle-o"></i>{% endif %}
+          {% trans item.title %}
+          {% if item.url %}</a>{% endif %}
+        </a>
+      </h6>
+    </div>
+    <div id="nav-panel-{{forloop.counter}}" class="list-group panel-collapse collapse{% if item.selected %} in{% endif %}">
+      {% for sitem in item.menus %}
+      <a href="{{ sitem.url|default_if_none:'#' }}" class="list-group-item{% if sitem.selected %} active{% endif %}">
+        {% if sitem.icon %}<i class="fa-fw {{sitem.icon}}"></i>{%else%}<i class="fa-fw fa fa-circle-o"></i>{% endif %}
+        {{ sitem.title }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock navbar_md %}

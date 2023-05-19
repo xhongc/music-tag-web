@@ -1,0 +1,10 @@
+{% load i18n xadmin_tags %}
+<li class="dropdown g-theme">
+<a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+<i class="fa fa-magic"></i> <span class="hide-sm">{% trans "Themes" %} <i class="caret"></i></span></a>
+<ul id="g-theme-menu" class="dropdown-menu" role="menu">
+  {% for t in themes %}
+      <li{% if t.css == select_css %} class="active"{% endif %}><a data-css-href="{{t.css}}">{{t.name}}</a></li>
+  {% endfor %}
+</ul>
+</li>

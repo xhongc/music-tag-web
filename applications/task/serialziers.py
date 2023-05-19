@@ -42,3 +42,7 @@ class FetchId3ByTitleSerializer(serializers.Serializer):
 class FetchLlyricSerializer(serializers.Serializer):
     song_id = serializers.CharField(required=True)
     resource = serializers.CharField(required=True)
+
+
+class MergeArtistSerializer(serializers.Serializer):
+    full_text = serializers.CharField(required=True)

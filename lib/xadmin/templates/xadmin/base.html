@@ -1,0 +1,43 @@
+{% load xadmin_tags %}{% load i18n %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+  {% block extrameta %}
+  <meta name="description" content="">
+  <meta name="author" content="">
+  {% endblock %}
+  {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+  <title>{% block title %}{% endblock %}</title>
+  {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "xadmin/css/rtl.css" %}{% endblock %}" />{% endif %}
+  {% vendor 'bootstrap.css' %}
+  {% if site_theme %}
+  <link rel="stylesheet" type="text/css" id="site-theme" href="{{site_theme}}" />
+  {% else %}
+  <link rel="stylesheet" type="text/css" href="{% static "xadmin/css/themes/bootstrap-xadmin.css" %}" />
+  {% endif %}
+  {% vendor 'font-awesome.css' 'xadmin.main.css' 'xadmin.plugins.css' 'xadmin.responsive.css' %}
+  {{ media.css }}
+  {% block extrastyle %}{% endblock %}
+  {% vendor 'jquery.js' %}
+  {% url 'xadmin:index' as indexurl %}
+  <script type="text/javascript">
+    window.__admin_media_prefix__ = "{% filter escapejs %}{% static "xadmin/" %}{% endfilter %}";
+    window.__admin_path_prefix__ = "{% filter escapejs %}{{ indexurl }}{% endfilter %}";
+    window.__admin_language_code__ = "{{LANGUAGE_CODE}}";
+  </script>
+  <script type="text/javascript" src="{% url 'xadmin:jsi18n' %}"></script>
+  {% block extrahead %}{% endblock %}
+  {% view_block 'extrahead' %}
+</head>
+<body class="{% block bodyclass %}{% endblock %}">
+  {% block body %}
+    <div id="content-block" class="col-sm-12">
+    {% block content %}{% endblock content %}
+    </div>
+  {% endblock body %}
+  {% vendor 'jquery-ui-sortable.js' 'bootstrap.js' 'xadmin.main.js' 'xadmin.responsive.js' %}
+  {{ media.js }}
+  {% block extrabody %}{% endblock %}
+  {% view_block 'extrabody' %}
+</body>
+</html>

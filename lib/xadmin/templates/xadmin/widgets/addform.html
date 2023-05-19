@@ -1,0 +1,22 @@
+{% extends "xadmin/widgets/base.html" %}
+{% load i18n xadmin_tags %}
+{% load crispy_forms_tags %}
+
+{% block box_class %}{{block.super}} form-horizontal short_label fieldset{% endblock box_class %}
+
+{% block content %}
+<form class="exform quick-form widget-form" action="{{addurl}}" method="post" id="{{ widget.model_name }}_form">{% csrf_token %}
+  {% crispy addform addhelper %}
+  <div class="form-group row submit-line">
+    <div class="controls">
+      <div class="alert alert-success alert-dismissable" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{% trans "Success" %}</strong> {% trans "Add success, click <a id='change-link'>edit</a> to edit." %}
+      </div>
+      <button type="submit" class="btn btn-primary">
+        {% trans "Quick Add" %}
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock content %}

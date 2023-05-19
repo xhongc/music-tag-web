@@ -13,33 +13,33 @@ class Album(models.Model):
     name = models.CharField("专辑名称", max_length=255, default='', null=False)
     artist = models.ForeignKey('Artist', on_delete=models.SET_NULL, null=True, related_name='albums',
                                db_constraint=False)
-    all_artist_ids = ListTextField(base_field=models.IntegerField(), default=list)
+    all_artist_ids = ListTextField(base_field=models.IntegerField(), default=list, null=True, blank=True)
 
     max_year = models.IntegerField(default=0, null=False)
     song_count = models.IntegerField("歌曲统计", default=-1, null=False)
     plays_count = models.IntegerField("播放次数", default=0, null=False)
     duration = models.FloatField("歌曲时长s", default=0, null=False)
     genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, related_name='albums', db_constraint=False)
-    created_at = models.DateTimeField(null=True)
+    created_at = models.DateTimeField(null=True, default=datetime.now)
     updated_at = models.DateTimeField(null=True, auto_now=True)
-    accessed_date = models.DateTimeField("访问时间", null=True)
+    accessed_date = models.DateTimeField("访问时间", null=True, blank=True)
 
     full_text = models.CharField(max_length=255, default='', null=True, blank=True)
     size = models.IntegerField("文件大小", default=0, null=False)
-    comment = models.CharField(max_length=255, null=True)
-    paths = models.CharField(max_length=255, null=True)
-    description = models.CharField(max_length=255, default='', null=True)
+    comment = models.CharField(max_length=255, null=True, blank=True)
+    paths = models.CharField(max_length=255, null=True, blank=True)
+    description = models.CharField(max_length=255, default='', null=True, blank=True)
     attachment_cover = models.ForeignKey('Attachment', on_delete=models.SET_NULL, null=True, related_name='album_cover',
                                          db_constraint=False)
 
     # musicbrainz fields
-    mbz_album_id = models.CharField(max_length=255, null=True)
-    mbz_album_artist_id = models.CharField(max_length=255, null=True)
-    mbz_album_type = models.CharField(max_length=255, null=True)
-    mbz_album_comment = models.CharField(max_length=255, null=True)
+    mbz_album_id = models.CharField(max_length=255, null=True, blank=True)
+    mbz_album_artist_id = models.CharField(max_length=255, null=True, blank=True)
+    mbz_album_type = models.CharField(max_length=255, null=True, blank=True)
+    mbz_album_comment = models.CharField(max_length=255, null=True, blank=True)
 
-    external_url = models.CharField(max_length=255, default='', null=True)
-    external_info_updated_at = models.DateTimeField(null=True)
+    external_url = models.CharField(max_length=255, default='', null=True, blank=True)
+    external_info_updated_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name = "专辑"
@@ -119,6 +119,9 @@ class Genre(models.Model):
     class Meta:
         verbose_name = "风格"
         verbose_name_plural = "风格"
+
+    def __str__(self):
+        return self.name
 
 
 class Attachment(models.Model):

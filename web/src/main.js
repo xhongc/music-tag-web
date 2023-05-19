@@ -78,7 +78,7 @@ Validator.extend('integer', {
     validate: value => Number(value) >= 1 && Number(value) % 1 === 0
 })
 /* eslint-disable no-new */
-new Vue({
+const vue = new Vue({
     el: '#app',
     router,
     store,
@@ -90,3 +90,4 @@ new Vue({
     },
     template: '<App/>'
 })
+export default vue

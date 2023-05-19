@@ -1,0 +1,52 @@
+{% load i18n xadmin_tags %}
+
+
+{% block navbar_md %}
+  <ul class="well nav nav-pills nav-stacked nav-sitemenu hide-sm">
+    <li>
+      <a href="{% url 'xadmin:index' %}"><i class="fa-fw fa fa-home"></i> {% trans 'Home' %}</a>
+    </li>
+    {% for item in nav_menu %}
+      <li class="{% if item.menus %}nav-header{% endif %} {% if item.selected %} active{% endif %}">
+        {% if item.url %}<a href="{{ item.url }}" class="section">{% endif %}
+        {% if item.icon %}<i class="fa-fw {{item.icon}}"></i>{% endif %}{{ item.title }}
+        {% if item.url %}</a>{% endif %}
+      </li>
+      {% for sitem in item.menus %}
+      <li{% if sitem.selected %} class="active"{% endif %}>
+        {% if sitem.url %}<a href="{{ sitem.url }}">{% endif %}
+        {% if sitem.icon %}<i class="fa-fw {{sitem.icon}}"></i>{%else%}<i class="fa-fw fa fa-circle-o"></i>{% endif %}
+        {{ sitem.title }}</span>{% if sitem.url %}</a>{% endif %}
+      </li>
+      {% endfor %}
+    {% endfor %}
+    {% view_block 'menu-nav' %}
+  </ul>
+{% endblock navbar_md %}
+
+{% block navbar_sm %}
+  <ul class="well nav nav-list nav-sitemenu show-sm">
+    <li class="app_menu">
+      <a href="{% url 'xadmin:index' %}"><i class="icon fa-fw fa fa-home"></i></a><hr/>
+    </li>
+    {% for item in nav_menu %}
+      <li class="app_menu dropdown-submenu {% if item.selected %} active{% endif %}">
+        <a href="#" class="section">
+          {% if item.icon %}<i class="icon fa-fw {{item.icon}}"></i>
+          {% elif item.first_icon %}<i class="icon fa-fw {{item.first_icon}}"></i>
+          {%else%}<i class="icon fa-fw fa fa-circle-o"></i>{% endif %}
+        </a><hr/>
+        <ul class="dropdown-menu">
+          {% for sitem in item.menus %}
+          <li{% if sitem.selected %} class="active"{% endif %}>
+            {% if sitem.url %}<a href="{{ sitem.url }}">{% endif %}
+            {% if sitem.icon %}<i class="fa-fw {{sitem.icon}}"></i>{%else%}<i class="fa-fw fa fa-circle-o"></i>{% endif %}
+            {{ sitem.title }}</span>{% if sitem.url %}</a>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+    {% view_block 'menu-nav' %}
+  </ul>
+{% endblock navbar_sm %}

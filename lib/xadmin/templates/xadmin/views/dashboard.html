@@ -1,0 +1,38 @@
+{% extends base_template %}
+{% load i18n xadmin_tags %}
+
+
+{% block bodyclass %}dashboard{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+{% block nav_title %}
+  {% if icon %}<i class="{{icon}}"></i>{%endif%} {{ title }}
+{% endblock %}
+
+{% block nav_toggles %}
+{% include "xadmin/includes/toggle_menu.html" %}
+{% if has_add_widget_permission %}
+  <a title="{% trans "Add Widget" %}" href="{{ add_widget_url }}" class="navbar-toggle pull-right">
+    <i class="fa fa-plus"></i></a>
+{% endif %}
+{% endblock %}
+
+{% block nav_btns %}
+{% if has_add_widget_permission %}
+  <a title="{% trans "Add Widget" %}" href="{{ add_widget_url }}" class="btn btn-primary">
+    <i class="fa fa-plus"></i> <span>{% trans "Add Widget" %}</span></a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="dashboard row">
+  {% for c in columns %}
+  <div class="{{ c.0 }} column">
+    {% for widget in c.1 %}
+      {{ widget.widget|safe }}
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+<input type='hidden' id='_portal_key' value='{{ portal_key }}' />
+{% endblock %}

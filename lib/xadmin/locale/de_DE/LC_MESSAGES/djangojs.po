@@ -1,0 +1,72 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Azd325 <tim.kleinschmidt@gmail.com>, 2013
+# Azd325 <tim.kleinschmidt@gmail.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: xadmin-core\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-30 23:11+0800\n"
+"PO-Revision-Date: 2013-11-20 12:41+0000\n"
+"Last-Translator: Azd325 <tim.kleinschmidt@gmail.com>\n"
+"Language-Team: German (Germany) (http://www.transifex.com/projects/p/xadmin/language/de_DE/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: static/xadmin/js/xadmin.plugin.actions.js:20
+msgid "%(sel)s of %(cnt)s selected"
+msgid_plural "%(sel)s of %(cnt)s selected"
+msgstr[0] "%(sel)s von %(cnt)s markiert"
+msgstr[1] "%(sel)s von %(cnt)s markiert"
+
+#: static/xadmin/js/xadmin.plugin.revision.js:25
+msgid "New Item"
+msgstr "Neues Element"
+
+#: static/xadmin/js/xadmin.widget.datetime.js:32
+msgid "Sunday Monday Tuesday Wednesday Thursday Friday Saturday Sunday"
+msgstr "Sonntag Montag Dienstag Mittwoch Donnerstag Freitag Samstag Sonntag"
+
+#: static/xadmin/js/xadmin.widget.datetime.js:33
+msgid "Sun Mon Tue Wed Thu Fri Sat Sun"
+msgstr "So Mo Di Mi Do Fr Sa So"
+
+#: static/xadmin/js/xadmin.widget.datetime.js:34
+msgid "Su Mo Tu We Th Fr Sa Su"
+msgstr "So Mo Di Mi Do Fr Sa So"
+
+#: static/xadmin/js/xadmin.widget.datetime.js:35
+msgid ""
+"January February March April May June July August September October November"
+" December"
+msgstr "Januar Februar März April Mai Juni Juli August September Oktober November Dezember"
+
+#: static/xadmin/js/xadmin.widget.datetime.js:36
+msgid "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec"
+msgstr "Jan Feb Mär Apr Mai Jun Jul Aug Sep Okt Nov Dez"
+
+#: static/xadmin/js/xadmin.widget.datetime.js:37
+msgid "Today"
+msgstr "Heute"
+
+#: static/xadmin/js/xadmin.widget.datetime.js:38
+msgid "%a %d %b %Y %T %Z"
+msgstr "%a %d %b %Y %T %Z"
+
+#: static/xadmin/js/xadmin.widget.datetime.js:39
+msgid "AM PM"
+msgstr "vorm nachm"
+
+#: static/xadmin/js/xadmin.widget.datetime.js:40
+msgid "am pm"
+msgstr "vorm nachm"
+
+#: static/xadmin/js/xadmin.widget.datetime.js:43
+msgid "%T"
+msgstr "%T"

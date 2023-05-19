@@ -1,0 +1,45 @@
+{% extends "xadmin/edit_inline/base.html" %}
+{% load i18n xadmin_tags crispy_forms_tags %}
+
+{% block box_content_class %}nopadding{% endblock box_content_class %}
+{% block box_content_attrs %}{% endblock box_content_attrs %}
+
+{% block formset_content %}
+  <table class="table">
+    <thead>
+   {% for field in fields %}
+     {% if not field.widget.is_hidden %}
+       <th{% if field.required %} class="required"{% endif %}>{{ field.label|capfirst }}
+       {% if field.help_text %}&nbsp;<a title="{{ field.help_text|striptags }}" /><i class="fa fa-question-circle"></i></a>{% endif %}
+       </th>
+     {% endif %}
+   {% endfor %}
+   {% for field in readonly_fields %}
+       <th>{{ field.label }}</th>
+   {% endfor %}
+   {% if formset.formset.can_delete %}<th>&nbsp;</th>{% endif %}
+    </thead>
+    <tbody class="formset-content" data-prefix="{{ prefix }}" data-style="stacked">
+      {% for fs in formset.formset %}
+      <tr class="formset-row">
+        {% crispy fs formset.formset.helper %}
+        {% for r_o_f in fs.readonly_fields %}
+            <td>{{ r_o_f.contents|safe }}</td>
+        {% endfor %}
+        {% if formset.formset.can_delete %}
+          <td><a class="delete-row"><i class="fa fa-times"></i></a></td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock formset_content %}
+
+{% block formset_empty %}
+  <tr class="formset-row">
+    {% crispy formset.formset.empty_form formset.formset.helper %}
+    {% if formset.formset.can_delete %}
+      <td><a class="delete-row"><i class="fa fa-times"></i></a></td>
+    {% endif %}
+  </tr>
+{% endblock formset_empty %}

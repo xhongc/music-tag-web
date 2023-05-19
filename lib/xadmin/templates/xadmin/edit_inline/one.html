@@ -1,0 +1,9 @@
+{% extends "xadmin/edit_inline/base.html" %}
+{% load i18n xadmin_tags crispy_forms_tags %}
+
+{% block box_title %}{{ formset.opts.verbose_name_plural|title }}{% endblock box_title %}
+{% block box_content %}
+  {{ formset.formset.management_form }}
+  {{ formset.formset.non_form_errors }}
+  {% crispy formset.formset.0 formset.formset.helper %}
+{% endblock box_content %}

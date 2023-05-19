@@ -1,0 +1,6 @@
+<div id="div_{{ field.auto_id }}" class="value form-group row{% if wrapper_class %} {{ wrapper_class }}{% endif %}{% if field.css_classes %} {{ field.css_classes }}{% endif %}">
+    <div class="control-label">{{ result.label|safe }}</div>
+    <div class="controls">
+        <p class="form-control-static {{input_class}}">{{ result.val }}</p>
+    </div>
+</div>

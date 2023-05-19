@@ -1,0 +1,28 @@
+{% load i18n %}
+{% load xadmin_tags %}
+<div class="form-actions well well-sm clearfix">
+{% if show_delete_link %}
+  <a href="{{ delete_url }}" class="btn btn-danger deletelink col-xs-2 show-xs"><i class="fa fa-trash-o"></i></a>
+{% endif %}
+
+{% if show_save %}
+  <div class="btn-group clearfix show-xs save-group {% if show_delete_link %}col-xs-10{%else%}col-xs-12{% endif %}">
+  <button type="submit" class="default btn btn-primary col-xs-10" name="_save" data-loading-text="{% trans "Saving.." %}" {{ onclick_attrib }}/><i class="fa fa-save"></i> {% trans 'Save' %}</button>
+  <button type="button" class="more btn btn-primary col-xs-2" data-toggle="collapse" data-target=".nav-collapse.more-btns"><i class="fa fa-ellipsis-vertical"></i></button>
+  </div>
+  <button type="submit" class="default btn btn-primary hide-xs" name="_save" data-loading-text="{% trans "Saving.." %}" {{ onclick_attrib }}/><i class="fa fa-save"></i> {% trans 'Save' %}</button>
+{% endif %}
+
+<div class="nav-collapse collapse more-btns">
+{% if show_save_as_new %}<input type="submit" class="btn btn-default" value="{% trans 'Save as new' %}" name="_saveasnew" {{ onclick_attrib }}/>{%endif%}
+{% if show_save_and_add_another %}<input type="submit" class="btn btn-default" value="{% trans 'Save and add another' %}" name="_addanother" {{ onclick_attrib }} />{% endif %}
+{% if show_save_and_continue %}<input type="submit" class="btn btn-default" value="{% trans 'Save and continue editing' %}" name="_continue" {{ onclick_attrib }}/>{% endif %}
+{% view_block 'submit_more_btns' %}
+</div>
+
+{% if show_delete_link %}
+  <a href="{{ delete_url }}" class="btn btn-danger deletelink pull-right hide-xs"><i class="fa fa-trash-o"></i> {% trans "Delete" %}</a>
+{% endif %}
+
+{% view_block 'submit_line' %}
+</div>

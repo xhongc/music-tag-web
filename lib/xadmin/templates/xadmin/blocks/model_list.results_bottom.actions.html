@@ -1,0 +1,24 @@
+{% load i18n %}
+<div class="form-actions well well-sm">
+  <input type="hidden" id="action" name="action" value=""/>
+  <input type="hidden" id="select-across" name="select_across" value=""/>
+  <div class="btn-group clearfix dropup">
+    <a class="dropdown-toggle btn btn-success" data-toggle="dropdown" href="#">
+    <i class="fa fa-wrench"></i> 
+    <span class="action-counter">{{ selection_note }}</span>
+    <span class="all" style="display: none;">{{ selection_note_all }}</span>
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+      {% for name, descr, icon in action_choices %}
+        <li><a onclick="$.do_action('{{name}}');"><i class="{{icon}}"></i> {{descr}}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% if actions_selection_counter %}
+      {% if cl.result_count != cl.result_list|length %}
+      <a class="question btn btn-default" href="javascript:;" style="display: none;" title="{% trans "Click here to select the objects across all pages" %}">{% blocktrans with cl.result_count as total_count %}Select all {{ total_count }} {{ model_name }}{% endblocktrans %}</a>
+      <a class="clear btn btn-default" href="javascript:;" style="display: none;">{% trans "Clear selection" %}</a>
+      {% endif %}
+  {% endif %}
+  <script type="text/javascript">var _actions_icnt="{{ cl.result_list|length|default:"0" }}";</script>
+</div>

@@ -1,0 +1,27 @@
+{% extends base_template %}
+{% load i18n %}
+
+
+{% block extrastyle %}{{ block.super }}
+<style type="text/css">
+  .form-signout h2, .form-signout p{margin-bottom: 15px;}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+  <div class="panel panel-default form-signout panel-single" style="max-width: 300px;">
+    <div class="panel-body">
+      <h2 class="text-success">{% trans "Logout Success" %}</h2>
+      <p>{% trans "Thanks for spending some quality time with the Web site today." %}</p>
+      <p class="btn-group">
+        <a href="#" onclick="javascript:window.opener=null;window.open('','_self');window.close();" class="btn btn-primary">{% trans 'Close Window' %}</a>
+        <a href="{% url 'xadmin:index' %}" class="btn btn-default">{% trans 'Log in again' %}</a>
+      </p>
+    </div>
+  </div>
+
+</div> <!-- /container -->
+
+{% endblock %}
