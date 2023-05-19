@@ -142,14 +142,14 @@ def get_album2_data(album):
     """
     subsonic expects this kind of data:
     """
-    # todo 优化 外建关联prefetch
+
     payload = {
         "id": album.id,
         "artistId": album.artist_id,
         "name": album.name,
         "artist": album.artist.name,
         "created": to_subsonic_date(album.created_at),
-        "duration": album.tracks.aggregate(duration_count=Sum("duration")).get("duration_count", 0),
+        "duration": sum([t.duration or 0 for t in album.tracks.all()]),
         "playCount": 1,
     }
     if album.attachment_cover_id:
@@ -200,6 +200,7 @@ def get_starred_tracks_data(favorites):
 
 
 def get_album_list2_data(albums):
+    albums = albums.select_related("artist").prefetch_related("tracks")
     return [get_album2_data(a) for a in albums]
 
 

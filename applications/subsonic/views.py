@@ -2,6 +2,7 @@
 Documentation of Subsonic API can be found at http://www.subsonic.org/pages/api.jsp
 """
 import datetime
+import time
 
 from django.conf import settings
 from django.utils import timezone
@@ -268,9 +269,8 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     def get_album_list2(self, request, *args, **kwargs):
         data = request.GET or request.POST
 
-        queryset = Album.objects.order_by("artist__name")
-        filterset = AlbumList2FilterSet(data, queryset=queryset)
-        queryset = filterset.qs
+        a = time.time()
+        queryset = Album.objects.all()
         al_type = data.get("type", "alphabeticalByArtist")
         if al_type == "alphabeticalByArtist":
             queryset = queryset.order_by("artist__name")
@@ -329,7 +329,13 @@ class SubsonicViewSet(viewsets.GenericViewSet):
 
         size = min(size, 500)
         queryset = queryset[offset: offset + size]
+        print(1, time.time() - a)
+        from django.db import connection
+
         data = {"albumList2": {"album": serializers.get_album_list2_data(queryset)}}
+        print(len(connection.queries))
+
+        print(2, time.time() - a)
         return response.Response(data)
 
     @action(

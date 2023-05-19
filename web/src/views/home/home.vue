@@ -302,8 +302,8 @@
             return {
                 searchWord: '',
                 treeListOne: [],
-                filePath: '/app/media/',
-                bakDir: '/app/media/',
+                filePath: '/app/media/music/',
+                bakDir: '/app/media/music/',
                 fileName: '',
                 resource: 'netease',
                 resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}],

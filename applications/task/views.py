@@ -1,6 +1,8 @@
 import base64
 import copy
+import json
 import os
+import random
 
 import music_tag
 from django.db import transaction
@@ -248,4 +250,25 @@ class TaskViewSets(GenericViewSet):
             for album in album_list[1:]:
                 Track.objects.filter(album=album).update(album=first_album)
                 Album.objects.filter(id=album.id).delete()
+        return self.success_response()
+
+    @action(methods=['GET'], detail=False)
+    def import_music(self, request, *args, **kwargs):
+        with open("/Users/macbookair/Downloads/艺术家.json","r") as f:
+            a = json.load(f)
+        for each in a["objects"]:
+            Artist.objects.create(**{
+                "name": each["name"],
+            })
+        return self.success_response()
+
+    @action(methods=['GET'], detail=False)
+    def import_music2(self, request, *args, **kwargs):
+        with open("/Users/macbookair/Downloads/专辑.json", "r") as f:
+            a = json.load(f)
+        for each in a["objects"]:
+            Album.objects.create(**{
+                "name": each["专辑名称"],
+                "artist_id": random.randint(11, 485)
+            })
         return self.success_response()
