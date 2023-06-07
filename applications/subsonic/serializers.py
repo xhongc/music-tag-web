@@ -158,7 +158,7 @@ def get_album2_data(album):
         payload["genre"] = album.genre.name
     if album.max_year:
         payload["year"] = album.max_year
-    payload["songCount"] = album.tracks.count()
+    payload["songCount"] = len(album.tracks.all())
     return payload
 
 
