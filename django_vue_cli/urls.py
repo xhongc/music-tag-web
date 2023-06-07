@@ -1,5 +1,3 @@
-import xadmin
-
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include, re_path
@@ -10,9 +8,10 @@ from applications.subsonic.urls import router as subsonic_router
 from django.views import static
 from rest_framework_jwt.views import obtain_jwt_token
 
+admin.site.site_header = "音乐管理系统"
+admin.site.site_title = "音乐管理系统 ｜ Music Tag"
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('xadmin/', xadmin.site.urls),
     path('', index),
     re_path(r"^api/", include(task_router.urls)),
     re_path(r"^rest/", include(subsonic_router.urls)),

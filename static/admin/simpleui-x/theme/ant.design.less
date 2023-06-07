@@ -1,0 +1,43 @@
+@import "base";
+
+/*主题色*/
+@primary: #409eff !important;
+@color: white;
+
+
+@menu-color: rgb(164, 171, 179);
+
+@menu-background: #000b16 !important;
+
+@menu-color-hover: #FFF;
+@menu-background-hover: #1890ff;
+
+@menu-title-color: hsla(0, 0%, 100%, .65);
+@menu-title-background-color: #001528;
+
+@menu-title-color-hover: #fff;
+@menu-title-background-color-hover: @menu-title-background-color;
+
+
+@navbar-color: rgba(0, 0, 0, 0.65);
+@navbar-background: #fff;
+
+.logo-wrap {
+  background-color: #002140;
+  color: white !important;
+}
+
+.menu {
+
+  .el-submenu__title i:hover, .is-opened .el-submenu__title i {
+    color: white !important;
+  }
+
+  .el-menu .is-active {
+
+    color: #FFF !important;
+    background-color: @menu-background-hover !important;
+  }
+
+
+}

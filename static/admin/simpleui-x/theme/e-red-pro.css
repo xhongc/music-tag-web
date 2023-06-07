@@ -1,0 +1,182 @@
+.el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
+  color: #c9333e !important;
+  border-bottom: #c9333e 2px solid !important;
+}
+.el-button--text {
+  color: #c9333e !important;
+}
+.el-button--primary:focus,
+.el-button--primary:hover {
+  color: white;
+  border-color: rgba(201, 51, 62, 0.9) !important;
+  background-color: rgba(201, 51, 62, 0.8) !important;
+}
+.el-dropdown-menu__item:focus,
+.el-dropdown-menu__item:not(.is-disabled):hover {
+  background-color: rgba(201, 51, 62, 0.2) !important;
+  color: #c9333e !important;
+}
+.el-select-dropdown__item.selected {
+  color: #c9333e !important;
+}
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=url]:focus,
+input[type=number]:focus,
+input[type=tel]:focus,
+textarea:focus,
+select:focus,
+.vTextField:focus {
+  border-color: #c9333e !important;
+}
+.el-button--primary {
+  background-color: #c9333e !important;
+  border-color: #c9333e !important;
+}
+tbody a:link,
+tbody a:visited {
+  color: #c9333e !important;
+}
+tbody tr:hover td,
+tbody tr:hover th {
+  background-color: rgba(201, 51, 62, 0.2) !important;
+}
+a:link,
+a:visited {
+  color: #c9333e !important;
+}
+.results {
+  color: inherit !important;
+}
+.el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
+  background-color: rgba(201, 51, 62, 0.2) !important;
+}
+.el-date-table td.today span {
+  color: #c9333e !important;
+}
+.el-date-table td.available:hover {
+  color: #c9333e !important;
+}
+.el-picker-panel__icon-btn:hover {
+  color: rgba(201, 51, 62, 0.8) !important;
+}
+.el-range-editor.is-active,
+.el-range-editor.is-active:hover {
+  border-color: #c9333e !important;
+}
+.el-date-table td.end-date span,
+.el-date-table td.start-date span {
+  background-color: #c9333e !important;
+}
+.el-date-table td.in-range div,
+.el-date-table td.in-range div:hover,
+.el-date-table.is-week-mode .el-date-table__row.current div,
+.el-date-table.is-week-mode .el-date-table__row:hover div {
+  background-color: rgba(201, 51, 62, 0.2) !important;
+}
+.el-time-panel__btn.confirm {
+  color: #c9333e !important;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  color: white;
+  background-color: #c9333e !important;
+}
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+  color: #c9333e !important;
+}
+.el-tabs--border-card > .el-tabs__header .el-tabs__item:not(.is-disabled):hover {
+  color: #c9333e !important;
+}
+.navbar {
+  background-color: #c9333e !important;
+}
+.navbar .el-button:focus,
+.navbar .el-button:hover {
+  color: #c9333e !important;
+}
+.navbar .el-button,
+.navbar .el-breadcrumb__item:last-child .el-breadcrumb__inner,
+.navbar .el-breadcrumb__item:last-child .el-breadcrumb__inner a,
+.navbar .el-breadcrumb__item:last-child .el-breadcrumb__inner a:hover,
+.navbar .el-breadcrumb__item:last-child .el-breadcrumb__inner:hover {
+  color: #FFF;
+}
+.navbar .el-breadcrumb__inner,
+.navbar .el-breadcrumb__separator {
+  color: #FFF;
+}
+.logo-wrap {
+  color: #a7b1c2;
+}
+.menu {
+  background-color: #283846 !important;
+}
+.menu .el-menu-item {
+  color: #a7b1c2;
+}
+.menu .el-menu-item:hover {
+  color: #FFF;
+}
+.menu .el-menu .is-active {
+  color: #c9333e !important;
+}
+.menu .el-menu-item-group,
+.menu .el-menu-item {
+  background-color: #283846 !important;
+}
+.menu .el-menu-item:hover {
+  background-color: #3b5769 !important;
+  color: #FFF !important;
+}
+.menu .el-menu-item i {
+  color: inherit;
+}
+.menu .el-submenu__title .far,
+.menu .el-submenu__title .fa,
+.menu .el-submenu__title .fab,
+.menu .el-submenu__title .fas {
+  color: inherit;
+}
+.menu .el-submenu__title i {
+  color: #FFF !important;
+}
+.menu .el-submenu__title {
+  color: #FFF !important;
+  background-color: #2f4050 !important;
+}
+.menu .el-submenu__title:hover,
+.menu .is-opened .el-submenu__title {
+  color: #FFF !important;
+  background-color: #212c3a !important;
+}
+.quick-card a:hover {
+  color: rgba(201, 51, 62, 0.8) !important;
+}
+.module h2,
+.module caption,
+.inline-group h2,
+.selector-chosen h2 {
+  background: #FFF !important;
+  color: #FFF !important;
+}
+#changelist .actions {
+  min-height: 38px;
+}
+.colM {
+  overflow: auto;
+}
+.logo-wrap {
+  background-color: #c9333e !important;
+  color: #FFF;
+}
+.navbar .el-button:focus,
+.navbar .el-button:hover {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+.menu .el-menu li .is-active {
+  color: white !important;
+  border-left: #c9333e 3px solid !important;
+}
+/*# sourceMappingURL=e-red-pro.css.map */

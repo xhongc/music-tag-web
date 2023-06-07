@@ -1,7 +1,0 @@
-{% extends "xadmin/includes/box.html" %}
-{% block box_class %}fieldset{% if fieldset.css_class %} {{ fieldset.css_class }}{% endif %}{% endblock box_class %}
-{% block box_attrs %}{% if fieldset.css_id %}id="{{ fieldset.css_id }}"{% endif %} {{ fieldset.flat_attrs|safe }}{% endblock box_attrs %}
-{% block box_title %}{{ legend|safe }}{% if fieldset.description %} <small class="m">{{fieldset.description}}</small>{% endif %}{% endblock box_title %}
-{% block box_content %}
-{{ fields|safe }}
-{% endblock box_content %}

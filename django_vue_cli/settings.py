@@ -9,7 +9,7 @@ sys.path.insert(1, os.path.join(os.getcwd(), 'lib'))
 
 SECRET_KEY = 'django-insecure-u5_r=pekio0@zt!y(kgbufuosb9mddu8*qeejkzj@=7uyvb392'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_CREDENTIALS = True
@@ -19,6 +19,7 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 INSTALLED_APPS = [
+    'simpleui',
     "corsheaders",
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,15 +28,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "rest_framework",
-    'xadmin',
-    'crispy_forms',
-    'reversion',
     "applications.task",
     "applications.user",
     "applications.music",
     "applications.subsonic",
     # "django_extensions",
-
 ]
 
 MIDDLEWARE = [
@@ -171,6 +168,84 @@ REVERSE_PROXY_TYPE = "nginx"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 SUBSONIC_DEFAULT_TRANSCODING_FORMAT = "mp3"
+
+# simpleui
+SIMPLEUI_DEFAULT_THEME = 'admin.lte.css'
+SIMPLEUI_HOME_PAGE = '/'
+SIMPLEUI_HOME_TITLE = '首页'
+# SIMPLEUI_LOGO = "/static/dist/img/music-tag.png"
+SIMPLEUI_ANALYSIS = False
+SIMPLEUI_CONFIG = {
+    'system_keep': False,
+    'menu_display': ['首页', '音乐管理', '用户管理'],
+    'dynamic': False,
+    'menus': [
+        {
+            'name': '用户管理',
+            'icon': 'fa fa-fw fa-home',
+            "newTab": False,
+            "models": [
+                {
+                    'name': 'Subsonic用户',
+                    'icon': 'fa fa-user',
+                    "url": "/admin/user/userprofile/"
+                },
+                {
+                    'name': '用户',
+                    'icon': 'fa fa-user',
+                    "url": "/admin/auth/user/"
+                }
+            ]
+        },
+        {
+            'name': '音乐管理',
+            'icon': 'fa fa-fw fa-home',
+            "newTab": False,
+            "models": [
+                {
+                    'name': '专辑',
+                    'icon': 'fa fa-user',
+                    "url": "/admin/music/album/"
+                },
+                {
+                    'name': '歌曲',
+                    'icon': 'fa fa-user',
+                    "url": "/admin/music/track/"
+                },
+                {
+                    'name': '艺术家',
+                    'icon': 'fa fa-user',
+                    "url": "/admin/music/artist/"
+                },
+                {
+                    'name': '图片附件',
+                    'icon': 'fa fa-user',
+                    "url": "/admin/music/attachment/"
+                },
+                {
+                    'name': '音乐风格',
+                    'icon': 'fa fa-user',
+                    "url": "/admin/music/genre/"
+                },
+                {
+                    'name': '文件目录',
+                    'icon': 'fa fa-user',
+                    "url": "/admin/music/folder/"
+                },
+                {
+                    'name': '喜爱列表',
+                    'icon': 'fa fa-user',
+                    "url": "/admin/music/trackfavorite/"
+                },
+                {
+                    'name': '播放列表',
+                    'icon': 'fa fa-user',
+                    "url": "/admin/music/playlist/"
+                }
+            ]
+        }
+    ]
+}
 try:
     from local_settings import *  # noqa
 except ImportError:

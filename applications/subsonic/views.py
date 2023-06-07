@@ -2,6 +2,7 @@
 Documentation of Subsonic API can be found at http://www.subsonic.org/pages/api.jsp
 """
 import datetime
+import time
 
 from django.conf import settings
 from django.db.models import Count
@@ -262,6 +263,8 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     )
     def get_album_list2(self, request, *args, **kwargs):
         data = request.GET or request.POST
+        a = time.time()
+        from django.db import connection
 
         queryset = Album.objects.all()
         al_type = data.get("type", "alphabeticalByArtist")
@@ -324,6 +327,8 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         queryset = queryset[offset: offset + size]
 
         data = {"albumList2": {"album": serializers.get_album_list2_data(queryset)}}
+        print("耗时", time.time() - a)
+        print("sql", len(connection.queries), connection.queries)
         return response.Response(data)
 
     @action(

@@ -179,6 +179,10 @@ class Playlist(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "播放列表"
+        verbose_name_plural = "播放列表"
+
 
 class TrackFavorite(models.Model):
     creation_date = models.DateTimeField(default=datetime.now)
@@ -193,6 +197,8 @@ class TrackFavorite(models.Model):
 
     class Meta:
         ordering = ("-creation_date",)
+        verbose_name = "喜爱列表"
+        verbose_name_plural = "喜爱列表"
 
     @classmethod
     def add_track(cls, track, user):
@@ -209,6 +215,7 @@ class TrackFavorite(models.Model):
         favorite, created = cls.objects.get_or_create(user=user, artist=artist)
         return favorite
 
+
 class Folder(models.Model):
     name = models.CharField(max_length=256)
     path = models.TextField()
@@ -221,3 +228,7 @@ class Folder(models.Model):
     parent_id = models.UUIDField(default=uuid.uuid4, editable=False, null=True, blank=True)
     # none, scanning, scanned, updated
     state = models.CharField(max_length=32, default='none')
+
+    class Meta:
+        verbose_name = "文件目录"
+        verbose_name_plural = "文件目录"

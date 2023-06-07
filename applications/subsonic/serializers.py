@@ -224,7 +224,7 @@ def get_starred_data(favorites):
 
 
 def get_album_list2_data(albums):
-    albums = albums.select_related("artist").prefetch_related("tracks")
+    albums = albums.select_related("artist").select_related("genre").prefetch_related("tracks")
     return [get_album2_data(a) for a in albums]
 
 

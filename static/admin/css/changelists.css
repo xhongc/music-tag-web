@@ -21,7 +21,7 @@
 
 .change-list .filtered .results, .change-list .filtered .paginator,
 .filtered #toolbar, .filtered div.xfull {
-    margin-right: 280px;
+    /*margin-right: 280px;*/
     width: auto;
 }
 
@@ -79,7 +79,7 @@
 #changelist #toolbar form input {
     border-radius: 4px;
     font-size: 14px;
-    padding: 5px;
+    /*padding: 5px;*/
     color: #333;
 }
 
