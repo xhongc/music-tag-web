@@ -1,9 +1,11 @@
+import random
 import urllib.parse
 from datetime import datetime
 
 from django.conf import settings
 from rest_framework.response import Response
 
+from applications.music.models import Track, Album
 from applications.subsonic.constants import EXTENSION_TO_MIMETYPE
 
 
@@ -40,3 +42,14 @@ def handle_serve(
         response["Content-Type"] = mt
 
     return response
+
+
+def mock_track():
+    alnum = Album.objects.order_by("?").first()
+
+    for i in range(150):
+        Track.objects.create(
+            name="test2",
+            album_id=alnum.id
+        )
+        print(i)

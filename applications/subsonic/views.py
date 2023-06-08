@@ -7,6 +7,8 @@ import time
 from django.conf import settings
 from django.db.models import Count
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.gzip import gzip_page
 from rest_framework import exceptions
 from rest_framework import permissions as rest_permissions
 from rest_framework import response, viewsets
@@ -18,6 +20,7 @@ from .serializers import PassSerializers
 from .utils import handle_serve
 
 
+@method_decorator(gzip_page, name="dispatch")
 class SubsonicViewSet(viewsets.GenericViewSet):
     content_negotiation_class = negotiation.SubsonicContentNegociation
     authentication_classes = [authentication.SubsonicAuthentication]
@@ -330,7 +333,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
 
         data = {"albumList2": {"album": serializers.get_album_list2_data(queryset)}}
         print("耗时", time.time() - a)
-        print("sql", len(connection.queries), connection.queries)
+        print("sql", len(connection.queries), [i["time"] for i in connection.queries])
         return response.Response(data)
 
     @action(

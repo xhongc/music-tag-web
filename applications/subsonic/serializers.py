@@ -1,4 +1,5 @@
 import collections
+import time
 
 from django.db.models import Count, functions, Sum
 from rest_framework import serializers
@@ -149,7 +150,6 @@ def get_album2_data(album):
     """
     subsonic expects this kind of data:
     """
-
     payload = {
         "id": album.id,
         "artistId": album.artist_id,

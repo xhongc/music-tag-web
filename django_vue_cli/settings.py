@@ -174,19 +174,15 @@ SUBSONIC_DEFAULT_TRANSCODING_FORMAT = "mp3"
 SIMPLEUI_DEFAULT_THEME = 'ant.design.css'
 SIMPLEUI_HOME_PAGE = '/'
 SIMPLEUI_HOME_TITLE = '首页'
+
+
 # SIMPLEUI_LOGO = "/static/dist/img/music-tag.png"
 SIMPLEUI_ANALYSIS = False
 SIMPLEUI_CONFIG = {
     'system_keep': False,
-    'menu_display': ['首页', '音乐管理', '用户管理', "Swagger文档"],
+    'menu_display': ['首页', '音乐管理', '用户管理'],
     'dynamic': False,
     'menus': [
-        {
-            'name': 'Swagger文档',
-            'icon': 'fa fa-fw fa-home',
-            "newTab": False,
-            "url": "/docs/"
-        },
         {
             'name': '用户管理',
             'icon': 'fa fa-fw fa-home',
