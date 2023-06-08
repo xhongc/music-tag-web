@@ -216,6 +216,16 @@ class TrackFavorite(models.Model):
         return favorite
 
 
+class FolderManager(models.Manager):
+    def last_scan_time(self):
+        last_folder = self.order_by("-last_scan_time").first()
+        if last_folder:
+            last_scan_time = last_folder.last_scan_time
+        else:
+            last_scan_time = datetime(1970, 1, 1)
+        return last_scan_time
+
+
 class Folder(models.Model):
     FILE_TYPE_CHOICES = (
         ('folder', '文件夹'),
@@ -239,6 +249,7 @@ class Folder(models.Model):
     parent_id = models.UUIDField(default=uuid.uuid4, editable=False, null=True, blank=True)
     # none, scanning, scanned, updated
     state = models.CharField("状态", max_length=32, default='none', choices=STATE_CHOICES)
+    objects = FolderManager()
 
     class Meta:
         verbose_name = "文件目录"

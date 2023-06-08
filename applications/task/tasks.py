@@ -94,26 +94,21 @@ def full_scan_folder(sub_path=None):
     print("完成扫描！", time.time() - a)
 
 
-@app.task
-def update_scan_folder(sub_path=None):
+def update_scan_folder_func(sub_path=None, now_time=None):
     music_folder = os.path.join(settings.MEDIA_ROOT, "music")
     ignore_path = [os.path.join(music_folder, "data")]
-    print(music_folder)
-    if sub_path:
-        stack = sub_path
-    else:
-        stack = [(None, music_folder)]
-    last_folder = Folder.objects.order_by("-last_scan_time").first()
-    if last_folder:
-        last_scan_time = last_folder.last_scan_time
-    else:
-        last_scan_time = datetime.datetime(1970, 1, 1)
-    now_time = datetime.datetime.now()
+
+    stack = sub_path if sub_path else [(None, music_folder)]
+    last_scan_time = Folder.objects.last_scan_time()
+    now_time = datetime.datetime.now() if not now_time else now_time
+    print(now_time)
     while len(stack) != 0:
         # 从栈里取出数据
         parent_uid, dir_data = stack.pop(0)
         if dir_data in ignore_path:
             continue
+
+        # 文件夹格式
         if os.path.isdir(dir_data):
             try:
                 sub_path = os.scandir(dir_data)
@@ -122,20 +117,19 @@ def update_scan_folder(sub_path=None):
                 print(m)
                 continue
             update_time = folder_update_time(dir_data)
-            if update_time < last_scan_time:
-                try:
-                    sub_path_list = [i.path for i in sub_path]
-                except Exception as e:
-                    m = f"Error4 while reading {dir}: {e.__class__.__name__} {e}\n"
-                    print(m)
-                    continue
-                finally:
-                    if hasattr(sub_path, "close"):
-                        sub_path.close()
-                if not exists_dir(sub_path_list):
-                    continue
+            try:
+                sub_path_list = [i.path for i in sub_path]
+            except Exception as e:
+                m = f"Error4 while reading {dir}: {e.__class__.__name__} {e}\n"
+                print(m)
+                continue
+            finally:
+                if hasattr(sub_path, "close"):
+                    sub_path.close()
+
             current_folder = Folder.objects.filter(path=dir_data).first()
             if current_folder:
+                last_scan_time = current_folder.last_scan_time
                 my_uuid = current_folder.uid
                 update_data = {
                     "name": dir_data.split("/")[-1],
@@ -154,22 +148,23 @@ def update_scan_folder(sub_path=None):
                     "updated_at": now_time,
                 }
             Folder.objects.update_or_create(path=dir_data, defaults=update_data)
-            try:
-                sub_path = [(my_uuid, f"{dir_data}/{i}") for i in sub_path]
-            except Exception as e:
-                m = f"Error5 while reading {dir}: {e.__class__.__name__} {e}\n"
-                print(m)
-                continue
-            finally:
-                if hasattr(sub_path, "close"):
-                    sub_path.close()
-            # stack.extend(sub_path)
-            if sub_path:
-                update_scan_folder.delay(sub_path)
+            if current_folder:
+                # 如果文件夹的更新时间小于上次扫描时间and没有子文件夹，就不扫描。
+                if update_time < last_scan_time:
+                    if not exists_dir(sub_path_list):
+                        print("文件夹没有更新，不扫描！", dir_data)
+                        Folder.objects.filter(parent_id=current_folder.uid).update(
+                            updated_at=now_time
+                        )
+                        continue
+
+            sub_path_stack = [(my_uuid, i) for i in sub_path_list]
+            if sub_path_stack:
+                time.sleep(0.1)
+                update_scan_folder_func(sub_path_stack, now_time)
         else:
             suffix = dir_data.split(".")[-1]
             if suffix in dict(AUDIO_EXTENSIONS_AND_MIMETYPE):
-                print(dir_data)
                 my_uuid = get_uuid()
                 update_data = {
                     "name": dir_data.split("/")[-1],
@@ -192,14 +187,23 @@ def update_scan_folder(sub_path=None):
             else:
                 continue
             Folder.objects.update_or_create(path=dir_data, defaults=update_data)
+
+
+@app.task
+def update_scan_folder(sub_path=None, now_time=None):
+    now_time = datetime.datetime.now() if not now_time else now_time
+    update_scan_folder_func(sub_path, now_time)
     folder_lst = Folder.objects.filter(updated_at=now_time, file_type="folder")
     for folder in folder_lst:
+        # 没有扫描到的子文件夹
         path_list = list(
-            Folder.objects.filter(parent_id=folder.uid).exclude(updated_at=now_time).values_list("path", flat=True))
+            Folder.objects.filter(parent_id=folder.uid, file_type="music").exclude(updated_at=now_time).values_list(
+                "path", flat=True))
         with transaction.atomic():
-            Track.objects.filter(path__in=path_list).delete()
+            if path_list:
+                Track.objects.filter(path__in=path_list).delete()
+            print(Folder.objects.filter(parent_id=folder.uid).exclude(updated_at=now_time).values("path"))
             Folder.objects.filter(parent_id=folder.uid).exclude(updated_at=now_time).delete()
-
     print("完成更新扫描！")
 
 
