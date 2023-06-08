@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.swagger-ui .topbar a {
+  flex: none;
+}
+
+.swagger-ui .topbar .download-url-wrapper .download-url-button {
+  border-radius: 4px;
+}
+
+.swagger-ui .user-context {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  text-align: right;
+}
+
+footer.swagger-ui {
+  box-shadow: inset 1px 2px 0 rgba(0,0,0,.15);
+  font-size: 0.7rem;
+  margin: 2rem 0 1rem;
+  padding-top: 1rem;
+  text-align: right;
+}
+

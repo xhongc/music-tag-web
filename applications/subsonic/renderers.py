@@ -30,9 +30,9 @@ ET._serialize_xml = ET._serialize["xml"] = _serialize_xml
 
 def structure_payload(data):
     payload = {
-        "funkwhaleVersion": "1",
+        "MusicTagVersion": "1",
         "status": "ok",
-        "type": "funkwhale",
+        "type": "music-tag",
         "version": "1.16.0",
     }
     payload.update(data)

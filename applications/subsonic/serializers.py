@@ -7,6 +7,13 @@ from applications.music.models import Track, Artist, Album
 from applications.subsonic.utils import get_type_from_ext
 
 
+class PassSerializers(serializers.Serializer):
+    u = serializers.CharField(required=True)
+    p = serializers.CharField(required=False)
+    s = serializers.CharField(required=False)
+    t = serializers.CharField(required=False)
+
+
 def to_subsonic_date(date):
     """
     Subsonic expects this kind of date format: 2012-04-17T19:55:49.000Z

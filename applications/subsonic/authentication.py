@@ -46,7 +46,7 @@ def authenticate_salt(username, salt, token):
 
 class SubsonicAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
-        data = request.GET or request.POST
+        data = request.GET or request.POST or request.data
         username = data.get("u")
         if not username:
             return None

@@ -217,17 +217,28 @@ class TrackFavorite(models.Model):
 
 
 class Folder(models.Model):
-    name = models.CharField(max_length=256)
+    FILE_TYPE_CHOICES = (
+        ('folder', '文件夹'),
+        ('music', '音乐'),
+        ('image', '图片'),
+    )
+    STATE_CHOICES = (
+        ('none', '未扫描'),
+        ('scanning', '扫描中'),
+        ('scanned', '扫描完成'),
+        ('updated', '已更新')
+    )
+    name = models.CharField("文件名称", max_length=256)
     path = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     last_scan_time = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(default=datetime.now)
     # 文件格式，例如：folder, music, image
-    file_type = models.CharField(max_length=32, default='folder')
+    file_type = models.CharField("文件格式", max_length=32, default='folder', choices=FILE_TYPE_CHOICES)
     uid = models.UUIDField(default=uuid.uuid4, editable=False)
     parent_id = models.UUIDField(default=uuid.uuid4, editable=False, null=True, blank=True)
     # none, scanning, scanned, updated
-    state = models.CharField(max_length=32, default='none')
+    state = models.CharField("状态", max_length=32, default='none', choices=STATE_CHOICES)
 
     class Meta:
         verbose_name = "文件目录"

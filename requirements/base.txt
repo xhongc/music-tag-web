@@ -24,3 +24,6 @@ future==0.18.3
 django-crispy-forms==1.10.0
 django-reversion==3.0.5
 httplib2==0.21.0
+django-simpleui==2023.3.1
+django-rest-swagger==2.2.0
+

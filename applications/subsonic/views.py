@@ -14,6 +14,7 @@ from rest_framework.decorators import action
 
 from applications.music.models import Artist, Album, Attachment, Track, Playlist, TrackFavorite, Genre
 from . import authentication, negotiation, serializers
+from .serializers import PassSerializers
 from .utils import handle_serve
 
 
@@ -22,6 +23,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     authentication_classes = [authentication.SubsonicAuthentication]
     permission_classes = [rest_permissions.IsAuthenticated]
     throttling_scopes = {"*": {"authenticated": "subsonic", "anonymous": "subsonic"}}
+    serializer_class = PassSerializers
 
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
