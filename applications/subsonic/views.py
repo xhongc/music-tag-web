@@ -268,7 +268,6 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     )
     def get_album_list2(self, request, *args, **kwargs):
         data = request.GET or request.POST
-        a = time.time()
         from django.db import connection
 
         queryset = Album.objects.all()
@@ -330,7 +329,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
 
         size = min(size, 500)
         queryset = queryset[offset: offset + size]
-
+        a = time.time()
         data = {"albumList2": {"album": serializers.get_album_list2_data(queryset)}}
         print("耗时", time.time() - a)
         print("sql", len(connection.queries), [i["time"] for i in connection.queries])

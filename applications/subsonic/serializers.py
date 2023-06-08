@@ -156,7 +156,7 @@ def get_album2_data(album):
         "name": album.name,
         "artist": album.artist.name,
         "created": to_subsonic_date(album.created_at),
-        "duration": sum([t.duration or 0 for t in album.tracks.all()]),
+        "duration": 0,
         "playCount": 1,
     }
     if album.attachment_cover_id:
@@ -165,7 +165,7 @@ def get_album2_data(album):
         payload["genre"] = album.genre.name
     if album.max_year:
         payload["year"] = album.max_year
-    payload["songCount"] = len(album.tracks.all())
+    payload["songCount"] = 0
     return payload
 
 
@@ -231,7 +231,10 @@ def get_starred_data(favorites):
 
 
 def get_album_list2_data(albums):
-    albums = albums.select_related("artist").select_related("genre").prefetch_related("tracks")
+    a = time.time()
+    albums = albums.select_related("artist").select_related("genre")
+    albums = list(albums)
+    print("get_album_list2_data", time.time() - a)
     return [get_album2_data(a) for a in albums]
 
 
