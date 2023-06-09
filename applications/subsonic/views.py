@@ -5,7 +5,7 @@ import datetime
 import time
 
 from django.conf import settings
-from django.db.models import Count
+from django.db.models import Count, F
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.gzip import gzip_page
@@ -14,9 +14,10 @@ from rest_framework import permissions as rest_permissions
 from rest_framework import response, viewsets
 from rest_framework.decorators import action
 
-from applications.music.models import Artist, Album, Attachment, Track, Playlist, TrackFavorite, Genre, Folder
+from applications.music.models import Artist, Album, Attachment, Track, Playlist, TrackFavorite, Genre, Folder, \
+    PlaylistTrack
 from . import authentication, negotiation, serializers
-from .serializers import PassSerializers, get_folder_child
+from .serializers import PassSerializers, get_folder_child, get_song_list_data
 from .utils import handle_serve, get_query, order_for_search, try_int
 
 
@@ -81,6 +82,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         url_path="getArtists",
     )
     def get_artists(self, request, *args, **kwargs):
+        """获取歌手列表"""
         artists = Artist.objects.all()
         data = serializers.GetArtistsSerializer(artists).data
         payload = {"artists": data}
@@ -154,6 +156,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         url_path="getArtist",
     )
     def get_artist(self, request, *args, **kwargs):
+        """单个歌手信息"""
         data = request.GET or request.POST
 
         artist = Artist.objects.filter(pk=data["id"]).first()
@@ -163,6 +166,23 @@ class SubsonicViewSet(viewsets.GenericViewSet):
             )
         data = serializers.GetArtistSerializer(artist).data
         payload = {"artist": data}
+
+        return response.Response(payload, status=200)
+
+    @action(
+        detail=False,
+        methods=["get", "post"],
+        url_name="get_top_songs",
+        url_path="getTopSongs",
+    )
+    def get_top_songs(self, request, *args, **kwargs):
+        data = request.GET or request.POST
+        artist_name = data.get("artist", "")
+        count = int(data.get("count", 10))
+        tracks = Track.objects.filter(artist__name=artist_name).select_related("album__artist").order_by(
+            "-plays_count")[:count]
+        data = get_song_list_data(tracks)
+        payload = {"topSongs": data}
 
         return response.Response(payload, status=200)
 
@@ -197,6 +217,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         detail=False, methods=["get", "post"], url_name="get_album", url_path="getAlbum"
     )
     def get_album(self, request, *args, **kwargs):
+        """单个专辑信息"""
         req_data = request.GET or request.POST
 
         album = Album.objects.filter(pk=req_data["id"]).first()
@@ -210,6 +231,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
 
     @action(detail=False, methods=["get", "post"], url_name="stream", url_path="stream")
     def stream(self, request, *args, **kwargs):
+        """音乐流式传输"""
         data = request.GET or request.POST
         try:
             track_id = int(data["id"])
@@ -249,6 +271,11 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         """
         回传正在播放的音乐信息 ?id=1&albumId=1&submission=true
         """
+        data = request.GET or request.POST
+        track_id = data.get("id")
+        album_id = data.get("albumId")
+        Track.objects.filter(pk=track_id).update(plays_count=F("plays_count") + 1)
+        Album.objects.filter(pk=album_id).update(plays_count=F("plays_count") + 1)
         return response.Response({})
 
     @action(
@@ -409,7 +436,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         size = min(size, 500)
         queryset = queryset[offset: offset + size]
 
-        data = {"albumList2": {"album": serializers.get_album_list2_data(queryset)}}
+        data = {"albumList": {"album": serializers.get_album_list2_data(queryset)}}
         return response.Response(data)
 
     @action(
@@ -457,7 +484,10 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         """
         data = request.GET or request.POST
         folder_uid = data.get("id")
-        parent_node = Folder.objects.filter(uid=folder_uid).first()
+        try:
+            parent_node = Folder.objects.filter(uid=folder_uid).first()
+        except Exception:
+            return response.Response({"error": {"code": 10, "message": "没有找到根目录"}})
         if not parent_node:
             return response.Response({"error": {"code": 10, "message": "没有找到根目录"}})
 
@@ -477,16 +507,141 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     @action(
         detail=False,
         methods=["get", "post"],
+        url_name="create_playlist",
+        url_path="createPlaylist",
+    )
+    def create_playlist(self, request, *args, **kwargs):
+        data = request.GET or request.POST
+        name = data.get("name", "")
+        create_playlist = True
+        play_list_id = data.get("playlistId", "")
+        if name and play_list_id:
+            return response.Response(
+                {
+                    "error": {
+                        "code": 10,
+                        "message": "You can only supply either a playlistId or name, not both.",
+                    }
+                }
+            )
+        if play_list_id:
+            playlist = request.user.playlists.get(pk=play_list_id)
+            create_playlist = False
+            if not name and not playlist:
+                return response.Response(
+                    {
+                        "error": {
+                            "code": 10,
+                            "message": "A valid playlist ID or name must be specified.",
+                        }
+                    }
+                )
+        if create_playlist:
+            playlist = request.user.playlists.create(name=name)
+        ids = []
+        for i in data.getlist("songId"):
+            try:
+                ids.append(int(i))
+            except (TypeError, ValueError):
+                pass
+        if ids:
+            tracks = Track.objects.filter(pk__in=ids)
+            by_id = {t.id: t for t in tracks}
+            sorted_tracks = []
+            for i in ids:
+                try:
+                    sorted_tracks.append(by_id[i])
+                except KeyError:
+                    pass
+            if sorted_tracks:
+                playlist.insert_many(sorted_tracks)
+        playlist = request.user.playlists.annotate(_tracks_count=Count("playlist_tracks")).get(pk=playlist.pk)
+        ret_data = {"playlist": serializers.get_playlist_detail_data(playlist)}
+        return response.Response(ret_data)
+
+    @action(
+        detail=False,
+        methods=["get", "post"],
         url_name="get_playlists",
         url_path="getPlaylists",
     )
     def get_playlists(self, request, *args, **kwargs):
-        req_data = request.GET or request.POST
-        print(req_data)
-        qs = Playlist.objects.filter(user=request.user).all()
+        qs = Playlist.objects.filter(user=request.user)
+        qs = qs.select_related("user")
         data = {
             "playlists": {"playlist": [serializers.get_playlist_data(p) for p in qs]}
         }
+        return response.Response(data)
+
+    @action(
+        detail=False,
+        methods=["get", "post"],
+        url_name="get_playlist",
+        url_path="getPlaylist",
+    )
+    def get_playlist(self, request, *args, **kwargs):
+        data = request.GET or request.POST
+        playlist_id = data.get("id")
+        playlist = Playlist.objects.filter(pk=playlist_id).first()
+        data = {"playlist": serializers.get_playlist_detail_data(playlist)}
+        return response.Response(data)
+
+    @action(
+        detail=False,
+        methods=["get", "post"],
+        url_name="update_playlist",
+        url_path="updatePlaylist",
+    )
+    def update_playlist(self, request, *args, **kwargs):
+        data = request.GET or request.POST
+        play_list_id = data.get("playlistId", "")
+        playlist = Playlist.objects.filter(pk=play_list_id).first()
+        new_name = data.get("name", "")
+        if new_name:
+            playlist.name = new_name
+            playlist.save(update_fields=["name", "modification_date"])
+        try:
+            to_remove = int(data["songIndexToRemove"])
+            plt = playlist.playlist_tracks.get(index=to_remove)
+        except (TypeError, ValueError, KeyError):
+            pass
+        except PlaylistTrack.DoesNotExist:
+            pass
+        else:
+            plt.delete(update_indexes=True)
+
+        ids = []
+        for i in data.getlist("songIdToAdd"):
+            try:
+                ids.append(int(i))
+            except (TypeError, ValueError):
+                pass
+        if ids:
+            tracks = Track.objects.filter(pk__in=ids)
+            by_id = {t.id: t for t in tracks}
+            sorted_tracks = []
+            for i in ids:
+                try:
+                    sorted_tracks.append(by_id[i])
+                except KeyError:
+                    pass
+            if sorted_tracks:
+                playlist.insert_many(sorted_tracks)
+
+        data = {"status": "ok"}
+        return response.Response(data)
+
+    @action(
+        detail=False,
+        methods=["get", "post"],
+        url_name="delete_playlist",
+        url_path="deletePlaylist",
+    )
+    def delete_playlist(self, request, *args, **kwargs):
+        data = request.GET or request.POST
+        playlist_id = data.get("id")
+        Playlist.objects.filter(pk=playlist_id).delete()
+        data = {"status": "ok"}
         return response.Response(data)
 
     @action(

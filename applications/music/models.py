@@ -2,12 +2,13 @@ import uuid
 from datetime import datetime
 
 from django.contrib.auth.models import User
-from django.db import models
+from django.db import models, transaction
 from django.db.models import Count
 from django_mysql.models import ListTextField
 
 from applications.music import validators
 from applications.music.utils import get_file_path
+from rest_framework import exceptions
 
 
 class Album(models.Model):
@@ -190,6 +191,71 @@ class Playlist(models.Model):
     class Meta:
         verbose_name = "播放列表"
         verbose_name_plural = "播放列表"
+
+    @transaction.atomic
+    def remove(self, index):
+        existing = self.playlist_tracks.select_for_update()
+        self.save(update_fields=["modification_date"])
+        to_update = existing.filter(index__gt=index)
+        return to_update.update(index=models.F("index") - 1)
+
+    @transaction.atomic
+    def insert_many(self, tracks, allow_duplicates=True):
+        existing = self.playlist_tracks.select_for_update()
+        now = datetime.now()
+        total = existing.filter(index__isnull=False).count()
+
+        if not allow_duplicates:
+            self._check_duplicate_add(existing, tracks)
+
+        self.save(update_fields=["modification_date"])
+        start = total
+        plts = [
+            PlaylistTrack(
+                creation_date=now, playlist=self, track=track, index=start + i
+            )
+            for i, track in enumerate(tracks)
+        ]
+        return PlaylistTrack.objects.bulk_create(plts)
+
+    def _check_duplicate_add(self, existing_playlist_tracks, tracks_to_add):
+        track_ids = [t.pk for t in tracks_to_add]
+
+        duplicates = existing_playlist_tracks.filter(
+            track__pk__in=track_ids
+        ).values_list("track__pk", flat=True)
+        if duplicates:
+            duplicate_tracks = [t for t in tracks_to_add if t.pk in duplicates]
+            raise exceptions.ValidationError(
+                {
+                    "non_field_errors": [
+                        {
+                            "tracks": duplicate_tracks,
+                            "playlist_name": self.name,
+                            "code": "tracks_already_exist_in_playlist",
+                        }
+                    ]
+                }
+            )
+
+
+class PlaylistTrack(models.Model):
+    track = models.ForeignKey("Track", related_name="playlist_tracks", on_delete=models.CASCADE)
+    index = models.PositiveIntegerField(null=True, blank=True)
+    playlist = models.ForeignKey(Playlist, related_name="playlist_tracks", on_delete=models.CASCADE)
+    creation_date = models.DateTimeField(default=datetime.now)
+
+    class Meta:
+        ordering = ("-playlist", "index")
+
+    def delete(self, *args, **kwargs):
+        playlist = self.playlist
+        index = self.index
+        update_indexes = kwargs.pop("update_indexes", False)
+        r = super().delete(*args, **kwargs)
+        if index is not None and update_indexes:
+            playlist.remove(index)
+        return r
 
 
 class TrackFavorite(models.Model):

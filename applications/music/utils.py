@@ -1,4 +1,5 @@
 import os
+import random
 import uuid
 import urllib.parse
 
@@ -85,3 +86,27 @@ def get_file_path_view(audio_file):
             path = audio_file.replace(prefix, serve_path, 1)
         path = strip_absolute_media_url(path)
         return path.encode("utf-8")
+
+
+def mock_test():
+    from applications.music.models import Artist, Album, Track
+    from applications.task.tasks import clear_music
+
+    clear_music()
+    a_name = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o"]
+    bulk1 = []
+    for i in range(1, 1200):
+        name = random.choice(a_name)
+        bulk1.append(Artist(id=i, name=f"{name}_{i}"))
+    Artist.objects.bulk_create(bulk1, batch_size=500)
+
+    bulk2 = []
+    for i in range(1, 1200):
+        bulk2.append(Album(id=i, name=f"Album{i}", artist_id=random.randint(1, 1200)))
+    Album.objects.bulk_create(bulk2, batch_size=500)
+
+    bulk3 = []
+    for i in range(1, 12000):
+        bulk3.append(Track(id=i, name=f"Track{i}", album_id=random.randint(1, 1200), artist_id=random.randint(1, 1200)))
+
+    Track.objects.bulk_create(bulk3, batch_size=500)
