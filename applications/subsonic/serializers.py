@@ -272,10 +272,7 @@ def get_starred_data(favorites):
 
 
 def get_album_list2_data(albums):
-    a = time.time()
     albums = albums.select_related("artist").select_related("genre")
-    albums = list(albums)
-    print("get_album_list2_data", time.time() - a)
     return [get_album2_data(a) for a in albums]
 
 

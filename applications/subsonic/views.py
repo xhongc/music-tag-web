@@ -274,8 +274,15 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         data = request.GET or request.POST
         track_id = data.get("id")
         album_id = data.get("albumId")
-        Track.objects.filter(pk=track_id).update(plays_count=F("plays_count") + 1)
-        Album.objects.filter(pk=album_id).update(plays_count=F("plays_count") + 1)
+        if track_id:
+            Track.objects.filter(pk=track_id).update(plays_count=F("plays_count") + 1,
+                                                     accessed_date=datetime.datetime.now())
+        if album_id:
+            Album.objects.filter(pk=album_id).update(plays_count=F("plays_count") + 1,
+                                                     accessed_date=datetime.datetime.now())
+        else:
+            Album.objects.filter(tracks__id=track_id).update(plays_count=F("plays_count") + 1,
+                                                             accessed_date=datetime.datetime.now())
         return response.Response({})
 
     @action(
@@ -300,8 +307,6 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     )
     def get_album_list2(self, request, *args, **kwargs):
         data = request.GET or request.POST
-        from django.db import connection
-
         queryset = Album.objects.all()
         al_type = data.get("type", "alphabeticalByArtist")
         if al_type == "alphabeticalByArtist":
@@ -311,8 +316,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         elif al_type == "alphabeticalByName" or not al_type:
             queryset = queryset.order_by("name")
         elif al_type == "recent" or not al_type:
-            # todo最近播放的
-            queryset = queryset.exclude(max_year=0).order_by("-max_year")
+            queryset = queryset.order_by("-accessed_date")
         elif al_type == "newest" or not al_type:
             queryset = queryset.order_by("-created_at")
         elif al_type == "frequent":
@@ -361,10 +365,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
 
         size = min(size, 500)
         queryset = queryset[offset: offset + size]
-        a = time.time()
         data = {"albumList2": {"album": serializers.get_album_list2_data(queryset)}}
-        print("耗时", time.time() - a)
-        print("sql", len(connection.queries), [i["time"] for i in connection.queries])
         return response.Response(data)
 
     @action(
@@ -815,4 +816,22 @@ class SubsonicViewSet(viewsets.GenericViewSet):
             queryset = order_for_search(queryset, c["search_fields"][0])
             queryset = queryset[offset: offset + size]
             payload["searchResult3"][c["subsonic"]] = c["serializer"](queryset)
+        return response.Response(payload)
+
+    @action(
+        detail=False,
+        methods=["get", "post"],
+        url_name="get_lyrics",
+        url_path="getLyrics",
+    )
+    def get_lyrics(self, request, *args, **kwargs):
+        data = request.GET or request.POST
+        artist = data.get("artist")
+        title = data.get("title")
+        track = Track.objects.filter(artist__name=artist, name=title).first()
+        payload = {"lyrics": {
+            "artist": artist,
+            "title": title,
+            "value": track.lyrics if track else ""
+        }}
         return response.Response(payload)
