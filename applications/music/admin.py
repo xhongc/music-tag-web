@@ -141,7 +141,7 @@ class ArtistAdmin(AjaxAdmin):
     search_fields = ('name',)
 
     list_per_page = 10
-    actions = ['merge_artist']
+    actions = ['merge_artist', "scan_artist_cover"]
 
     def merge_artist(self, request, queryset):
         # 这里的queryset 会有数据过滤，只包含选中的数据
@@ -198,6 +198,45 @@ class ArtistAdmin(AjaxAdmin):
             # 为空校验，默认为False
             'require': True
         }]
+    }
+
+    def scan_artist_cover(self, request, queryset):
+        if queryset:
+            for artist in queryset:
+                if not artist.attachment_cover:
+                    album = artist.albums.filter(attachment_cover__isnull=False).first()
+                    if album:
+                        artist.attachment_cover = album.attachment_cover
+                        artist.save()
+        else:
+            for artist in Artist.objects.filter(attachment_cover__isnull=True):
+                album = artist.albums.filter(attachment_cover__isnull=False).first()
+                if album:
+                    artist.attachment_cover = album.attachment_cover
+                    artist.save()
+        return JsonResponse(data={
+            'status': 'success',
+            'msg': '处理成功！'
+        })
+    scan_artist_cover.short_description = '刮削封面'
+    scan_artist_cover.layer = {
+        # 弹出层中的输入框配置
+
+        # 这里指定对话框的标题
+        'title': '刮削封面',
+        # 提示信息
+        'tips': '将没有封面的歌手，使用专辑封面进行刮削，是否继续？',
+        # 确认按钮显示文本
+        'confirm_button': '确认提交',
+        # 取消按钮显示文本
+        'cancel_button': '取消',
+
+        # 弹出层对话框的宽度，默认50%
+        'width': '40%',
+
+        # 表单中 label的宽度，对应element-ui的 label-width，默认80px
+        'labelWidth': "80px",
+        'params': []
     }
 
 
