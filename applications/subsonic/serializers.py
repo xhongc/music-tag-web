@@ -60,6 +60,26 @@ def get_artist_data(artist_values):
     }
 
 
+def get_folder_data(artist_values):
+    return {
+        "id": artist_values["uid"],
+        "name": artist_values["name"],
+        "albumCount": 0,
+        "coverArt": "",
+    }
+
+
+def get_folder_child(folder):
+    return {
+        "id": folder.uid,
+        "parent": folder.parent_id,
+        "title": folder.name,
+        "artist": "",
+        "isDir": True if folder.file_type == "folder" else False,
+        "coverArt": "",
+    }
+
+
 class GetArtistsSerializer(serializers.Serializer):
     def to_representation(self, queryset):
         payload = {"ignoredArticles": "", "index": []}
@@ -76,6 +96,26 @@ class GetArtistsSerializer(serializers.Serializer):
             letter_data = {
                 "name": letter,
                 "artist": [get_artist_data(v) for v in artists],
+            }
+            payload["index"].append(letter_data)
+        return payload
+
+
+class GetFolderSerializer(serializers.Serializer):
+    def to_representation(self, queryset):
+        payload = {"ignoredArticles": "", "index": []}
+        queryset = queryset.order_by(functions.Lower("name"))
+        values = queryset.values("id", "name", "uid")
+
+        first_letter_mapping = collections.defaultdict(list)
+        for artist in values:
+            if artist["name"]:
+                first_letter_mapping[artist["name"][0].upper()].append(artist)
+
+        for letter, artists in sorted(first_letter_mapping.items()):
+            letter_data = {
+                "name": letter,
+                "artist": [get_folder_data(v) for v in artists],
             }
             payload["index"].append(letter_data)
         return payload

@@ -14,10 +14,10 @@ from rest_framework import permissions as rest_permissions
 from rest_framework import response, viewsets
 from rest_framework.decorators import action
 
-from applications.music.models import Artist, Album, Attachment, Track, Playlist, TrackFavorite, Genre
+from applications.music.models import Artist, Album, Attachment, Track, Playlist, TrackFavorite, Genre, Folder
 from . import authentication, negotiation, serializers
-from .serializers import PassSerializers
-from .utils import handle_serve
+from .serializers import PassSerializers, get_folder_child
+from .utils import handle_serve, get_query, order_for_search, try_int
 
 
 @method_decorator(gzip_page, name="dispatch")
@@ -211,7 +211,12 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     @action(detail=False, methods=["get", "post"], url_name="stream", url_path="stream")
     def stream(self, request, *args, **kwargs):
         data = request.GET or request.POST
-        track = Track.objects.filter(pk=data["id"]).first()
+        try:
+            track_id = int(data["id"])
+            track = Track.objects.filter(pk=track_id).first()
+        except Exception:
+            folder = Folder.objects.filter(uid=data["id"]).first()
+            track = Track.objects.filter(path=folder.path).first()
         max_bitrate = data.get("maxBitRate")
         try:
             max_bitrate = min(max(int(max_bitrate), 0), 320) or None
@@ -414,9 +419,11 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         url_path="getIndexes",
     )
     def get_indexes(self, request, *args, **kwargs):
-        artists = Artist.objects.all()
-
-        data = serializers.GetArtistsSerializer(artists).data
+        root_node = Folder.objects.filter(parent_id__isnull=True).first()
+        if not root_node:
+            return response.Response({"error": {"code": 10, "message": "没有找到根目录"}})
+        folders = Folder.objects.filter(parent_id=root_node.uid).all()
+        data = serializers.GetFolderSerializer(folders).data
         payload = {"indexes": data}
 
         return response.Response(payload, status=200)
@@ -431,7 +438,11 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         """
         获取音乐文件夹
         """
-        data = {"musicFolders": {"musicFolder": [{"id": 1, "name": "Music"}]}}
+        root_node = Folder.objects.filter(parent_id__isnull=True).first()
+        if not root_node:
+            return response.Response({"error": {"code": 10, "message": "没有找到根目录"}})
+
+        data = {"musicFolders": {"musicFolder": [{"id": root_node.uid, "name": "music"}]}}
         return response.Response(data, status=200)
 
     @action(
@@ -444,31 +455,21 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         """
         获取音乐文件夹
         """
+        data = request.GET or request.POST
+        folder_uid = data.get("id")
+        parent_node = Folder.objects.filter(uid=folder_uid).first()
+        if not parent_node:
+            return response.Response({"error": {"code": 10, "message": "没有找到根目录"}})
+
+        folders = Folder.objects.filter(parent_id=folder_uid).all()
+        child_data = [get_folder_child(i) for i in folders]
         data = {
             "directory": {
-                "id": "10",
-                "parent": "1",
-                "name": "ABBA",
+                "id": folder_uid,
+                "parent": parent_node.parent_id,
+                "name": parent_node.name,
                 "starred": "2013-11-02T12:30:00",
-                "child": [
-                    {
-                        "id": "11"
-                        ,
-                        "parent": "10",
-                        "title": "Arrival",
-                        "artist": "ABBA",
-                        "isDir": "true",
-                        "coverArt": "22"
-                    },
-                    {
-                        "id": "12",
-                        "parent": "10",
-                        "title": "Super Trouper",
-                        "artist": "ABBA",
-                        "isDir": "true",
-                        "coverArt": "23"
-                    }
-                ]
+                "child": child_data
             }
         }
         return response.Response(data)
@@ -583,3 +584,54 @@ class SubsonicViewSet(viewsets.GenericViewSet):
             }
         }
         return response.Response(data)
+
+    @action(
+        detail=False, methods=["get", "post"], url_name="search3", url_path="search3"
+    )
+    def search3(self, request, *args, **kwargs):
+        data = request.GET or request.POST
+        query = str(data.get("query", "")).replace("*", "")
+        conf = [
+            {
+                "subsonic": "artist",
+                "search_fields": ["name"],
+                "queryset": (
+                    Artist.objects.with_albums_count().values(
+                        "id", "_albums_count", "name"
+                    )
+                ),
+                "serializer": lambda qs: [serializers.get_artist_data(a) for a in qs],
+            },
+            {
+                "subsonic": "album",
+                "search_fields": ["name"],
+                "queryset": (
+                    Album.objects.all()
+                ),
+                "serializer": serializers.get_album_list2_data,
+            },
+            {
+                "subsonic": "song",
+                "search_fields": ["name"],
+                "queryset": (
+                    Track.objects.select_related("album__artist")
+                ),
+                "serializer": serializers.get_song_list_data,
+            },
+        ]
+        payload = {"searchResult3": {}}
+        for c in conf:
+            offset_key = "{}Offset".format(c["subsonic"])
+            count_key = "{}Count".format(c["subsonic"])
+
+            offset = try_int(data.get(offset_key, 0))
+            size = try_int(data.get(count_key, 20))
+            size = min(size, 500)
+
+            queryset = c["queryset"]
+            if query:
+                queryset = c["queryset"].filter(get_query(query, c["search_fields"]))
+            queryset = order_for_search(queryset, c["search_fields"][0])
+            queryset = queryset[offset: offset + size]
+            payload["searchResult3"][c["subsonic"]] = c["serializer"](queryset)
+        return response.Response(payload)

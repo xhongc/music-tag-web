@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Count
 from django_mysql.models import ListTextField
 
 from applications.music import validators
@@ -90,6 +91,11 @@ class Track(models.Model):
         return self.name
 
 
+class ArtistManager(models.Manager):
+    def with_albums_count(self):
+        return self.annotate(_albums_count=Count('albums'))
+
+
 class Artist(models.Model):
     name = models.CharField(max_length=255, default='', blank=False)
     album_count = models.IntegerField(default=0)
@@ -104,6 +110,8 @@ class Artist(models.Model):
     similar_artists = models.CharField(max_length=255, default='', null=True, blank=True)
     external_url = models.CharField(max_length=255, default='', null=True, blank=True)
     external_info_updated_at = models.DateTimeField(null=True, blank=True)
+
+    objects = ArtistManager()
 
     class Meta:
         verbose_name = "艺术家"
