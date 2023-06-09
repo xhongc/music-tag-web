@@ -329,9 +329,9 @@ def get_user_detail_data(user):
     }
 
 
-def get_genre_data(tag):
+def get_genre_data(tag, _tracks_count_map):
     return {
-        "songCount": getattr(tag, "_tracks_count", 0),
+        "songCount": _tracks_count_map.get(tag.pk, 0),
         "albumCount": getattr(tag, "_albums_count", 0),
         "value": tag.name,
     }

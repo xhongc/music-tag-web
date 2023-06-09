@@ -292,11 +292,13 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         url_path="getGenres",
     )
     def get_genres(self, request, *args, **kwargs):
-        queryset = Genre.objects.annotate(_albums_count=Count("albums", distinct=True),
-                                          _tracks_count=Count("tracks", distinct=True)).order_by("name")
+        queryset = Genre.objects.annotate(_albums_count=Count("albums")).order_by("name")
+        _tracks_count_map = dict(
+            Genre.objects.annotate(_tracks_count=Count("tracks")).values_list("id", "_tracks_count"))
         data = {
-            "genres": {"genre": [serializers.get_genre_data(tag) for tag in queryset]}
+            "genres": {"genre": [serializers.get_genre_data(tag, _tracks_count_map) for tag in queryset]}
         }
+
         return response.Response(data)
 
     @action(

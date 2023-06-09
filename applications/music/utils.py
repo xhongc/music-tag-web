@@ -89,7 +89,7 @@ def get_file_path_view(audio_file):
 
 
 def mock_test():
-    from applications.music.models import Artist, Album, Track
+    from applications.music.models import Artist, Album, Track, Genre
     from applications.task.tasks import clear_music
 
     clear_music()
@@ -100,13 +100,20 @@ def mock_test():
         bulk1.append(Artist(id=i, name=f"{name}_{i}"))
     Artist.objects.bulk_create(bulk1, batch_size=500)
 
+    bulk4 = []
+    for i in range(1, 30):
+        bulk4.append(Genre(id=i, name=f"Genre{i}"))
+    Genre.objects.bulk_create(bulk4, batch_size=500)
+
     bulk2 = []
     for i in range(1, 1200):
-        bulk2.append(Album(id=i, name=f"Album{i}", artist_id=random.randint(1, 1200)))
+        bulk2.append(Album(id=i, name=f"Album{i}", genre_id=random.randint(1, 30),
+                           artist_id=random.randint(1, 1200)))
     Album.objects.bulk_create(bulk2, batch_size=500)
 
     bulk3 = []
     for i in range(1, 12000):
-        bulk3.append(Track(id=i, name=f"Track{i}", album_id=random.randint(1, 1200), artist_id=random.randint(1, 1200)))
+        bulk3.append(Track(id=i, name=f"Track{i}", genre_id=random.randint(1, 30),
+                           album_id=random.randint(1, 1200), artist_id=random.randint(1, 1200)))
 
     Track.objects.bulk_create(bulk3, batch_size=500)
