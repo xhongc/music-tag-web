@@ -448,7 +448,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     def get_indexes(self, request, *args, **kwargs):
         root_node = Folder.objects.filter(parent_id__isnull=True).first()
         if not root_node:
-            return response.Response({"error": {"code": 10, "message": "没有找到根目录"}})
+            return response.Response({"indexes": {}}, status=200)
         folders = Folder.objects.filter(parent_id=root_node.uid).all()
         data = serializers.GetFolderSerializer(folders).data
         payload = {"indexes": data}
@@ -467,7 +467,8 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         """
         root_node = Folder.objects.filter(parent_id__isnull=True).first()
         if not root_node:
-            return response.Response({"error": {"code": 10, "message": "没有找到根目录"}})
+            data = {"musicFolders": {"musicFolder": [{"id": 1, "name": "music"}]}}
+            return response.Response(data, status=200)
 
         data = {"musicFolders": {"musicFolder": [{"id": root_node.uid, "name": "music"}]}}
         return response.Response(data, status=200)
@@ -487,9 +488,25 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         try:
             parent_node = Folder.objects.filter(uid=folder_uid).first()
         except Exception:
-            return response.Response({"error": {"code": 10, "message": "没有找到根目录"}})
+            return response.Response({
+                "directory": {
+                    "id": folder_uid,
+                    "parent": folder_uid,
+                    "name": folder_uid,
+                    "starred": "2013-11-02T12:30:00",
+                    "child": []
+                }
+            }, status=200)
         if not parent_node:
-            return response.Response({"error": {"code": 10, "message": "没有找到根目录"}})
+            return response.Response({
+                "directory": {
+                    "id": folder_uid,
+                    "parent": folder_uid,
+                    "name": folder_uid,
+                    "starred": "2013-11-02T12:30:00",
+                    "child": []
+                }
+            }, status=200)
 
         folders = Folder.objects.filter(parent_id=folder_uid).all()
         child_data = [get_folder_child(i) for i in folders]
@@ -708,6 +725,15 @@ class SubsonicViewSet(viewsets.GenericViewSet):
             return response.Response(
                 {"error": {"code": 10, "message": "Invalid id or albumId parameter"}}
             )
+        return response.Response({"status": "ok"})
+
+    @action(
+        detail=False,
+        methods=["get", "post"],
+        url_name="set_rating",
+        url_path="setRating",
+    )
+    def set_rating(self, request, *args, **kwargs):
         return response.Response({"status": "ok"})
 
     @action(
