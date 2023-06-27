@@ -11,7 +11,7 @@ from applications.task.serialziers import FileListSerializer, Id3Serializer, Upd
     FetchId3ByTitleSerializer, FetchLlyricSerializer, BatchUpdateId3Serializer
 from applications.task.services.music_resource import MusicResource
 from applications.task.services.update_ids import update_music_info
-from applications.task.tasks import full_scan_folder, scan_music_id3, scan, clear_music
+from applications.task.tasks import full_scan_folder, scan, clear_music
 from component.drf.viewsets import GenericViewSet
 from django_vue_cli.celery_app import app as celery_app
 

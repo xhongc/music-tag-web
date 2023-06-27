@@ -306,7 +306,7 @@
                 bakDir: '/app/media/',
                 fileName: '',
                 resource: 'netease',
-                resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}],
+                resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}, {id: 'qmusic', name: 'QQ音乐'}],
                 baseMusicInfo: {
                     'genre': '流行',
                     'is_save_lyrics_file': false

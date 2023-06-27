@@ -1,5 +1,7 @@
 import requests
+import base64
 
+from applications.task.services.qm import QQMusicApi
 from applications.task.utils import timestamp_to_dt
 from applications.utils.send import send
 
@@ -13,6 +15,8 @@ class MusicResource:
             return NetEaseMusicClient()
         elif info == "migu":
             return MiGuMusicClient()
+        elif info == "qmusic":
+            return QmusicClient()
         raise Exception("暂不支持该音乐平台")
 
     def fetch_lyric(self, song_id):
@@ -79,4 +83,17 @@ class MiGuMusicClient:
             song["album_id"] = song['albumId']
             song["album_img"] = song['cover']
             song["year"] = ""
+        return songs
+
+
+class QmusicClient:
+    def fetch_lyric(self, song_id):
+        a = QQMusicApi()
+        res = a.getQQMusicMediaLyric(song_id)
+        decoded_str = base64.b64decode(res.get("lyric", "")).decode("utf-8")
+        return decoded_str
+
+    def fetch_id3_by_title(self, title):
+        a = QQMusicApi()
+        songs = a.getQQMusicMatchSong(title)
         return songs

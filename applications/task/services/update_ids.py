@@ -5,6 +5,8 @@ import music_tag
 from applications.utils.constant_template import ConstantTemplate
 from applications.utils.send import send
 
+COPYRIGHT = "感谢您的聆听，music-tag-web打上标签。POW~"
+
 
 def update_music_info(music_id3_info, is_raw_thumbnail=False):
     for each in music_id3_info:
@@ -36,6 +38,10 @@ def update_music_info(music_id3_info, is_raw_thumbnail=False):
         if each.get("year", None):
             f["year"] = each["year"]
         if each.get("lyrics", None):
+            if each["lyrics"]:
+                if not each["lyrics"].endswith(COPYRIGHT):
+                    each["lyrics"] = each["lyrics"] + "\n" + COPYRIGHT
+
             f["lyrics"] = each["lyrics"]
             if each.get("is_save_lyrics_file", False):
                 lyrics_file_path = f"{os.path.dirname(each['file_full_path'])}/{base_filename}.lrc"
@@ -56,7 +62,6 @@ def update_music_info(music_id3_info, is_raw_thumbnail=False):
                 if is_raw_thumbnail:
                     f['artwork'] = f['artwork'].first.raw_thumbnail([128, 128])
         f.save()
-
         if each.get("filename", None):
             if "${" in each["filename"]:
                 each["filename"] = ConstantTemplate(each["filename"]).resolve_data(var_dict)
