@@ -145,7 +145,8 @@
                             style="width: 50%;">
                             手动批量修改
                         </bk-button>
-                        <bk-button :theme="'success'" :loading="isLoading" :disabled="true" class="mr10"
+                        <bk-button :theme="'success'" :loading="isLoading"
+                            @click="exampleSetting1.primary.visible = true" class="mr10"
                             style="width: 50%;">
                             自动批量修改
                         </bk-button>
@@ -294,6 +295,35 @@
                 </div>
             </transition>
         </div>
+        <bk-dialog v-model="exampleSetting1.primary.visible"
+            theme="primary"
+            :mask-close="false"
+            @confirm="handleBatchAuto"
+            :header-position="exampleSetting1.primary.headerPosition"
+            title="自动批量修改">
+            <p>宽松模式: 只根据标题匹配元数据, 可能存在同名或翻唱歌曲。</p>
+            <p>严格模式: 根据标题和歌手或标题和专辑匹配元数据, 准确性更高。</p>
+            <bk-radio-group v-model="selectAutoMode">
+                <bk-radio-button value="simple">
+                    宽松模式
+                </bk-radio-button>
+                <bk-radio-button value="hard">
+                    严格模式
+                </bk-radio-button>
+            </bk-radio-group>
+            <div>音乐源顺序</div>
+            <bk-select style="width: 250px;"
+                searchable
+                multiple
+                show-select-all
+                v-model="sourceList">
+                <bk-option v-for="option in resourceList"
+                    :key="option.id"
+                    :id="option.id"
+                    :name="option.name">
+                </bk-option>
+            </bk-select>
+        </bk-dialog>
     </div>
 </template>
 <script>
@@ -306,7 +336,10 @@
                 bakDir: '/app/media/',
                 fileName: '',
                 resource: 'netease',
-                resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}, {id: 'qmusic', name: 'QQ音乐'}],
+                resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}, {
+                    id: 'qmusic',
+                    name: 'QQ音乐'
+                }],
                 baseMusicInfo: {
                     'genre': '流行',
                     'is_save_lyrics_file': false
@@ -340,7 +373,15 @@
                     {'id': '氛围音乐', name: '氛围音乐'}
                 ],
                 checkedIds: [],
-                checkedData: []
+                checkedData: [],
+                selectAutoMode: 'hard',
+                sourceList: [],
+                exampleSetting1: {
+                    primary: {
+                        visible: false,
+                        headerPosition: 'left'
+                    }
+                }
             }
         },
         created() {
@@ -350,10 +391,13 @@
             tpl(node, ctx) {
                 // 如果在某些情况下 h 不能自动注入而报错，需将 h 参数写上；一般来说 h 默认是第一参数，但是现在改为第一参数会导致已经使用的用户都需要修改，所以先放在最后。
                 // 如果 h 能自动注入则可以忽略 h 参数，无需写上，否则 h 参数会重复。
-                const titleClass = node.selected ? 'node-title node-selected' : 'node-title'
+                const titleClass = node.selected ? 'node-title node-selected' : 'node-title ' + node.state
+                console.log(node, titleClass)
                 return <span>
                     <span class={titleClass} domPropsInnerHTML={node.title.slice(0, 30)}
-                        onClick={() => { this.nodeClickOne(node) }} v-bk-tooltips={node.title}>
+                        onClick={() => {
+                            this.nodeClickOne(node)
+                        }} v-bk-tooltips={node.title}>
                     </span>
                 </span>
             },
@@ -526,6 +570,34 @@
                         }
                     }
                 })
+            },
+            handleBatchAuto() {
+                this.$bkInfo({
+                    title: '确认要批量修改？',
+                    confirmLoading: true,
+                    confirmFn: () => {
+                        try {
+                            this.isLoading = true
+                            this.musicInfoManual['select_mode'] = this.selectAutoMode
+                            this.musicInfoManual['source_list'] = this.sourceList
+                            this.$api.Task.batchAutoUpdateId3({
+                                'file_full_path': this.filePath,
+                                'select_data': this.checkedData,
+                                'music_info': this.musicInfoManual
+                            }).then((res) => {
+                                this.isLoading = false
+                                console.log(res)
+                                if (res.result) {
+                                    this.$cwMessage('创建成功', 'success')
+                                }
+                            })
+                            return true
+                        } catch (e) {
+                            console.warn(e)
+                            return false
+                        }
+                    }
+                })
             }
         }
     }
@@ -602,12 +674,14 @@
     text-align: center;
     cursor: pointer;
 }
+
 .file-section {
     background: #fff;
     height: calc(100vh - 55px);
     overflow: scroll;
     width: 30%;
 }
+
 .edit-section {
     background: #fff;
     height: calc(100vh - 55px);
@@ -615,13 +689,27 @@
     margin-left: 20px;
     margin-right: 20px;
 }
+
 .resource-section {
     background: #fff;
     height: calc(100vh - 55px);
     width: 30%;
     overflow: scroll;
 }
+
 .bk-form-checkbox {
     margin-right: 10px;
+}
+
+.success {
+    color: #d1cfc5;
+}
+
+.failed {
+    color: #ac354b;
+}
+
+.null {
+    color: #333146;
 }
 </style>

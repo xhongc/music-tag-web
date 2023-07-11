@@ -1,17 +1,19 @@
 import base64
 import copy
 import os
+import time
 
 import music_tag
 from django.utils.decorators import method_decorator
 from django.views.decorators.gzip import gzip_page
 from rest_framework.decorators import action
 
+from applications.task.models import TaskRecord, Task
 from applications.task.serialziers import FileListSerializer, Id3Serializer, UpdateId3Serializer, \
     FetchId3ByTitleSerializer, FetchLlyricSerializer, BatchUpdateId3Serializer
 from applications.task.services.music_resource import MusicResource
 from applications.task.services.update_ids import update_music_info
-from applications.task.tasks import full_scan_folder, scan, clear_music
+from applications.task.tasks import full_scan_folder, scan, clear_music, batch_auto_tag_task
 from component.drf.viewsets import GenericViewSet
 from django_vue_cli.celery_app import app as celery_app
 
@@ -29,7 +31,7 @@ class TaskViewSets(GenericViewSet):
             return FetchId3ByTitleSerializer
         elif self.action == "fetch_lyric":
             return FetchLlyricSerializer
-        elif self.action == "batch_update_id3":
+        elif self.action in ["batch_update_id3", "batch_auto_update_id3"]:
             return BatchUpdateId3Serializer
         return FileListSerializer
 
@@ -47,8 +49,19 @@ class TaskViewSets(GenericViewSet):
         allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
                       "opus", "wma", "dsf", "dff"]
         frc_map = {}
-        for index, entry in enumerate(data, 1):
+        file_data = []
+        full_path_list = []
+        for entry in data:
             each = entry.name
+            file_data.append(each)
+            full_path_list.append(f"{file_path}/{each}")
+            file_type = each.split(".")[-1]
+            file_name = ".".join(each.split(".")[:-1])
+            if file_type in ["lrc", "txt"]:
+                frc_map[file_name] = each
+        task_map = dict(Task.objects.filter(parent_path=file_path).values_list("filename", "state"))
+        for index, entry in enumerate(file_data, 1):
+            each = entry
             file_type = each.split(".")[-1]
             file_name = ".".join(each.split(".")[:-1])
             if os.path.isdir(f"{file_path}/{each}"):
@@ -57,11 +70,10 @@ class TaskViewSets(GenericViewSet):
                     "name": each,
                     "title": each,
                     "icon": "icon-folder",
+                    "state": "null",
                     "children": []
                 })
                 continue
-            if file_type in ["lrc", "txt"]:
-                frc_map[file_name] = each
             if file_type not in allow_type:
                 continue
             if file_name in frc_map:
@@ -72,7 +84,8 @@ class TaskViewSets(GenericViewSet):
                 "id": index,
                 "name": each,
                 "title": each,
-                "icon": icon
+                "icon": icon,
+                "state": task_map.get(each, "null")
             })
         res_data = [
             {
@@ -155,10 +168,32 @@ class TaskViewSets(GenericViewSet):
             else:
                 music_info.update({
                     "file_full_path": f"{full_path}/{data.get('name')}",
-                    "filename": data.get('name')
                 })
                 music_id3_info.append(copy.deepcopy(music_info))
         update_music_info(music_id3_info)
+        return self.success_response()
+
+    @action(methods=['POST'], detail=False)
+    def batch_auto_update_id3(self, request, *args, **kwargs):
+        validate_data = self.is_validated_data(request.data)
+        full_path = validate_data['file_full_path']
+        select_data = validate_data['select_data']
+        music_info = validate_data['music_info']
+        select_mode = music_info["select_mode"]
+        source_list = music_info.get("source_list", [])
+        timestamp = str(int(time.time() * 1000))
+        bulk_set = []
+        for each in select_data:
+            name = each.get("name")
+            song_name = ".".join(name.split(".")[:-1])
+            bulk_set.append(TaskRecord(**{
+                "song_name": song_name,
+                "full_path": f"{full_path}/{name}",
+                "icon": each.get("icon"),
+                "batch": timestamp
+            }))
+        TaskRecord.objects.bulk_create(bulk_set, batch_size=500)
+        batch_auto_tag_task(timestamp, source_list, select_mode)
         return self.success_response()
 
     @action(methods=['POST'], detail=False)

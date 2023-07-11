@@ -121,7 +121,7 @@ STATIC_ROOT = 'static'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # noqa
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-IS_USE_CELERY = True
+IS_USE_CELERY = False
 
 if IS_USE_CELERY:
     BROKER_URL = f"redis://{REDIS_HOST}:6379/1"

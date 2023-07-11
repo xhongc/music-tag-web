@@ -8,8 +8,10 @@ from django.db import transaction
 
 from applications.music.models import Folder, Track, Album, Genre, Artist, Attachment
 from applications.subsonic.constants import AUDIO_EXTENSIONS_AND_MIMETYPE, COVER_TYPE
+from applications.task.models import TaskRecord, Task
+from applications.task.services.music_resource import MusicResource
 from applications.task.services.scan_utils import ScanMusic
-from applications.task.utils import folder_update_time, exists_dir
+from applications.task.utils import folder_update_time, exists_dir, match_song
 from django_vue_cli.celery_app import app
 
 
@@ -234,3 +236,54 @@ def clear_music():
     Genre.objects.all().delete()
     Artist.objects.all().delete()
     Attachment.objects.all().delete()
+
+
+def batch_auto_tag_task(batch, source_list, select_mode):
+    """
+    source_list: ["migu", "qmusic", "netease"]
+    """
+    folder_list = TaskRecord.objects.filter(batch=batch, icon="icon-folder").all()
+    for folder in folder_list:
+        data = os.scandir(folder.full_path)
+        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
+                      "opus", "wma", "dsf", "dff"]
+        bulk_set = []
+        for entry in data:
+            each = entry.name
+            file_type = each.split(".")[-1]
+            file_name = ".".join(each.split(".")[:-1])
+            if file_type not in allow_type:
+                continue
+            bulk_set.append(TaskRecord(**{
+                "batch": batch,
+                "song_name": file_name,
+                "full_path": f"{folder.full_path}/{each}",
+                "icon": "icon-music",
+
+            }))
+        TaskRecord.objects.bulk_create(bulk_set)
+    task_list = TaskRecord.objects.filter(batch=batch).exclude(icon="icon-folder").all()
+    for task in task_list:
+        is_match = False
+        for resource in source_list:
+            print("开始匹配", resource)
+            is_match = match_song(resource, task.full_path, select_mode)
+            if is_match:
+                task.state = "success"
+                task.save()
+                parent_path = os.path.dirname(task.full_path)
+                Task.objects.update_or_create(full_path=task.full_path, defaults={
+                    "state": task.state,
+                    "parent_path": parent_path,
+                    "filename": os.path.basename(task.full_path)
+                })
+                break
+        if not is_match:
+            task.state = "failed"
+            task.save()
+            parent_path = os.path.dirname(task.full_path)
+            Task.objects.update_or_create(full_path=task.full_path, defaults={
+                "state": task.state,
+                "parent_path": parent_path,
+                "filename": os.path.basename(task.full_path)
+            })

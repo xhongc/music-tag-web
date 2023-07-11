@@ -217,7 +217,6 @@ class QQMusicApi:
     def getQQMusicMatchSong(self, name):
         song_list = self.getQQMusicSearch(name)
         songs = self.formatList(song_list["data"])
-        print(f"搜索到{len(songs)}条。")
         if len(songs) == 0:
             return []
         return songs
