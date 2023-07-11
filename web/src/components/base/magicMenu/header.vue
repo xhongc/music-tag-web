@@ -33,12 +33,12 @@
     export default {
         data() {
             return {
-                logout_url: '',
+                logout_url: 'https://github.com/xhongc/music-tag-web',
                 pageTitle: '测试',
                 userData: {},
                 user: {
                     list: [
-                        '退出'
+                        '关于作者'
                     ]
                 }
             }
