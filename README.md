@@ -11,6 +11,7 @@ DFF等音频格式。
 
 - 该版本是我自用的小工具，如果你也有这个需求，可以使用。欢迎提出issues，我会满足你的需求，在我的能力范围内。
 - 支持音乐标签来源 网易云音乐，QQ音乐，咪咕音乐
+- 支持批量自动修改音乐标签
 # 🦀 Show Project
 
 [【音乐标签Web｜Music Tag Web】](http://42.193.218.103:8002/#/)
@@ -26,11 +27,11 @@ DFF等音频格式。
 
 ### 从阿里云Docker Registry拉取镜像
 
-1`docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.0.1`
+1`docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.0.2`
 
 ### dokcer run
 
-2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.0.1`
+2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.0.2`
    
 或者 使用portainer stacks部署
    ![img_1.png](img_1.png)
@@ -40,7 +41,7 @@ version: '3'
 
 services:
   music-tag:
-    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.0.1
+    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.0.2
     container_name: music-tag-web
     ports:
       - "8001:8001"
