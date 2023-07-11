@@ -9,7 +9,7 @@ from applications.utils.send import send
 COPYRIGHT = "感谢您的聆听，music-tag-web打上标签。POW~"
 
 
-def update_music_info(music_id3_info, is_raw_thumbnail=False):
+def update_music_info(music_id3_info, is_raw_thumbnail=True):
     for each in music_id3_info:
         f = music_tag.load_file(each["file_full_path"])
         save_music(f, each, is_raw_thumbnail)
