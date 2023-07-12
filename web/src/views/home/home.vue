@@ -251,49 +251,53 @@
                     <div v-else>
                         <div class="parent">
                             <div class="title2">应用</div>
-                            <div class="title2">专辑封面</div>
+                            <div class="title2">封面</div>
                             <div class="title2">歌曲名</div>
                             <div class="title2">歌手</div>
                             <div class="title2">专辑</div>
                             <div class="title2">歌词</div>
                             <div class="title2">年份</div>
                         </div>
-                        <div v-for="(item,index) in SongList" :key="index" style="margin-bottom: 10px;">
-                            <div class="song-card">
-                                <div>
-                                    <div class="parent">
-                                        <bk-icon type="arrows-left-circle" @click="copyAll(item)"
-                                            style="font-size: 20px;color: #64c864;margin-right: 5px;cursor: pointer;"></bk-icon>
-                                        <bk-image fit="contain" :src="item.album_img"
-                                            style="width: 64px;cursor: pointer;"
-                                            @click="handleCopy('album_img',item.album_img)">
-                                        </bk-image>
-                                        <div @click="handleCopy('title',item.name)" class="music-item">
-                                            {{
-                                                item.name
-                                            }}
-                                        </div>
-                                        <div @click="handleCopy('artist',item.artist)" class="music-item">
-                                            {{ item.artist }}
-                                        </div>
-                                        <div @click="handleCopy('album',item.album)" class="music-item">
-                                            {{
-                                                item.album
-                                            }}
-                                        </div>
-                                        <div @click="handleCopy('lyric',item.id)" class="music-item">加载歌词</div>
-                                        <div @click="handleCopy('year',item.year)" class="music-item">
-                                            {{
-                                                item.year
-                                            }}
-                                        </div>
-                                    </div>
-                                </div>
+                        <div v-for="(item,index) in SongList" :key="index" style="margin-bottom: 10px;" class="parent">
+                            <bk-icon type="arrows-left-circle" @click="copyAll(item)"
+                                style="font-size: 20px;color: #64c864;margin-right: 5px;cursor: pointer;"></bk-icon>
+                            <bk-image fit="contain" :src="item.album_img"
+                                style="width: 64px;cursor: pointer;"
+                                @click="handleCopy('album_img',item.album_img)">
+                            </bk-image>
+                            <div @click="handleCopy('title',item.name)" class="music-item">
+                                {{
+                                    item.name
+                                }}
                             </div>
+                            <div @click="handleCopy('artist',item.artist)" class="music-item">
+                                {{ item.artist }}
+                            </div>
+                            <div @click="handleCopy('album',item.album)" class="music-item">
+                                {{
+                                    item.album
+                                }}
+                            </div>
+                            <div @click="handleCopy('lyric',item.id)" class="music-item">加载歌词</div>
+                            <div @click="handleCopy('year',item.year)" class="music-item">
+                                {{
+                                    item.year
+                                }}
+                            </div>
+                            <bk-divider></bk-divider>
+                            <bk-divider></bk-divider>
+                            <bk-divider></bk-divider>
+                            <bk-divider></bk-divider>
+                            <bk-divider></bk-divider>
+                            <bk-divider></bk-divider>
+                            <bk-divider></bk-divider>
                         </div>
                     </div>
                 </div>
             </transition>
+            <div v-show="!fadeShowDetail" style="width: 90%;height: 90%; margin: 50px 20px 20px 50px;">
+                <bk-image fit="contain" :src="'http://127.0.0.1:8005/static/dist/img/music_null-cutout.png'" style="width: 100%;height: 98%;"></bk-image>
+            </div>
         </div>
         <bk-dialog v-model="exampleSetting1.primary.visible"
             theme="primary"
@@ -677,24 +681,33 @@
 
 .file-section {
     background: #fff;
-    height: calc(100vh - 55px);
+    height: calc(100vh - 75px);
     overflow: scroll;
-    width: 30%;
+    width: 25%;
+    border: 1px solid #173769;
+    margin: 10px 0 10px 10px;
+    border-radius: 20px;
+
 }
 
 .edit-section {
     background: #fff;
-    height: calc(100vh - 55px);
+    height: calc(100vh - 75px);
     overflow: scroll;
-    margin-left: 20px;
-    margin-right: 20px;
+    border: 1px solid #173769;
+    margin: 10px 10px 10px 10px;
+    border-radius: 20px;
 }
 
 .resource-section {
     background: #fff;
-    height: calc(100vh - 55px);
+    height: calc(100vh - 75px);
     width: 30%;
+    flex: 1;
     overflow: scroll;
+    border: 1px solid #173769;
+    margin: 10px 10px 10px 0;
+    border-radius: 20px;
 }
 
 .bk-form-checkbox {
@@ -711,5 +724,58 @@
 
 .null {
     color: #333146;
+}
+button.bk-success {
+    background-color: rgb(17, 64, 108) !important;
+    border-color: rgb(17, 64, 108) !important;
+}
+button.bk-primary {
+    background-color: rgb(17, 64, 108) !important;
+    border-color: rgb(17, 64, 108) !important;
+}
+button.bk-button-text {
+    background-color: transparent !important;
+}
+.bk-form-checkbox.is-checked .bk-checkbox {
+    border-color: rgb(17, 64, 108) !important;
+    background-color: rgb(17, 64, 108) !important;
+    background-clip: border-box !important;
+}
+
+.bk-button-group .bk-button.is-selected {
+    border-color: rgb(17, 64, 108) !important;
+    color: rgb(17, 64, 108) !important;
+}
+
+.bk-button.bk-default:hover {
+    border-color: rgb(17, 64, 108) !important;
+    color: rgb(17, 64, 108) !important;
+}
+
+.bk-form-radio input[type=radio].is-checked {
+    color: rgb(17, 64, 108) !important;
+}
+
+.bk-steps .bk-step.current .bk-step-icon, .bk-steps .bk-step.current .bk-step-number, .bk-steps .bk-step.current .bk-step-text {
+    border-color: rgb(17, 64, 108) !important;
+    background-color: rgb(17, 64, 108) !important;
+}
+
+.bk-steps .bk-step.done .bk-step-icon, .bk-steps .bk-step.done .bk-step-number, .bk-steps .bk-step.done .bk-step-text {
+    border-color: rgb(17, 64, 108) !important;
+    color: rgb(17, 64, 108) !important;
+}
+.bk-icon.icon-arrows-left-circle {
+    color: rgb(17, 64, 108) !important;
+}
+.bk-icon.icon-arrows-right-circle {
+    color: rgb(17, 64, 108) !important;
+}
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #f4f5f0;
 }
 </style>
