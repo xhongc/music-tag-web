@@ -41,6 +41,12 @@ def match_song(resource, song_path, select_mode):
 
     songs = MusicResource(resource).fetch_id3_by_title(title)
 
+    def is_match_artist(my_artist, u_artist):
+        if not my_artist or not u_artist:
+            return False
+        if my_artist == u_artist or my_artist in u_artist or u_artist in my_artist:
+            return True
+
     is_match = False
     song_select = None
     for song in songs:
@@ -50,29 +56,29 @@ def match_song(resource, song_path, select_mode):
                 song_select = song
                 break
             else:
-                if artist and (artist == song["artist"] or artist in song["artist"] or song["artist"] in artist):
+                if is_match_artist(artist, song["artist"]):
                     is_match = True
                     song_select = song
                     break
-                elif album and (album == song["album"] or album in song["album"] or song["album"] in album):
+                elif is_match_artist(album, song["album"]):
                     is_match = True
                     song_select = song
                     break
         elif title in song["name"]:
-            if artist and (artist == song["artist"] or artist in song["artist"] or song["artist"] in artist):
+            if is_match_artist(artist, song["artist"]):
                 is_match = True
                 song_select = song
                 break
-            elif album and (album == song["album"] or album in song["album"] or song["album"] in album):
+            elif is_match_artist(album, song["album"]):
                 is_match = True
                 song_select = song
                 break
         elif song["name"] in title:
-            if artist and (artist == song["artist"] or artist in song["artist"] or song["artist"] in artist):
+            if is_match_artist(artist, song["artist"]):
                 is_match = True
                 song_select = song
                 break
-            elif album and (album == song["album"] or album in song["album"] or song["album"] in album):
+            elif is_match_artist(album, song["album"]):
                 is_match = True
                 song_select = song
                 break

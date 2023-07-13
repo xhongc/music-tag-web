@@ -296,7 +296,7 @@
                 </div>
             </transition>
             <div v-show="!fadeShowDetail" style="width: 90%;height: 90%; margin: 50px 20px 20px 50px;">
-                <bk-image fit="contain" :src="'http://127.0.0.1:8005/static/dist/img/music_null-cutout.png'" style="width: 100%;height: 98%;"></bk-image>
+                <bk-image fit="contain" :src="'/static/dist/img/music_null-cutout.png'" style="width: 100%;height: 98%;"></bk-image>
             </div>
         </div>
         <bk-dialog v-model="exampleSetting1.primary.visible"
