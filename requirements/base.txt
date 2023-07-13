@@ -18,4 +18,5 @@ django-mysql==3.8.1
 redis==3.2.0
 mysqlclient==1.4.4
 sqlalchemy==1.4.23
+PyExecJS==1.5.1
 

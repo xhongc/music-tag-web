@@ -296,7 +296,8 @@
                 </div>
             </transition>
             <div v-show="!fadeShowDetail" style="width: 90%;height: 90%; margin: 50px 20px 20px 50px;">
-                <bk-image fit="contain" :src="'/static/dist/img/music_null-cutout.png'" style="width: 100%;height: 98%;"></bk-image>
+                <bk-image fit="contain" :src="'/static/dist/img/music_null-cutout.png'"
+                    style="width: 100%;height: 98%;"></bk-image>
             </div>
         </div>
         <bk-dialog v-model="exampleSetting1.primary.visible"
@@ -340,10 +341,12 @@
                 bakDir: '/app/media/',
                 fileName: '',
                 resource: 'netease',
-                resourceList: [{id: 'netease', name: '网易云音乐'}, {id: 'migu', name: '咪咕音乐'}, {
-                    id: 'qmusic',
-                    name: 'QQ音乐'
-                }],
+                resourceList: [
+                    {id: 'netease', name: '网易云音乐'},
+                    {id: 'migu', name: '咪咕音乐'},
+                    {id: 'qmusic', name: 'QQ音乐'},
+                    {id: 'kugou', name: '酷狗音乐'}
+                ],
                 baseMusicInfo: {
                     'genre': '流行',
                     'is_save_lyrics_file': false
@@ -725,17 +728,21 @@
 .null {
     color: #333146;
 }
+
 button.bk-success {
     background-color: rgb(17, 64, 108) !important;
     border-color: rgb(17, 64, 108) !important;
 }
+
 button.bk-primary {
     background-color: rgb(17, 64, 108) !important;
     border-color: rgb(17, 64, 108) !important;
 }
+
 button.bk-button-text {
     background-color: transparent !important;
 }
+
 .bk-form-checkbox.is-checked .bk-checkbox {
     border-color: rgb(17, 64, 108) !important;
     background-color: rgb(17, 64, 108) !important;
@@ -765,16 +772,20 @@ button.bk-button-text {
     border-color: rgb(17, 64, 108) !important;
     color: rgb(17, 64, 108) !important;
 }
+
 .bk-icon.icon-arrows-left-circle {
     color: rgb(17, 64, 108) !important;
 }
+
 .bk-icon.icon-arrows-right-circle {
     color: rgb(17, 64, 108) !important;
 }
+
 ::-webkit-scrollbar {
     width: 6px;
     background-color: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
     background-color: #f4f5f0;
 }
