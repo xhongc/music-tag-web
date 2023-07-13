@@ -210,7 +210,7 @@ class KugouClient:
         for song in songs:
             song["id"] = song['FileHash']
             song["name"] = song['SongName'].replace("<em>", "").replace("</em>", "")
-            song["artist"] = song['SingerName']
+            song["artist"] = song['SingerName'].replace("<em>", "").replace("</em>", "")
             song["artist_id"] = song['SingerId']
             song["album"] = song['AlbumName']
             song["album_id"] = song['AlbumID']
