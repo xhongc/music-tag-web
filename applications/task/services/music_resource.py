@@ -2,6 +2,7 @@ import requests
 import base64
 
 from applications.task.services.kugou import KugouClient
+from applications.task.services.kuwo import KuwoClient
 from applications.task.services.qm import QQMusicApi
 from applications.task.utils import timestamp_to_dt
 from applications.utils.send import send
@@ -20,6 +21,8 @@ class MusicResource:
             return QmusicClient()
         elif info == "kugou":
             return KugouClient()
+        elif info == "kuwo":
+            return KuwoClient()
         raise Exception("暂不支持该音乐平台")
 
     def fetch_lyric(self, song_id):
