@@ -9,6 +9,7 @@
                         :placeholder="'请输入文件夹路径：'"
                         behavior="simplicity">
                     </bk-input>
+                    <bk-icon type="arrows-down-shape" @click="handleSearchFile" style="cursor: pointer;"></bk-icon>
                 </div>
                 <div style="margin-top: 10px;">
                     <bk-input type="text" v-model="searchWord" placeholder="search..." @enter="handleSearch"></bk-input>
@@ -59,8 +60,8 @@
                             <bk-input :clearable="true" v-model="musicInfo.title"></bk-input>
                         </div>
                         <div>
-                            <bk-icon type="arrows-right-circle" @click="toggleLock('title')"
-                                style="cursor: pointer;font-size: 22px;color: #64c864;margin-left: 10px;"></bk-icon>
+                            <bk-icon type="arrows-right-shape" @click="toggleLock('title')"
+                                style="cursor: pointer;color: #64c864;margin-left: 20px;"></bk-icon>
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
@@ -259,8 +260,8 @@
                             <div class="title2">年份</div>
                         </div>
                         <div v-for="(item,index) in SongList" :key="index" style="margin-bottom: 10px;" class="parent">
-                            <bk-icon type="arrows-left-circle" @click="copyAll(item)"
-                                style="font-size: 20px;color: #64c864;margin-right: 5px;cursor: pointer;"></bk-icon>
+                            <bk-icon type="arrows-left-shape" @click="copyAll(item)"
+                                style="margin-right: 5px;cursor: pointer;"></bk-icon>
                             <bk-image fit="contain" :src="item.album_img"
                                 style="width: 64px;cursor: pointer;"
                                 @click="handleCopy('album_img',item.album_img)">
@@ -781,9 +782,20 @@ button.bk-button-text {
 .bk-icon.icon-arrows-right-circle {
     color: rgb(17, 64, 108) !important;
 }
-
+.bk-icon.icon-arrows-right-shape {
+    color: rgb(17, 64, 108) !important;
+}
+.bk-icon.icon-arrows-right-shape:hover {
+    color: #df4d40 !important;
+}
+.bk-icon.icon-arrows-left-shape:hover {
+    color: #df4d40 !important;
+}
+.bk-icon.icon-arrows-down-shape:hover {
+    color: #df4d40 !important;
+}
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 0;
     background-color: transparent;
 }
 
