@@ -339,10 +339,12 @@
                 searchWord: '',
                 treeListOne: [],
                 filePath: '/app/media/',
+                fullPath: '',
                 bakDir: '/app/media/',
                 fileName: '',
                 resource: 'netease',
                 resourceList: [
+                    {id: 'acoustid', name: '音乐指纹识别'},
                     {id: 'netease', name: '网易云音乐'},
                     {id: 'migu', name: '咪咕音乐'},
                     {id: 'qmusic', name: 'QQ音乐'},
@@ -425,6 +427,7 @@
                     }
                     this.musicInfo = this.baseMusicInfo
                     this.fileName = node.name
+                    this.fullPath = this.filePath + '/' + node.name
                     this.$api.Task.musicId3({'file_path': this.filePath, 'file_name': node.name}).then((res) => {
                         console.log(res)
                         this.musicInfo = res.data
@@ -512,7 +515,7 @@
                         return
                     }
                     this.fadeShowDetail = false
-                    this.$api.Task.fetchId3Title({title: this.musicInfo.title, resource: this.resource}).then((res) => {
+                    this.$api.Task.fetchId3Title({title: this.musicInfo.title, resource: this.resource, full_path: this.fullPath}).then((res) => {
                         this.fadeShowDetail = true
                         this.SongList = res.data
                     })

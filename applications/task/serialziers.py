@@ -37,6 +37,7 @@ class BatchUpdateId3Serializer(serializers.Serializer):
 class FetchId3ByTitleSerializer(serializers.Serializer):
     title = serializers.CharField(required=True)
     resource = serializers.CharField(required=True)
+    full_path = serializers.CharField(required=False, allow_null=True, allow_blank=True)
 
 
 class FetchLlyricSerializer(serializers.Serializer):

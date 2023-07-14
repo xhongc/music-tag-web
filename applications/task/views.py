@@ -211,8 +211,11 @@ class TaskViewSets(GenericViewSet):
     def fetch_id3_by_title(self, request, *args, **kwargs):
         validate_data = self.is_validated_data(request.data)
         resource = validate_data["resource"]
-
+        full_path = validate_data.get("full_path", "")
         title = validate_data["title"]
+
+        if resource == "acoustid":
+            title = full_path
         songs = MusicResource(resource).fetch_id3_by_title(title)
         return self.success_response(data=songs)
 

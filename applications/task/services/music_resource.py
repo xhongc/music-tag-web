@@ -1,6 +1,7 @@
 import requests
 import base64
 
+from applications.task.services.acoust import AcoustidClient
 from applications.task.services.kugou import KugouClient
 from applications.task.services.kuwo import KuwoClient
 from applications.task.services.qm import QQMusicApi
@@ -23,6 +24,8 @@ class MusicResource:
             return KugouClient()
         elif info == "kuwo":
             return KuwoClient()
+        elif info == "acoustid":
+            return AcoustidClient()
         raise Exception("暂不支持该音乐平台")
 
     def fetch_lyric(self, song_id):
