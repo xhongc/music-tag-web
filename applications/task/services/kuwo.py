@@ -18,7 +18,14 @@ def generate_kw_token(length=32):
 class KuwoClient:
     def __init__(self):
         self.token = generate_kw_token()
-        self.cross = hashlib.md5(self.token.encode('utf-8')).hexdigest()
+        self.cross = self.sha1_and_md5(self.token)
+
+    def sha1_and_md5(self, token):
+        sha1_hash = hashlib.sha1()
+        sha1_hash.update(token.encode('utf-8'))
+        hash_value = sha1_hash.hexdigest()
+        cross = hashlib.md5(hash_value.encode('utf-8')).hexdigest()
+        return cross
 
     def _api_request(self, url, params):
         headers = default_headers.copy()
