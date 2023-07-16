@@ -9,7 +9,7 @@ from applications.utils.send import send
 COPYRIGHT = "感谢您的聆听，music-tag-web打上标签。POW~"
 
 
-def update_music_info(music_id3_info, is_raw_thumbnail=True):
+def update_music_info(music_id3_info, is_raw_thumbnail=False):
     for each in music_id3_info:
         f = music_tag.load_file(each["file_full_path"])
         save_music(f, each, is_raw_thumbnail)
@@ -69,8 +69,10 @@ def save_music(f, each, is_raw_thumbnail):
             img_data = send().GET(each["album_img"])
             if img_data.status_code == 200:
                 f['artwork'] = img_data.content
+                if len(img_data.content)/1024/1024 > 5:
+                    f['artwork'] = f['artwork'].first.raw_thumbnail([2048, 2048])
                 if is_raw_thumbnail:
-                    f['artwork'] = f['artwork'].first.raw_thumbnail([128, 128])
+                    f['artwork'] = f['artwork'].first.raw_thumbnail([2048, 2048])
         except Exception:
             pass
     f.save()

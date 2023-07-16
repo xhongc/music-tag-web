@@ -89,5 +89,5 @@ def match_song(resource, song_path, select_mode):
         song_select["filename"] = file_name
         song_select["file_full_path"] = song_path
         song_select["lyrics"] = MusicResource(resource).fetch_lyric(song_select["id"])
-        save_music(file, song_select, True)
+        save_music(file, song_select, False)
     return is_match

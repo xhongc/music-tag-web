@@ -138,7 +138,7 @@ class TaskViewSets(GenericViewSet):
         """更新音乐id3信息"""
         validate_data = self.is_validated_data(request.data)
         music_id3_info = validate_data['music_id3_info']
-        update_music_info(music_id3_info)
+        update_music_info(music_id3_info, False)
         return self.success_response()
 
     @action(methods=['POST'], detail=False)
@@ -170,7 +170,7 @@ class TaskViewSets(GenericViewSet):
                     "file_full_path": f"{full_path}/{data.get('name')}",
                 })
                 music_id3_info.append(copy.deepcopy(music_info))
-        update_music_info(music_id3_info)
+        update_music_info(music_id3_info, False)
         return self.success_response()
 
     @action(methods=['POST'], detail=False)
