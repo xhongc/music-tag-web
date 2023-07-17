@@ -340,7 +340,6 @@
                 treeListOne: [],
                 filePath: '/app/media/',
                 fullPath: '',
-                bakDir: '/app/media/',
                 fileName: '',
                 resource: 'netease',
                 resourceList: [
@@ -413,12 +412,28 @@
                 </span>
             },
             backDir() {
-                this.filePath = this.bakDir
+                this.filePath = this.backPath(this.filePath)
                 this.handleSearchFile()
+            },
+            backPath(path) {
+                // 使用正则表达式匹配最后一个斜杠及其后面的内容
+                const regex = /\/([^\/]+)\/?$/
+                const match = regex.exec(path)
+
+                // 如果匹配到了最后一个斜杠及其后面的内容
+                if (match) {
+                    // 截取掉最后一个斜杠及其后面的内容
+                    const parentPath = path.slice(0, match.index)
+
+                    // 返回回退后的路径
+                    return parentPath
+                }
+
+                // 如果没有匹配到最后一个斜杠及其后面的内容，则返回原始路径
+                return path
             },
             nodeClickOne(node) {
                 if (node.icon === 'icon-folder') {
-                    this.bakDir = this.filePath
                     this.filePath = this.filePath + '/' + node.name
                     this.handleSearchFile()
                 } else {
@@ -515,7 +530,11 @@
                         return
                     }
                     this.fadeShowDetail = false
-                    this.$api.Task.fetchId3Title({title: this.musicInfo.title, resource: this.resource, full_path: this.fullPath}).then((res) => {
+                    this.$api.Task.fetchId3Title({
+                        title: this.musicInfo.title,
+                        resource: this.resource,
+                        full_path: this.fullPath
+                    }).then((res) => {
                         this.fadeShowDetail = true
                         this.SongList = res.data
                     })
@@ -785,18 +804,23 @@ button.bk-button-text {
 .bk-icon.icon-arrows-right-circle {
     color: rgb(17, 64, 108) !important;
 }
+
 .bk-icon.icon-arrows-right-shape {
     color: rgb(17, 64, 108) !important;
 }
+
 .bk-icon.icon-arrows-right-shape:hover {
     color: #df4d40 !important;
 }
+
 .bk-icon.icon-arrows-left-shape:hover {
     color: #df4d40 !important;
 }
+
 .bk-icon.icon-arrows-down-shape:hover {
     color: #df4d40 !important;
 }
+
 ::-webkit-scrollbar {
     width: 0;
     background-color: transparent;
