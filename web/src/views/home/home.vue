@@ -83,6 +83,12 @@
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">专辑艺术家：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfo.albumartist"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
                         <div class="label1">风格：</div>
                         <div style="width: 70%;">
                             <bk-select
@@ -116,7 +122,7 @@
                             </div>
                         </div>
                         <div style="display: flex;margin-top: 10px;">
-                            <div class="label1">保存歌词lrc：</div>
+                            <div class="label1">保存歌词文件：</div>
                             <bk-switcher v-model="musicInfo.is_save_lyrics_file"></bk-switcher>
                         </div>
                     </div>
@@ -181,6 +187,12 @@
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">专辑艺术家：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfoManual.albumartist"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
                         <div class="label1">风格：</div>
                         <div style="width: 70%;">
                             <bk-select
@@ -214,7 +226,7 @@
                             </div>
                         </div>
                         <div style="display: flex;margin-top: 10px;">
-                            <div class="label1">保存歌词lrc：</div>
+                            <div class="label1">保存歌词文件：</div>
                             <bk-switcher v-model="musicInfoManual.is_save_lyrics_file"></bk-switcher>
                         </div>
                     </div>

@@ -46,7 +46,7 @@ class TaskViewSets(GenericViewSet):
         except FileNotFoundError:
             return self.failure_response(msg="文件夹不存在")
         children_data = []
-        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
+        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta",  "m4a", "ogg", "mpc",
                       "opus", "wma", "dsf", "dff"]
         frc_map = {}
         file_data = []
@@ -124,6 +124,7 @@ class TaskViewSets(GenericViewSet):
             "title": f["title"].value or file_title,
             "artist": f["artist"].value,
             "album": f["album"].value,
+            "albumartist": f["albumartist"].value,
             "genre": f["genre"].value,
             "year": f["year"].value,
             "lyrics": f["lyrics"].value,
@@ -153,7 +154,7 @@ class TaskViewSets(GenericViewSet):
             if data.get('icon') == 'icon-folder':
                 file_full_path = f"{full_path}/{data.get('name')}"
                 data = os.scandir(file_full_path)
-                allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
+                allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta",  "m4a", "ogg", "mpc",
                               "opus", "wma", "dsf", "dff"]
                 for index, entry in enumerate(data, 1):
                     each = entry.name

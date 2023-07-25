@@ -245,7 +245,7 @@ def batch_auto_tag_task(batch, source_list, select_mode):
     folder_list = TaskRecord.objects.filter(batch=batch, icon="icon-folder").all()
     for folder in folder_list:
         data = os.scandir(folder.full_path)
-        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "mp4", "m4a", "ogg", "mpc",
+        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta",  "m4a", "ogg", "mpc",
                       "opus", "wma", "dsf", "dff"]
         bulk_set = []
         for entry in data:
