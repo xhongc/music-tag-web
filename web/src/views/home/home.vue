@@ -61,7 +61,8 @@
                         </div>
                         <div>
                             <bk-icon type="arrows-right-shape" @click="toggleLock('title')"
-                                style="cursor: pointer;color: #64c864;margin-left: 20px;"></bk-icon>
+                                style="cursor: pointer;color: #64c864;margin-left: 20px;">
+                            </bk-icon>
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
@@ -117,8 +118,13 @@
                         <div style="display: flex;">
                             <div class="label1">歌词：</div>
                             <div style="width: 70%;">
-                                <bk-input :clearable="true" v-model="musicInfo.lyrics" type="textarea" :rows="15"
-                                ></bk-input>
+                                <bk-input :clearable="true" v-model="musicInfo.lyrics" type="textarea" :rows="15">
+                                </bk-input>
+                            </div>
+                            <div>
+                                <bk-icon type="arrows-right-shape" @click="translation()"
+                                    style="cursor: pointer;color: #64c864;margin-left: 20px;">
+                                </bk-icon>
                             </div>
                         </div>
                         <div style="display: flex;margin-top: 10px;">
@@ -308,7 +314,21 @@
                     </div>
                 </div>
             </transition>
-            <div v-show="!fadeShowDetail" style="width: 90%;height: 90%; margin: 50px 20px 20px 50px;">
+            <transition name="bk-slide-fade-left">
+                <div v-show="showTranslation">
+                    <div style="display: flex;height: 100%;">
+                        <bk-icon type="arrows-left-shape" @click="handleCopy('lyric_tran',translationText)"
+                            style="margin-right: 5px;margin-left: 15px;margin-top: 50%;cursor: pointer;"></bk-icon>
+                        <div style="width: 100%;height: 100%;">
+                            <bk-input :clearable="true" v-model="translationText" type="textarea" :rows="50"
+                                style="height: 100%;">
+                            </bk-input>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+            <div v-show="!fadeShowDetail && !showTranslation"
+                style="width: 90%;height: 90%; margin: 50px 20px 20px 50px;">
                 <bk-image fit="contain" :src="'/static/dist/img/music_null-cutout.png'"
                     style="width: 100%;height: 98%;"></bk-image>
             </div>
@@ -354,6 +374,7 @@
                 fullPath: '',
                 fileName: '',
                 resource: 'netease',
+                translationText: '',
                 resourceList: [
                     {id: 'acoustid', name: '音乐指纹识别'},
                     {id: 'netease', name: '网易云音乐'},
@@ -376,6 +397,7 @@
                 },
                 fadeShowDir: false,
                 fadeShowDetail: false,
+                showTranslation: false,
                 isLoading: false,
                 SongList: [],
                 reloadImg: true,
@@ -520,6 +542,9 @@
                     this.$nextTick(() => {
                         this.reloadImg = true
                     })
+                } else if (k === 'lyric_tran') {
+                    console.log(v)
+                    this.musicInfo['lyrics'] = v
                 } else {
                     this.musicInfo[k] = v
                 }
@@ -541,6 +566,7 @@
                         this.$cwMessage('标题不能为空', 'error')
                         return
                     }
+                    this.showTranslation = false
                     this.fadeShowDetail = false
                     this.$api.Task.fetchId3Title({
                         title: this.musicInfo.title,
@@ -551,6 +577,19 @@
                         this.SongList = res.data
                     })
                 }
+            },
+            translation() {
+                if (!this.musicInfo.lyrics) {
+                    this.$cwMessage('歌词不能为空', 'error')
+                }
+                this.fadeShowDetail = false
+                this.showTranslation = true
+                this.$api.Task.translationLyc({
+                    lyc: this.musicInfo.lyrics
+                }).then((res) => {
+                    this.showTranslation = true
+                    this.translationText = res.data
+                })
             },
             // 文件目录
             handleSearchFile() {

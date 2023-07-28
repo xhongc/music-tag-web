@@ -30,5 +30,8 @@ export default {
     },
     fetchLyric: function(params) {
         return POST(reUrl + '/api/fetch_lyric/', params)
+    },
+    translationLyc: function(params) {
+        return POST(reUrl + '/api/translation_lyc/', params)
     }
 }

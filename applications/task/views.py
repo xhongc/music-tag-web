@@ -10,10 +10,11 @@ from rest_framework.decorators import action
 
 from applications.task.models import TaskRecord, Task
 from applications.task.serialziers import FileListSerializer, Id3Serializer, UpdateId3Serializer, \
-    FetchId3ByTitleSerializer, FetchLlyricSerializer, BatchUpdateId3Serializer
+    FetchId3ByTitleSerializer, FetchLlyricSerializer, BatchUpdateId3Serializer, TranslationLycSerializer
 from applications.task.services.music_resource import MusicResource
 from applications.task.services.update_ids import update_music_info
 from applications.task.tasks import full_scan_folder, scan, clear_music, batch_auto_tag_task
+from applications.utils.translation import translation_lyc_text
 from component.drf.viewsets import GenericViewSet
 from django_vue_cli.celery_app import app as celery_app
 
@@ -33,6 +34,8 @@ class TaskViewSets(GenericViewSet):
             return FetchLlyricSerializer
         elif self.action in ["batch_update_id3", "batch_auto_update_id3"]:
             return BatchUpdateId3Serializer
+        elif self.action == "translation_lyc":
+            return TranslationLycSerializer
         return FileListSerializer
 
     @action(methods=['POST'], detail=False)
@@ -46,7 +49,7 @@ class TaskViewSets(GenericViewSet):
         except FileNotFoundError:
             return self.failure_response(msg="文件夹不存在")
         children_data = []
-        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta",  "m4a", "ogg", "mpc",
+        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "m4a", "ogg", "mpc",
                       "opus", "wma", "dsf", "dff"]
         frc_map = {}
         file_data = []
@@ -154,7 +157,7 @@ class TaskViewSets(GenericViewSet):
             if data.get('icon') == 'icon-folder':
                 file_full_path = f"{full_path}/{data.get('name')}"
                 data = os.scandir(file_full_path)
-                allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta",  "m4a", "ogg", "mpc",
+                allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "m4a", "ogg", "mpc",
                               "opus", "wma", "dsf", "dff"]
                 for index, entry in enumerate(data, 1):
                     each = entry.name
@@ -219,6 +222,40 @@ class TaskViewSets(GenericViewSet):
             title = full_path
         songs = MusicResource(resource).fetch_id3_by_title(title)
         return self.success_response(data=songs)
+
+    @action(methods=['POST'], detail=False)
+    def translation_lyc(self, request, *args, **kwargs):
+        validate_data = self.is_validated_data(request.data)
+        lyc = validate_data["lyc"]
+        clean_lyc_list = []
+        raw_lyc_list = []
+        for line in lyc.split("\n"):
+            if not line:
+                continue
+            clean_line = line.split("]")[-1]
+            clean_line = clean_line.strip()
+            if not clean_line:
+                continue
+            raw_lyc_list.append(line)
+            clean_lyc_list.append(clean_line)
+        clean_lyc_str = "\n".join(clean_lyc_list)
+        results = translation_lyc_text(clean_lyc_str)
+        new_lyc = []
+        results_list = results.split("\n")
+        for index, result in enumerate(results_list):
+            if not result:
+                new_lyc.append(raw_lyc_list[index])
+            else:
+                try:
+                    src = clean_lyc_list[index]
+                    raw_src = raw_lyc_list[index]
+                except Exception as e:
+                    continue
+                if src.replace(" ", "") == result.replace(" ", ""):
+                    new_lyc.append(raw_src)
+                else:
+                    new_lyc.append(f"{raw_src}\n「{result}」\n")
+        return self.success_response(data="\n".join(new_lyc))
 
     @action(methods=["get"], detail=False)
     def clear_celery(self, request, *args, **kwargs):
