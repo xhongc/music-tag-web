@@ -4,7 +4,8 @@ import time
 
 import requests
 
-import translators as ts
+
+from component import translators as ts
 
 
 def translation_lyc_text(contents):

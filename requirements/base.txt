@@ -6,7 +6,7 @@ django-cors-headers==3.2.1
 django-filter==2.0.0
 djangorestframework==3.8.1
 python-dateutil==2.8.2
-requests==2.27.1
+requests==2.31.0
 gunicorn==20.1.0
 gevent==21.12.0
 djangorestframework-jwt==1.11.0
@@ -19,5 +19,4 @@ redis==3.2.0
 mysqlclient==1.4.4
 sqlalchemy==1.4.23
 PyExecJS==1.5.1
-translators==5.8.0
 

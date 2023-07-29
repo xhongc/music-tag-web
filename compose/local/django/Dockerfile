@@ -13,7 +13,11 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   libpq-dev \
   default-libmysqlclient-dev \
   libffi-dev \
-  libjpeg-dev
+  libjpeg-dev \
+  libxml2 \
+  libxslt1-dev \
+  libssl-dev \
+  python-dev
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
 # Create Python Dependency and Sub-Dependency Wheels.
