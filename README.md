@@ -66,8 +66,8 @@ services:
 # 💸 赞助与支持
 如果您觉得 music-tag-web 对你有帮助，可以请作者喝杯咖啡。
 <div>
-<img  src="/xhongc/music-tag-web/raw/dev_1.0/WechatIMG377.jpg" width="250" >  &nbsp; 
-<img  src="/xhongc/music-tag-web/raw/dev_1.0/WechatIMG378.jpg" width="250">  &nbsp;
+<img  src="/WechatIMG377.jpg" width="250" >  &nbsp; 
+<img  src="/WechatIMG378.jpg" width="250">  &nbsp;
 </div>
 
 # 免责声明
