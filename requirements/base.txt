@@ -19,4 +19,6 @@ redis==3.2.0
 mysqlclient==1.4.4
 sqlalchemy==1.4.23
 PyExecJS==1.5.1
-
+tqdm==4.65.0
+lxml==4.9.1
+pathos==0.3.1
