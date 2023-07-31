@@ -132,6 +132,8 @@ class TaskViewSets(GenericViewSet):
             "year": f["year"].value,
             "lyrics": f["lyrics"].value,
             "comment": f["comment"].value,
+            "tracknumber": f["tracknumber"].value,
+            "discnumber": f["discnumber"].value,
             "artwork": "data:image/jpeg;base64," + bs64_img,
             "filename": file_name
         }

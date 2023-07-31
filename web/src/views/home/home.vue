@@ -149,6 +149,18 @@
                             </div>
                         </div>
                     </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">光盘编号：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfo.discnumber"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">音轨号：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfo.tracknumber"></bk-input>
+                        </div>
+                    </div>
                 </div>
             </transition>
             <transition name="bk-slide-fade-left">
@@ -254,6 +266,18 @@
                                 <bk-image fit="contain" :src="musicInfoManual.artwork" style="width: 128px;"
                                     v-if="!musicInfoManual.album_img"></bk-image>
                             </div>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">光盘编号：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfoManual.discnumber"></bk-input>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">音轨号：</div>
+                        <div style="width: 70%;">
+                            <bk-input :clearable="true" v-model="musicInfoManual.tracknumber"></bk-input>
                         </div>
                     </div>
                 </div>

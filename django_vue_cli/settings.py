@@ -168,6 +168,7 @@ REVERSE_PROXY_TYPE = "nginx"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 SUBSONIC_DEFAULT_TRANSCODING_FORMAT = "mp3"
+SITE_LOGIN = os.getenv("SITE_LOGIN", "true")
 try:
     from local_settings import *  # noqa
 except ImportError:

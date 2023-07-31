@@ -29,6 +29,8 @@ def save_music(f, each, is_raw_thumbnail):
         "title": f["title"].value,
         "artist": f["artist"].value,
         "albumartist": f["albumartist"].value,
+        "discnumber": f["discnumber"].value,
+        "tracknumber": f["tracknumber"].value,
         "album": f["album"].value,
         "filename": base_filename
     }
@@ -52,6 +54,16 @@ def save_music(f, each, is_raw_thumbnail):
             f["albumartist"] = ConstantTemplate(each["albumartist"]).resolve_data(var_dict)
         else:
             f["albumartist"] = each["albumartist"]
+    if each.get("discnumber", None):
+        if "${" in each["discnumber"]:
+            f["discnumber"] = ConstantTemplate(each["discnumber"]).resolve_data(var_dict)
+        else:
+            f["discnumber"] = each["discnumber"]
+    if each.get("tracknumber", None):
+        if "${" in each["tracknumber"]:
+            f["tracknumber"] = ConstantTemplate(each["tracknumber"]).resolve_data(var_dict)
+        else:
+            f["tracknumber"] = each["tracknumber"]
     if each.get("genre", None):
         f["genre"] = each["genre"]
     if each.get("year", None):

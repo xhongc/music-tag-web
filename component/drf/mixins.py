@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
 
@@ -10,7 +10,8 @@ class ApiGenericMixin(object):
     """API视图类通用函数"""
 
     # TODO 权限部分加载基类中
-    # permission_classes = ()
+    if settings.SITE_LOGIN == "false":
+        permission_classes = ()
 
     def finalize_response(self, request, response, *args, **kwargs):
         """统一返回数据格式"""
@@ -41,6 +42,7 @@ class ApiGenericMixin(object):
         return super(ApiGenericMixin, self).finalize_response(
             request, response, *args, **kwargs
         )
+
 
 class ApiGatewayMixin(object):
     """对外开放API返回格式统一
