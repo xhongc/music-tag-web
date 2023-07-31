@@ -75,6 +75,8 @@ def save_music(f, each, is_raw_thumbnail):
             with open(lyrics_file_path, "w", encoding="utf-8") as f_lyc:
                 f_lyc.write(each["lyrics"])
     else:
+        if each.get("lyrics") is not None:
+            f.remove_tag("lyrics")
         if each.get("is_save_lyrics_file", False):
             lyrics_file_path = f"{os.path.dirname(each['file_full_path'])}/{base_filename}.lrc"
             if not os.path.exists(lyrics_file_path):
