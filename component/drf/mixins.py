@@ -10,7 +10,7 @@ class ApiGenericMixin(object):
     """API视图类通用函数"""
 
     # TODO 权限部分加载基类中
-    permission_classes = ()
+    # permission_classes = ()
 
     def finalize_response(self, request, response, *args, **kwargs):
         """统一返回数据格式"""
