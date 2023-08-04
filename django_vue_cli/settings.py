@@ -156,12 +156,12 @@ REST_FRAMEWORK = {
 
 JWT_AUTH = {
     # 过期时间，生成的took七天之后不能使用
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
     # 刷新时间 之后的token时间值
-    # 'JWT_ALLOW_REFRESH': True,
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
     # 请求头携带的参数
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_AUTH_HEADER_PREFIX': 'JWT'
 }
 BASE_URL = "https://music.163.com/"
 REVERSE_PROXY_TYPE = "nginx"

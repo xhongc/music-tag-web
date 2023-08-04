@@ -50,3 +50,11 @@ class FetchLlyricSerializer(serializers.Serializer):
 
 class TranslationLycSerializer(serializers.Serializer):
     lyc = serializers.CharField(required=True)
+
+
+class TidyFolderSerializer(serializers.Serializer):
+    root_path = serializers.CharField(required=True)
+    first_dir = serializers.CharField(required=True)
+    second_dir = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+    file_full_path = serializers.JSONField(required=True)
+    select_data = serializers.JSONField(required=True)

@@ -56,7 +56,7 @@ Vue.prototype.setCookie = function(name, value, day) {
         const curTamp = curDate.getTime()
         const curWeeHours = new Date(curDate.toLocaleDateString()).getTime() - 1
         const passedTamp = curTamp - curWeeHours
-        const leftTamp = 24 * 60 * 60 * 1000 - passedTamp
+        const leftTamp = 7 * 24 * 60 * 60 * 1000 - passedTamp
         const leftTime = new Date()
         leftTime.setTime(leftTamp + curTamp)
         document.cookie = name + '=' + escape(value) + ';expires=' + leftTime.toGMTString()

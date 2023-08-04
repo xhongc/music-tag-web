@@ -176,6 +176,13 @@
                             自动批量修改
                         </bk-button>
                     </div>
+                    <div style="width: 100%;display: flex;margin-top: 10px;">
+                        <bk-button :theme="'success'" :loading="isLoading"
+                            @click="exampleSetting2.primary.visible = true" class="mr10"
+                            style="width: 50%;">
+                            整理文件夹
+                        </bk-button>
+                    </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
                         <div class="label1" v-bk-tooltips="'变量名:${title}'">标题：</div>
                         <div style="width: 70%;">
@@ -386,6 +393,38 @@
                 </bk-option>
             </bk-select>
         </bk-dialog>
+        <bk-dialog v-model="exampleSetting2.primary.visible"
+            theme="primary"
+            :mask-close="false"
+            @confirm="handleTidy"
+            :header-position="exampleSetting2.primary.headerPosition"
+            title="自动批量修改">
+            <p>整理文件夹，按一级目录，二级目录选定的信息分类</p>
+            <div>整理后的根目录</div>
+            <div class="input-demo">
+                <bk-input v-model="tidyFormData.root_path">
+                </bk-input>
+            </div>
+            <div>一级目录</div>
+            <bk-select style="width: 250px;"
+                :clearable="false"
+                v-model="tidyFormData.first_dir">
+                <bk-option v-for="option in tidyList"
+                    :key="option.id"
+                    :id="option.id"
+                    :name="option.name">
+                </bk-option>
+            </bk-select>
+            <div>二级目录</div>
+            <bk-select style="width: 250px;"
+                v-model="tidyFormData.second_dir">
+                <bk-option v-for="option in tidyList"
+                    :key="option.id"
+                    :id="option.id"
+                    :name="option.name">
+                </bk-option>
+            </bk-select>
+        </bk-dialog>
     </div>
 </template>
 <script>
@@ -406,6 +445,13 @@
                     {id: 'qmusic', name: 'QQ音乐'},
                     {id: 'kugou', name: '酷狗音乐'},
                     {id: 'kuwo', name: '酷我音乐'}
+                ],
+                tidyList: [
+                    {id: 'title', name: '标题'},
+                    {id: 'artist', name: '艺术家'},
+                    {id: 'album', name: '专辑'},
+                    {id: 'genre', name: '风格'},
+                    {id: 'comment', name: '描述'}
                 ],
                 baseMusicInfo: {
                     'genre': '流行',
@@ -444,7 +490,18 @@
                 checkedData: [],
                 selectAutoMode: 'hard',
                 sourceList: [],
+                tidyFormData: {
+                    root_path: '/app/media/',
+                    first_dir: 'artist',
+                    second_dir: ''
+                },
                 exampleSetting1: {
+                    primary: {
+                        visible: false,
+                        headerPosition: 'left'
+                    }
+                },
+                exampleSetting2: {
                     primary: {
                         visible: false,
                         headerPosition: 'left'
@@ -695,6 +752,32 @@
                                 console.log(res)
                                 if (res.result) {
                                     this.$cwMessage('创建成功', 'success')
+                                }
+                            })
+                            return true
+                        } catch (e) {
+                            console.warn(e)
+                            return false
+                        }
+                    }
+                })
+            },
+            handleTidy() {
+                this.$bkInfo({
+                    title: '确认要整理文件夹？',
+                    confirmLoading: true,
+                    confirmFn: () => {
+                        try {
+                            this.isLoading = true
+                            this.tidyFormData['file_full_path'] = this.filePath
+                            this.tidyFormData['select_data'] = this.checkedData
+                            this.$api.Task.tidyFolder(this.tidyFormData).then((res) => {
+                                this.isLoading = false
+                                console.log(res)
+                                if (res.result) {
+                                    this.$cwMessage('创建成功', 'success')
+                                } else {
+                                    this.$cwMessage('创建失败', 'error')
                                 }
                             })
                             return true

@@ -25,6 +25,9 @@ export default {
     batchAutoUpdateId3: function(params) {
         return POST(reUrl + '/api/batch_auto_update_id3/', params)
     },
+    tidyFolder: function(params) {
+        return POST(reUrl + '/api/tidy_folder/', params)
+    },
     fetchId3Title: function(params) {
         return POST(reUrl + '/api/fetch_id3_by_title/', params)
     },

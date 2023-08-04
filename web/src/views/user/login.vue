@@ -38,7 +38,7 @@
         methods: {
             submitLogin() {
                 this.$api.Task.login(this.formData).then((res) => {
-                    this.setCookie('AUTHORIZATION', 'jwt ' + res.token)
+                    this.setCookie('AUTHORIZATION', 'jwt ' + res.token, 7)
                     this.$router.push({name: 'home'})
                 })
             }

@@ -14,12 +14,16 @@ from PIL import Image
 
 
 class MusicInfo:
-    def __init__(self, folder: Folder):
-        self.file = music_tag.load_file(folder.path)
-        self.path = folder.path
-        self.folder_name = folder.name
-        self.file_type = folder.file_type
-        self.parent_id = folder.parent_id
+    def __init__(self, folder):
+        if isinstance(folder, Folder):
+            self.file = music_tag.load_file(folder.path)
+            self.path = folder.path
+            self.folder_name = folder.name
+            self.file_type = folder.file_type
+            self.parent_id = folder.parent_id
+        else:
+            self.file = music_tag.load_file(folder)
+            self.path = folder
 
     @property
     def album_name(self):
@@ -30,7 +34,20 @@ class MusicInfo:
         return self.file["album"].value
 
     @property
+    def album(self):
+        album_name = self.file["album"].value
+        album_name = album_name.replace(" ", "")
+        if not album_name:
+            album_name = "未知专辑"
+            return album_name
+        return self.file["album"].value
+
+    @property
     def artist_name(self):
+        return self.file["artist"].value
+
+    @property
+    def artist(self):
         return self.file["artist"].value
 
     @property

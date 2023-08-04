@@ -1,8 +1,11 @@
 import datetime
 import os
+import shutil
 import time
 import uuid
+from collections import defaultdict
 
+import music_tag
 from django.conf import settings
 from django.db import transaction
 
@@ -10,7 +13,7 @@ from applications.music.models import Folder, Track, Album, Genre, Artist, Attac
 from applications.subsonic.constants import AUDIO_EXTENSIONS_AND_MIMETYPE, COVER_TYPE
 from applications.task.models import TaskRecord, Task
 from applications.task.services.music_resource import MusicResource
-from applications.task.services.scan_utils import ScanMusic
+from applications.task.services.scan_utils import ScanMusic, MusicInfo
 from applications.task.utils import folder_update_time, exists_dir, match_song
 from django_vue_cli.celery_app import app
 
@@ -245,7 +248,7 @@ def batch_auto_tag_task(batch, source_list, select_mode):
     folder_list = TaskRecord.objects.filter(batch=batch, icon="icon-folder").all()
     for folder in folder_list:
         data = os.scandir(folder.full_path)
-        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta",  "m4a", "ogg", "mpc",
+        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "m4a", "ogg", "mpc",
                       "opus", "wma", "dsf", "dff"]
         bulk_set = []
         for entry in data:
@@ -287,3 +290,39 @@ def batch_auto_tag_task(batch, source_list, select_mode):
                 "parent_path": parent_path,
                 "filename": os.path.basename(task.full_path)
             })
+
+
+def tidy_folder_task(music_path_list, tidy_config):
+    root_path = tidy_config.get("root_path")
+    first_dir = tidy_config.get("first_dir")
+    second_dir = tidy_config.get("second_dir")
+
+    if second_dir:
+        tidy_map = defaultdict(lambda: defaultdict(list))
+        for music_path in music_path_list:
+            file = MusicInfo(music_path)
+            first_value = getattr(file, first_dir, "未知")
+            second_value = getattr(file, second_dir, "未知")
+            tidy_map[first_value][second_value].append(music_path)
+        for first_value, second_map in tidy_map.items():
+            first_path = os.path.join(root_path, first_value)
+            if not os.path.exists(first_path):
+                os.makedirs(first_path)
+            for second_value, music_path_list in second_map.items():
+                second_path = os.path.join(first_path, second_value)
+                if not os.path.exists(second_path):
+                    os.makedirs(second_path)
+                for music_path in music_path_list:
+                    shutil.move(music_path, second_path)
+    else:
+        tidy_map = defaultdict(list)
+        for music_path in music_path_list:
+            file = MusicInfo(music_path)
+            first_value = getattr(file, first_dir, "未知")
+            tidy_map[first_value].append(music_path)
+        for first_value, music_path_list in tidy_map.items():
+            first_path = os.path.join(root_path, first_value)
+            if not os.path.exists(first_path):
+                os.makedirs(first_path)
+            for music_path in music_path_list:
+                shutil.move(music_path, first_path)
