@@ -161,6 +161,24 @@
                             <bk-input :clearable="true" v-model="musicInfo.tracknumber"></bk-input>
                         </div>
                     </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">时长：</div>
+                        <div style="width: 70%;">
+                            {{musicInfo.duration}}
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">比特率：</div>
+                        <div style="width: 70%;">
+                            {{musicInfo.bit_rate}}
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-bottom: 10px;align-items: center;">
+                        <div class="label1">文件大小：</div>
+                        <div style="width: 70%;">
+                            {{musicInfo.size}}
+                        </div>
+                    </div>
                 </div>
             </transition>
             <transition name="bk-slide-fade-left">
@@ -186,7 +204,8 @@
                     <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
                         <div class="label1" v-bk-tooltips="'变量名:${title}'">标题：</div>
                         <div style="width: 70%;">
-                            <bk-input :clearable="true" v-model="musicInfoManual.title"></bk-input>
+                            <bk-input :clearable="true" v-model="musicInfoManual.title"
+                                :placeholder="'支持变量批量修改'"></bk-input>
                         </div>
                         <div>
                             <bk-icon type="arrows-right-circle" @click="toggleLock('title')"
@@ -196,13 +215,15 @@
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
                         <div class="label1" v-bk-tooltips="'变量名:${filename}'">文件名：</div>
                         <div style="width: 70%;">
-                            <bk-input :clearable="true" v-model="musicInfoManual.filename"></bk-input>
+                            <bk-input :clearable="true" v-model="musicInfoManual.filename"
+                                :placeholder="'例如：${title}-${album}'"></bk-input>
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
                         <div class="label1" v-bk-tooltips="'变量名:${artist}'">艺术家：</div>
                         <div style="width: 70%;">
-                            <bk-input :clearable="true" v-model="musicInfoManual.artist"></bk-input>
+                            <bk-input :clearable="true" v-model="musicInfoManual.artist"
+                                :placeholder="'具体哪些变量,鼠标悬浮在标题上查看'"></bk-input>
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
@@ -212,7 +233,7 @@
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                        <div class="label1">专辑艺术家：</div>
+                        <div class="label1" v-bk-tooltips="'变量名:${albumartist}'">专辑艺术家：</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfoManual.albumartist"></bk-input>
                         </div>
@@ -276,13 +297,13 @@
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                        <div class="label1">光盘编号：</div>
+                        <div class="label1" v-bk-tooltips="'变量名:${discnumber}'">光盘编号：</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfoManual.discnumber"></bk-input>
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
-                        <div class="label1">音轨号：</div>
+                        <div class="label1" v-bk-tooltips="'变量名:${tracknumber}'">音轨号：</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfoManual.tracknumber"></bk-input>
                         </div>
@@ -776,6 +797,7 @@
                                 console.log(res)
                                 if (res.result) {
                                     this.$cwMessage('创建成功', 'success')
+                                    this.handleSearchFile()
                                 } else {
                                     this.$cwMessage('创建失败', 'error')
                                 }

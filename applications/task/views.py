@@ -8,10 +8,12 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.gzip import gzip_page
 from rest_framework.decorators import action
 
+from applications.task.constants import ALLOW_TYPE
 from applications.task.models import TaskRecord, Task
 from applications.task.serialziers import FileListSerializer, Id3Serializer, UpdateId3Serializer, \
     FetchId3ByTitleSerializer, FetchLlyricSerializer, BatchUpdateId3Serializer, TranslationLycSerializer, \
     TidyFolderSerializer
+from applications.task.services.music_ids import MusicIDS
 from applications.task.services.music_resource import MusicResource
 from applications.task.services.update_ids import update_music_info
 from applications.task.tasks import full_scan_folder, scan, clear_music, batch_auto_tag_task, tidy_folder_task
@@ -52,8 +54,6 @@ class TaskViewSets(GenericViewSet):
         except FileNotFoundError:
             return self.failure_response(msg="文件夹不存在")
         children_data = []
-        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "m4a", "ogg", "mpc",
-                      "opus", "wma", "dsf", "dff"]
         frc_map = {}
         file_data = []
         full_path_list = []
@@ -80,7 +80,7 @@ class TaskViewSets(GenericViewSet):
                     "children": []
                 })
                 continue
-            if file_type not in allow_type:
+            if file_type not in ALLOW_TYPE:
                 continue
             if file_name in frc_map:
                 icon = "icon-script-files"
@@ -118,28 +118,7 @@ class TaskViewSets(GenericViewSet):
         sub_path = file_path.split('/')[-1]
         if sub_path == file_name:
             return self.success_response()
-        file_title = file_name.split('.')[0]
-        f = music_tag.load_file(f"{file_path}/{file_name}")
-        artwork = f["artwork"].values
-        bs64_img = ""
-        if artwork:
-            zip_img = artwork[0].raw_thumbnail([128, 128])
-
-            bs64_img = base64.b64encode(zip_img).decode()
-        res_data = {
-            "title": f["title"].value or file_title,
-            "artist": f["artist"].value,
-            "album": f["album"].value,
-            "albumartist": f["albumartist"].value,
-            "genre": f["genre"].value,
-            "year": f["year"].value,
-            "lyrics": f["lyrics"].value,
-            "comment": f["comment"].value,
-            "tracknumber": f["tracknumber"].value,
-            "discnumber": f["discnumber"].value,
-            "artwork": "data:image/jpeg;base64," + bs64_img,
-            "filename": file_name
-        }
+        res_data = MusicIDS(f"{file_path}/{file_name}").to_dict()
         return self.success_response(data=res_data)
 
     @action(methods=['POST'], detail=False)
