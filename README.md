@@ -51,7 +51,7 @@ services:
     command: /start
     restart: always
 ```
-
+ps. `/path/to/your/music` 改成你的音乐文件夹路径！
 3 访问在127.0.0.1:8001
 
 # 📷 User Interface
