@@ -13,6 +13,8 @@ DFF等音频格式。
 - 支持音乐标签来源 网易云音乐，QQ音乐，咪咕音乐, 酷狗音乐, 酷我音乐
 - 支持批量自动修改音乐标签
 - 支持音乐指纹识别，即使没有元数据也可以识别音乐
+- 支持整理音乐文件，按艺术家，专辑分组
+
 # 🦀 Show Project
 DEMO 地址账号密码为：admin/admin
 [【音乐标签Web｜Music Tag Web】](http://42.193.218.103:8002/#/)
@@ -28,11 +30,11 @@ DEMO 地址账号密码为：admin/admin
 
 ### 从阿里云Docker Registry拉取镜像
 
-1`docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.3`
+1`docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.4`
 
 ### dokcer run
 
-2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.3`
+2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.4`
    
 或者 使用portainer stacks部署
    ![img_1.png](img_1.png)
@@ -42,7 +44,7 @@ version: '3'
 
 services:
   music-tag:
-    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.3
+    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.4
     container_name: music-tag-web
     ports:
       - "8001:8001"
