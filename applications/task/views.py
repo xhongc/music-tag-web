@@ -106,7 +106,7 @@ class TaskViewSets(GenericViewSet):
                 "update_time": entry.get("update_time")
             })
         if "name" in sorted_fields:
-            children_data = sorted(children_data, key=lambda x: x.get("name").encode('gbk'), reverse=False)
+            children_data = sorted(children_data, key=lambda x: x.get("name").encode('gbk', "ignore"), reverse=False)
         if "update_time" in sorted_fields:
             children_data = sorted(children_data, key=lambda x: x.get("update_time"), reverse=True)
         if "size" in sorted_fields:
