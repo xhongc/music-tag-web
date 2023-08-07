@@ -1,5 +1,6 @@
 import base64
 import copy
+import locale
 import os
 import time
 
@@ -48,6 +49,7 @@ class TaskViewSets(GenericViewSet):
         """文件列表"""
         validate_data = self.is_validated_data(request.data)
         file_path = validate_data['file_path']
+        sorted_fields = validate_data['sorted_fields']
         file_path_list = file_path.split('/')
         try:
             data = os.scandir(file_path)
@@ -59,7 +61,13 @@ class TaskViewSets(GenericViewSet):
         full_path_list = []
         for entry in data:
             each = entry.name
-            file_data.append(each)
+            file_data.append({
+                "name": each,
+                "path": entry.path,
+                "is_dir": entry.is_dir(),
+                "update_time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(entry.stat().st_mtime)),
+                "size": entry.stat().st_size
+            })
             full_path_list.append(f"{file_path}/{each}")
             file_type = each.split(".")[-1]
             file_name = ".".join(each.split(".")[:-1])
@@ -67,17 +75,19 @@ class TaskViewSets(GenericViewSet):
                 frc_map[file_name] = each
         task_map = dict(Task.objects.filter(parent_path=file_path).values_list("filename", "state"))
         for index, entry in enumerate(file_data, 1):
-            each = entry
+            each = entry.get("name")
             file_type = each.split(".")[-1]
             file_name = ".".join(each.split(".")[:-1])
-            if os.path.isdir(f"{file_path}/{each}"):
+            if entry.get("is_dir", None):
                 children_data.append({
                     "id": index,
                     "name": each,
                     "title": each,
                     "icon": "icon-folder",
                     "state": "null",
-                    "children": []
+                    "children": [],
+                    "size": entry.get("size"),
+                    "update_time": entry.get("update_time")
                 })
                 continue
             if file_type not in ALLOW_TYPE:
@@ -91,8 +101,16 @@ class TaskViewSets(GenericViewSet):
                 "name": each,
                 "title": each,
                 "icon": icon,
-                "state": task_map.get(each, "null")
+                "state": task_map.get(each, "null"),
+                "size": entry.get("size"),
+                "update_time": entry.get("update_time")
             })
+        if "name" in sorted_fields:
+            children_data = sorted(children_data, key=lambda x: x.get("name").encode('gbk'), reverse=False)
+        if "update_time" in sorted_fields:
+            children_data = sorted(children_data, key=lambda x: x.get("update_time"), reverse=True)
+        if "size" in sorted_fields:
+            children_data = sorted(children_data, key=lambda x: x.get("size"), reverse=True)
         res_data = [
             {
                 "name": file_path_list[-1],

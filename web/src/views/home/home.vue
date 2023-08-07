@@ -11,8 +11,23 @@
                     </bk-input>
                     <bk-icon type="arrows-down-shape" @click="handleSearchFile" style="cursor: pointer;"></bk-icon>
                 </div>
-                <div style="margin-top: 10px;">
+                <div style="margin-top: 10px;display: flex;align-items: center;">
                     <bk-input type="text" v-model="searchWord" placeholder="search..." @enter="handleSearch"></bk-input>
+                    <div style="margin-left: 20px;margin-right: 5px;">
+                        <bk-dropdown-menu :align="'right'">
+                            <template slot="dropdown-trigger">
+                                <span class="dropdown-trigger-btn bk-icon icon-dedent" style="cursor: pointer;"></span>
+                            </template>
+                            <ul class="bk-dropdown-list" slot="dropdown-content">
+                                <li><a href="javascript:;" @click="changeSorted('name')"
+                                    :class="{ 'isSelected': sortedField.includes('name') }">名称</a></li>
+                                <li><a href="javascript:;" @click="changeSorted('update_time')"
+                                    :class="{ 'isSelected': sortedField.includes('update_time') }">修改时间</a></li>
+                                <li><a href="javascript:;" @click="changeSorted('size')"
+                                    :class="{ 'isSelected': sortedField.includes('size') }">大小</a></li>
+                            </ul>
+                        </bk-dropdown-menu>
+                    </div>
                 </div>
                 <transition name="bk-slide-fade-down">
                     <div style="margin-top: 10px;" v-show="fadeShowDir">
@@ -164,19 +179,19 @@
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
                         <div class="label1">时长：</div>
                         <div style="width: 70%;">
-                            {{musicInfo.duration}}
+                            {{ musicInfo.duration }}
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
                         <div class="label1">比特率：</div>
                         <div style="width: 70%;">
-                            {{musicInfo.bit_rate}}
+                            {{ musicInfo.bit_rate }}
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;">
                         <div class="label1">文件大小：</div>
                         <div style="width: 70%;">
-                            {{musicInfo.size}}
+                            {{ musicInfo.size }}
                         </div>
                     </div>
                 </div>
@@ -527,7 +542,8 @@
                         visible: false,
                         headerPosition: 'left'
                     }
-                }
+                },
+                sortedField: []
             }
         },
         created() {
@@ -698,7 +714,7 @@
                 this.fadeShowDir = false
                 this.checkedData = []
                 this.checkedIds = []
-                this.$api.Task.fileList({'file_path': this.filePath}).then((res) => {
+                this.$api.Task.fileList({'file_path': this.filePath, sorted_fields: this.sortedField}).then((res) => {
                     if (res.result) {
                         this.treeListOne = res.data
                         this.fadeShowDir = true
@@ -809,6 +825,15 @@
                         }
                     }
                 })
+            },
+            changeSorted(element) {
+                if (this.sortedField.includes(element)) {
+                    this.sortedField.splice(this.sortedField.indexOf(element), 1)
+                } else {
+                    this.sortedField.push(element)
+                }
+                console.log(this.sortedField)
+                this.handleSearchFile()
             }
         }
     }
@@ -1008,5 +1033,8 @@ button.bk-button-text {
 
 ::-webkit-scrollbar-thumb {
     background-color: #f4f5f0;
+}
+.isSelected {
+    background-color: #ecf3fe;
 }
 </style>
