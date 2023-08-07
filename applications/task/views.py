@@ -60,10 +60,10 @@ class TaskViewSets(GenericViewSet):
         file_data = []
         full_path_list = []
         for entry in data:
-            each = entry.name
+            each = entry.name.encode('utf-8', 'replace').decode()
             file_data.append({
                 "name": each,
-                "path": entry.path,
+                "path": entry.path.encode('utf-8', 'replace').decode(),
                 "is_dir": entry.is_dir(),
                 "update_time": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(entry.stat().st_mtime)),
                 "size": entry.stat().st_size
