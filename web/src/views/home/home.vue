@@ -546,7 +546,7 @@
                 ],
                 searchWord: '',
                 treeListOne: [],
-                filePath: '/Users/macbookair/Music/my_music/music/music_lyc',
+                filePath: '/app/media/',
                 fullPath: '',
                 fileName: '',
                 resource: localStorage.getItem('resource') ? localStorage.getItem('resource') : 'netease',
