@@ -95,6 +95,11 @@ def save_music(f, each, is_raw_thumbnail):
                     f['artwork'] = f['artwork'].first.raw_thumbnail([2048, 2048])
         except Exception:
             pass
+    if each.get("album_type", None):
+        if file_ext in ["flac", "ogg"]:
+            f.mfile.tags["RELEASETYPE"] = each["album_type"]
+        else:
+            f["MUSICBRAINZALBUMTYPE"] = each["album_type"]
     f.save()
     # 重命名文件名称
     if each.get("filename", None):

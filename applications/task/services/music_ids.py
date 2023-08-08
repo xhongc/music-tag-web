@@ -27,6 +27,16 @@ class MusicIDS:
         return self.file["album"].value
 
     @property
+    def album_type(self):
+        try:
+            if self.file.tag_format in ["FLAC", "OGG"]:
+                return self.file.mfile.tags.get("RELEASETYPE")[0]
+            else:
+                return self.file.mfile.tags.get("MUSICBRAINZALBUMTYPE")[0]
+        except Exception:
+            return ""
+
+    @property
     def album_artist(self):
         return self.file["albumartist"].value
 
@@ -137,6 +147,7 @@ class MusicIDS:
             "title": self.title or self.file_name.split(".")[0],
             "artist": self.artist,
             "album": self.album,
+            "album_type": self.album_type,
             "genre": self.genre,
             "filename": self.file_name,
             "albumartist": self.album_artist,

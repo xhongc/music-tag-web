@@ -15,6 +15,7 @@ class MusicId3Serializer(serializers.Serializer):
     title = serializers.CharField(required=True, allow_null=True, allow_blank=True)
     artist = serializers.CharField(required=True, allow_null=True, allow_blank=True)
     album = serializers.CharField(required=True, allow_null=True, allow_blank=True)
+    album_type = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     albumartist = serializers.CharField(required=True, allow_null=True, allow_blank=True)
     discnumber = serializers.CharField(required=True, allow_null=True, allow_blank=True)
     tracknumber = serializers.CharField(required=True, allow_null=True, allow_blank=True)

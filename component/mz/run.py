@@ -14,4 +14,7 @@ apikey = "cSpUJKpD"
 
 
 def get_acoustid(path):
-    return acoustid.match(apikey, path)
+    try:
+        return acoustid.match(apikey, path)
+    except Exception:
+        return ""
