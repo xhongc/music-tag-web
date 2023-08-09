@@ -32,7 +32,7 @@ class MusicIDS:
             if self.file.tag_format in ["FLAC", "OGG"]:
                 return self.file.mfile.tags.get("RELEASETYPE")[0]
             else:
-                return self.file.mfile.tags.get("MUSICBRAINZALBUMTYPE")[0]
+                return self.file.mfile.tags.get("TXXX:MUSICBRAINZALBUMTYPE").text[0]
         except Exception:
             return ""
 
@@ -139,7 +139,6 @@ class MusicIDS:
             "lyrics": self.lyrics,
             "duration": self.duration,
             "size": self.size,
-            "suffix": self.suffix,
             "bit_rate": self.bit_rate,
             "tracknumber": self.track_number,
             "discnumber": self.disc_number,

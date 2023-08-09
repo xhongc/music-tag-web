@@ -1,6 +1,9 @@
 import os
 
 import music_tag
+from music_tag import MetadataItem
+from mutagen.flac import VCFLACDict
+from mutagen.id3 import TXXX, ID3
 
 from applications.task.models import Task
 from applications.utils.constant_template import ConstantTemplate
@@ -89,17 +92,21 @@ def save_music(f, each, is_raw_thumbnail):
             img_data = send().GET(each["album_img"])
             if img_data.status_code == 200:
                 f['artwork'] = img_data.content
-                if len(img_data.content)/1024/1024 > 5:
+                if len(img_data.content) / 1024 / 1024 > 5:
                     f['artwork'] = f['artwork'].first.raw_thumbnail([2048, 2048])
                 if is_raw_thumbnail:
                     f['artwork'] = f['artwork'].first.raw_thumbnail([2048, 2048])
         except Exception:
             pass
     if each.get("album_type", None):
-        if file_ext in ["flac", "ogg"]:
+        if isinstance(f.mfile.tags, VCFLACDict):
             f.mfile.tags["RELEASETYPE"] = each["album_type"]
+        elif isinstance(f.mfile.tags, ID3):
+            f.mfile.tags["MUSICBRAINZALBUMTYPE"] = TXXX(encoding=3,
+                                                        desc="MUSICBRAINZALBUMTYPE",
+                                                        text=each["album_type"])
         else:
-            f["MUSICBRAINZALBUMTYPE"] = each["album_type"]
+            raise Exception("未知的音乐文件类型")
     f.save()
     # 重命名文件名称
     if each.get("filename", None):
