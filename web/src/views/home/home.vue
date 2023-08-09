@@ -12,7 +12,7 @@
                     <bk-icon type="arrows-down-shape" @click="handleSearchFile" style="cursor: pointer;"></bk-icon>
                 </div>
                 <div style="margin-top: 10px;display: flex;align-items: center;">
-                    <bk-input type="text" v-model="searchWord" placeholder="search..." @enter="handleSearch"></bk-input>
+                    <bk-input type="text" v-model="searchWord" placeholder="根据文件名称搜索" @enter="handleSearch"></bk-input>
                     <div style="margin-left: 10px;margin-right: 5px;">
                         <bk-dropdown-menu :align="'right'">
                             <template slot="dropdown-trigger">
@@ -39,6 +39,8 @@
                             :node-key="'id'"
                             :has-border="true"
                             :tpl="tpl"
+                            :draggable="true"
+                            :drag-sort="true"
                             @on-click="nodeClickOne"
                             @on-check="nodeCheckTwo"
                             @on-expanded="nodeExpandedOne">
@@ -61,7 +63,7 @@
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
-                        <div class="label1" v-bk-tooltips="'变量名:${title}'">标题：</div>
+                        <div class="label1 can-copy" v-bk-tooltips="'变量名:${title}'" v-bk-copy="'${title}'">标题：</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfo.title"></bk-input>
                         </div>
@@ -73,25 +75,25 @@
                     </div>
                     <div v-for="(item, index) in showFields" :key="'l1' + index">
                         <div class="edit-item" v-if="item === 'filename'">
-                            <div class="label1" v-bk-tooltips="'变量名:${filename}'">文件名：</div>
+                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${filename}'" v-bk-copy="'${filename}'">文件名：</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.filename"></bk-input>
                             </div>
                         </div>
-                        <div class="edit-item" v-else-if="item === 'artist'">
-                            <div class="label1" v-bk-tooltips="'变量名:${artist}'">艺术家：</div>
+                        <div class="edit-item can-copy" v-else-if="item === 'artist'">
+                            <div class="label1" v-bk-tooltips="'变量名:${artist}'" v-bk-copy="'${artist}'">艺术家：</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.artist"></bk-input>
                             </div>
                         </div>
-                        <div class="edit-item" v-else-if="item === 'album'">
-                            <div class="label1" v-bk-tooltips="'变量名:${album}'">专辑：</div>
+                        <div class="edit-item can-copy" v-else-if="item === 'album'">
+                            <div class="label1" v-bk-tooltips="'变量名:${album}'" v-bk-copy="'${album}'">专辑：</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.album"></bk-input>
                             </div>
                         </div>
-                        <div class="edit-item" v-else-if="item === 'albumartist'">
-                            <div class="label1">专辑艺术家：</div>
+                        <div class="edit-item can-copy" v-else-if="item === 'albumartist'">
+                            <div class="label1" v-bk-tooltips="'变量名:${albumartist}'" v-bk-copy="'${albumartist}'">专辑艺术家：</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.albumartist"></bk-input>
                             </div>
@@ -136,7 +138,7 @@
                                 </div>
                             </div>
                             <div style="display: flex;margin-top: 10px;">
-                                <div class="label1">保存歌词文件：</div>
+                                <div class="label1">保存歌词：</div>
                                 <bk-switcher v-model="musicInfo.is_save_lyrics_file"></bk-switcher>
                             </div>
                         </div>
@@ -148,12 +150,16 @@
                         </div>
                         <div class="edit-item" v-else-if="item === 'album_img'">
                             <div class="label1">专辑封面：</div>
-                            <div style="width: 70%;" v-if="reloadImg">
+                            <div style="width: 70%;display: flex;" v-if="reloadImg">
                                 <div v-if="musicInfo.album_img">
                                     <bk-image fit="contain" :src="musicInfo.album_img" style="width: 128px;"></bk-image>
                                 </div>
                                 <div v-else>
                                     <bk-image fit="contain" :src="musicInfo.artwork" style="width: 128px;"></bk-image>
+                                    <div style="color: #63656e;font-size: 12px;">
+                                        ({{ musicInfo.artwork_w }}*{{ musicInfo.artwork_h }})
+                                        {{ musicInfo.artwork_size }}MB
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -171,20 +177,20 @@
                         </div>
                         <div class="edit-item" v-else-if="item === 'duration'">
                             <div class="label1">时长：</div>
-                            <div style="width: 70%;">
-                                {{ musicInfo.duration }}
+                            <div style="width: 70%;color: #63656e;font-size: 14px;">
+                                {{ musicInfo.duration }} s
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'bit_rate'">
                             <div class="label1">比特率：</div>
-                            <div style="width: 70%;">
+                            <div style="width: 70%;color: #63656e;font-size: 14px;">
                                 {{ musicInfo.bit_rate }}
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'size'">
                             <div class="label1">文件大小：</div>
-                            <div style="width: 70%;">
-                                {{ musicInfo.size }}
+                            <div style="width: 70%;color: #63656e;font-size: 14px;">
+                                {{ musicInfo.size }} MB
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'album_type'">
@@ -230,7 +236,7 @@
                         </bk-button>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
-                        <div class="label1" v-bk-tooltips="'变量名:${title}'">标题：</div>
+                        <div class="label1 can-copy" v-bk-tooltips="'变量名:${title}'" v-bk-copy="'${title}'">标题：</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfoManual.title"
                                 :placeholder="'支持变量批量修改'"></bk-input>
@@ -242,27 +248,27 @@
                     </div>
                     <div v-for="(item, index) in showFields" :key="'l2' + index">
                         <div class="edit-item" v-if="item === 'filename'">
-                            <div class="label1" v-bk-tooltips="'变量名:${filename}'">文件名：</div>
+                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${filename}'" v-bk-copy="'${filename}'">文件名：</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.filename"
                                     :placeholder="'例如：${title}-${album}'"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'artist'">
-                            <div class="label1" v-bk-tooltips="'变量名:${artist}'">艺术家：</div>
+                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${artist}'" v-bk-copy="'${artist}'">艺术家：</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.artist"
                                     :placeholder="'具体哪些变量,鼠标悬浮在标题上查看'"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'album'">
-                            <div class="label1" v-bk-tooltips="'变量名:${album}'">专辑：</div>
+                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${album}'" v-bk-copy="'${album}'">专辑：</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.album"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'albumartist'">
-                            <div class="label1" v-bk-tooltips="'变量名:${albumartist}'">专辑艺术家：</div>
+                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${albumartist}'" v-bk-copy="'${albumartist}'">专辑艺术家：</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.albumartist"></bk-input>
                             </div>
@@ -292,23 +298,26 @@
                                 <bk-input :clearable="true" v-model="musicInfoManual.year"></bk-input>
                             </div>
                         </div>
-                        <div style="display: flex;margin-bottom: 10px;flex-direction: column;" v-else-if="item === 'lyrics'">
+                        <div style="display: flex;margin-bottom: 10px;flex-direction: column;"
+                            v-else-if="item === 'lyrics'">
                             <div style="display: flex;">
                                 <div class="label1">歌词：</div>
                                 <div style="width: 70%;">
-                                    <bk-input :clearable="true" v-model="musicInfoManual.lyrics" type="textarea" :rows="15"
+                                    <bk-input :clearable="true" v-model="musicInfoManual.lyrics" type="textarea"
+                                        :rows="15"
                                     ></bk-input>
                                 </div>
                             </div>
                             <div style="display: flex;margin-top: 10px;">
-                                <div class="label1">保存歌词文件：</div>
+                                <div class="label1">保存歌词：</div>
                                 <bk-switcher v-model="musicInfoManual.is_save_lyrics_file"></bk-switcher>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'comment'">
                             <div class="label1">描述：</div>
                             <div style="width: 70%;">
-                                <bk-input :clearable="true" v-model="musicInfoManual.comment" type="textarea"></bk-input>
+                                <bk-input :clearable="true" v-model="musicInfoManual.comment"
+                                    type="textarea"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'album_img'">
@@ -563,6 +572,8 @@
                     {id: 'title', name: '标题'},
                     {id: 'artist', name: '艺术家'},
                     {id: 'album', name: '专辑'},
+                    {id: 'albumartist', name: '专辑艺术家'},
+                    {id: 'album_type', name: '专辑类型'},
                     {id: 'genre', name: '风格'},
                     {id: 'comment', name: '描述'}
                 ],
@@ -638,13 +649,23 @@
                 // 如果 h 能自动注入则可以忽略 h 参数，无需写上，否则 h 参数会重复。
                 const titleClass = node.selected ? 'node-title node-selected' : 'node-title ' + node.state
                 console.log(node, titleClass)
-                return <span>
+                if (node.title.length > 30) {
+                    return <span>
                     <span class={titleClass} domPropsInnerHTML={node.title.slice(0, 30)}
                         onClick={() => {
                             this.nodeClickOne(node)
                         }} v-bk-tooltips={node.title}>
                     </span>
-                </span>
+                    </span>
+                } else {
+                    return <span>
+                    <span class={titleClass} domPropsInnerHTML={node.title.slice(0, 30)}
+                        onClick={() => {
+                            this.nodeClickOne(node)
+                        }}>
+                    </span>
+                    </span>
+                }
             },
             backDir() {
                 this.filePath = this.backPath(this.filePath)
@@ -1132,5 +1153,8 @@ button.bk-button-text {
     display: flex;
     margin-bottom: 10px;
     align-items: center;
+}
+.can-copy {
+    cursor: pointer;
 }
 </style>

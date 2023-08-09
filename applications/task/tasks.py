@@ -12,6 +12,7 @@ from django.db import transaction
 from applications.music.models import Folder, Track, Album, Genre, Artist, Attachment
 from applications.subsonic.constants import AUDIO_EXTENSIONS_AND_MIMETYPE, COVER_TYPE
 from applications.task.models import TaskRecord, Task
+from applications.task.services.music_ids import MusicIDS
 from applications.task.services.music_resource import MusicResource
 from applications.task.services.scan_utils import ScanMusic, MusicInfo
 from applications.task.utils import folder_update_time, exists_dir, match_song
@@ -300,7 +301,7 @@ def tidy_folder_task(music_path_list, tidy_config):
     if second_dir:
         tidy_map = defaultdict(lambda: defaultdict(list))
         for music_path in music_path_list:
-            file = MusicInfo(music_path)
+            file = MusicIDS(music_path)
             first_value = getattr(file, first_dir, "未知")
             second_value = getattr(file, second_dir, "未知")
             tidy_map[first_value][second_value].append(music_path)
@@ -317,7 +318,7 @@ def tidy_folder_task(music_path_list, tidy_config):
     else:
         tidy_map = defaultdict(list)
         for music_path in music_path_list:
-            file = MusicInfo(music_path)
+            file = MusicIDS(music_path)
             first_value = getattr(file, first_dir, "未知")
             tidy_map[first_value].append(music_path)
         for first_value, music_path_list in tidy_map.items():

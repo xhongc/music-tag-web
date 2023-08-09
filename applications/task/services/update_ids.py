@@ -102,8 +102,8 @@ def save_music(f, each, is_raw_thumbnail):
         if isinstance(f.mfile.tags, VCFLACDict):
             f.mfile.tags["RELEASETYPE"] = each["album_type"]
         elif isinstance(f.mfile.tags, ID3):
-            f.mfile.tags["MUSICBRAINZALBUMTYPE"] = TXXX(encoding=3,
-                                                        desc="MUSICBRAINZALBUMTYPE",
+            f.mfile.tags["MusicBrainz Album Type"] = TXXX(encoding=3,
+                                                        desc="MusicBrainz Album Type",
                                                         text=each["album_type"])
         else:
             raise Exception("未知的音乐文件类型")

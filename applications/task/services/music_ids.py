@@ -9,6 +9,11 @@ class MusicIDS:
         self.file = music_tag.load_file(folder)
         self.path = folder
 
+        self.artwork_w = 0
+        self.artwork_h = 0
+        self.artwork_size = 0
+
+
     @property
     def album_name(self):
         album_name = self.file["album"].value
@@ -32,7 +37,7 @@ class MusicIDS:
             if self.file.tag_format in ["FLAC", "OGG"]:
                 return self.file.mfile.tags.get("RELEASETYPE")[0]
             else:
-                return self.file.mfile.tags.get("TXXX:MUSICBRAINZALBUMTYPE").text[0]
+                return self.file.mfile.tags.get("TXXX:MusicBrainz Album Type").text[0]
         except Exception:
             return ""
 
@@ -124,6 +129,9 @@ class MusicIDS:
             if artwork:
                 zip_img = artwork[0].raw_thumbnail([128, 128])
                 bs64_img = base64.b64encode(zip_img).decode()
+                self.artwork_w = artwork[0].width
+                self.artwork_h = artwork[0].height
+                self.artwork_size = round(len(artwork[0].raw) / 1024 / 1024, 2)
             return "data:image/jpeg;base64," + bs64_img
         except Exception:
             return ""
@@ -143,6 +151,9 @@ class MusicIDS:
             "tracknumber": self.track_number,
             "discnumber": self.disc_number,
             "artwork": self.artwork,
+            "artwork_w": self.artwork_w,
+            "artwork_h": self.artwork_h,
+            "artwork_size": self.artwork_size,
             "title": self.title or self.file_name.split(".")[0],
             "artist": self.artist,
             "album": self.album,
