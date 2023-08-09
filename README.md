@@ -16,6 +16,7 @@ DFF等音频格式。
 - version：1.1.4 支持整理音乐文件，按艺术家，专辑分组
 - version：1.1.5 支持文件排序，按照文件名，文件大小，更新时间排序
 - version: 1.1.7 支持plex专辑类型，新增配置显示/隐藏字段
+- version： 1.1.8 修复不同类型音频文件的专辑类型
 
 # 🦀 Show Project
 DEMO 地址账号密码为：admin/admin
@@ -33,11 +34,11 @@ DEMO 地址账号密码为：admin/admin
 
 ### 从阿里云Docker Registry拉取镜像
 
-1`docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.4`
+1`docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.8`
 
 ### dokcer run
 
-2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.4`
+2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.8`
    
 或者 使用portainer stacks部署
    ![img_1.png](img_1.png)
@@ -47,7 +48,7 @@ version: '3'
 
 services:
   music-tag:
-    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.4
+    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.1.8
     container_name: music-tag-web
     ports:
       - "8001:8001"
