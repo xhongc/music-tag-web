@@ -2,6 +2,10 @@ import base64
 import os
 
 import music_tag
+from mutagen.flac import VCFLACDict
+from mutagen.id3 import ID3
+
+from applications.task.utils import detect_language
 
 
 class MusicIDS:
@@ -12,7 +16,6 @@ class MusicIDS:
         self.artwork_w = 0
         self.artwork_h = 0
         self.artwork_size = 0
-
 
     @property
     def album_name(self):
@@ -34,10 +37,12 @@ class MusicIDS:
     @property
     def album_type(self):
         try:
-            if self.file.tag_format in ["FLAC", "OGG"]:
+            if isinstance(self.file.mfile.tags, VCFLACDict):
                 return self.file.mfile.tags.get("RELEASETYPE")[0]
-            else:
+            elif isinstance(self.file.mfile.tags, ID3):
                 return self.file.mfile.tags.get("TXXX:MusicBrainz Album Type").text[0]
+            else:
+                return ""
         except Exception:
             return ""
 
@@ -101,7 +106,7 @@ class MusicIDS:
 
     @property
     def bit_rate(self):
-        return self.file['#bitrate'].value
+        return int(self.file['#bitrate'].value / 1000)
 
     @property
     def track_number(self):
@@ -140,6 +145,25 @@ class MusicIDS:
     def file_name(self):
         return os.path.basename(self.path)
 
+    @property
+    def language(self):
+        try:
+            if isinstance(self.file.mfile.tags, VCFLACDict):
+                language = self.file.mfile.tags.get("LANGUAGE")[0]
+            elif isinstance(self.file.mfile.tags, ID3):
+                language = self.file.mfile.tags.get("TXXX:LANGUAGE").text[0]
+            else:
+                language = ""
+        except Exception:
+            language = ""
+        if language:
+            return language
+        else:
+            try:
+                return detect_language(self.lyrics)
+            except Exception:
+                return ""
+
     def to_dict(self):
         return {
             "year": self.year,
@@ -161,4 +185,5 @@ class MusicIDS:
             "genre": self.genre,
             "filename": self.file_name,
             "albumartist": self.album_artist,
+            "language": self.language,
         }

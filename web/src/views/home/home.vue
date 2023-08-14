@@ -117,6 +117,25 @@
                                 </bk-select>
                             </div>
                         </div>
+                        <div class="edit-item" v-else-if="item === 'language'">
+                            <div class="label1">语言：</div>
+                            <div style="width: 70%;">
+                                <bk-select
+                                    :disabled="false"
+                                    v-model="musicInfo.language"
+                                    style="width: 250px;background: #fff;"
+                                    ext-cls="select-custom"
+                                    ext-popover-cls="select-popover-custom"
+                                    :placeholder="'请选择歌曲语言'"
+                                    searchable>
+                                    <bk-option v-for="option in languageList"
+                                        :key="option.id"
+                                        :id="option.id"
+                                        :name="option.name">
+                                    </bk-option>
+                                </bk-select>
+                            </div>
+                        </div>
                         <div class="edit-item" v-else-if="item === 'year'">
                             <div class="label1">年份：</div>
                             <div style="width: 70%;">
@@ -184,7 +203,7 @@
                         <div class="edit-item" v-else-if="item === 'bit_rate'">
                             <div class="label1">比特率：</div>
                             <div style="width: 70%;color: #63656e;font-size: 14px;">
-                                {{ musicInfo.bit_rate }}
+                                {{ musicInfo.bit_rate }} kbps
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'size'">
@@ -241,10 +260,6 @@
                             <bk-input :clearable="true" v-model="musicInfoManual.title"
                                 :placeholder="'支持变量批量修改'"></bk-input>
                         </div>
-                        <div>
-                            <bk-icon type="arrows-right-circle" @click="toggleLock('title')"
-                                style="cursor: pointer;font-size: 22px;color: #64c864;margin-left: 10px;"></bk-icon>
-                        </div>
                     </div>
                     <div v-for="(item, index) in showFields" :key="'l2' + index">
                         <div class="edit-item" v-if="item === 'filename'">
@@ -285,6 +300,25 @@
                                     :placeholder="'请选择歌曲风格'"
                                     searchable>
                                     <bk-option v-for="option in genreList"
+                                        :key="option.id"
+                                        :id="option.id"
+                                        :name="option.name">
+                                    </bk-option>
+                                </bk-select>
+                            </div>
+                        </div>
+                        <div class="edit-item" v-else-if="item === 'language'">
+                            <div class="label1">语言：</div>
+                            <div style="width: 70%;">
+                                <bk-select
+                                    :disabled="false"
+                                    v-model="musicInfoManual.language"
+                                    style="width: 250px;background: #fff;"
+                                    ext-cls="select-custom"
+                                    ext-popover-cls="select-popover-custom"
+                                    :placeholder="'请选择歌曲语言'"
+                                    searchable>
+                                    <bk-option v-for="option in languageList"
                                         :key="option.id"
                                         :id="option.id"
                                         :name="option.name">
@@ -541,7 +575,8 @@
                     {id: 'album_img', name: '专辑封面'},
                     {id: 'duration', name: '时长'},
                     {id: 'size', name: '文件大小'},
-                    {id: 'bit_rate', name: '比特率'}
+                    {id: 'bit_rate', name: '比特率'},
+                    {id: 'language', name: '语言'}
                 ],
                 albumTypeList: [
                     {id: 'album;compilation', name: '合集'},
@@ -575,6 +610,7 @@
                     {id: 'albumartist', name: '专辑艺术家'},
                     {id: 'album_type', name: '专辑类型'},
                     {id: 'genre', name: '风格'},
+                    {id: 'language', name: '语言'},
                     {id: 'comment', name: '描述'}
                 ],
                 baseMusicInfo: {
@@ -609,6 +645,14 @@
                     {'id': '古典', name: '古典'},
                     {'id': '独立', name: '独立'},
                     {'id': '氛围音乐', name: '氛围音乐'}
+                ],
+                languageList: [
+                    {'id': '中文', name: '中文'},
+                    {'id': '英文', name: '英文'},
+                    {'id': '日文', name: '日文'},
+                    {'id': '韩文', name: '韩文'},
+                    {'id': '泰文', name: '泰文'},
+                    {'id': '未知', name: '未知'}
                 ],
                 checkedIds: [],
                 checkedData: [],
@@ -701,8 +745,12 @@
                     this.fullPath = this.filePath + '/' + node.name
                     this.$api.Task.musicId3({'file_path': this.filePath, 'file_name': node.name}).then((res) => {
                         console.log(res)
-                        this.musicInfo = res.data
-                        this.musicInfo.is_save_lyrics_file = false
+                        if (res.result) {
+                            this.musicInfo = res.data
+                            this.musicInfo.is_save_lyrics_file = false
+                        } else {
+                            this.$cwMessage(res.message, 'error')
+                        }
                     })
                 }
             },

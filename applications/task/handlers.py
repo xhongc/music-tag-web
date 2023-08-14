@@ -8,5 +8,5 @@ def init_task(sender, **kwargs):
         User.objects.create_superuser("admin", "admin@qq.com", "admin")
 
     UserProfile.objects.get_or_create(user=User.objects.get(username="admin"))
-    music_folder = os.path.join(settings.MEDIA_ROOT, "music")
-    os.makedirs(music_folder, exist_ok=True)
+    # music_folder = os.path.join(settings.MEDIA_ROOT, "music")
+    # os.makedirs(music_folder, exist_ok=True)

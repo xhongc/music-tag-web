@@ -136,7 +136,10 @@ class TaskViewSets(GenericViewSet):
         sub_path = file_path.split('/')[-1]
         if sub_path == file_name:
             return self.success_response()
-        res_data = MusicIDS(f"{file_path}/{file_name}").to_dict()
+        try:
+            res_data = MusicIDS(f"{file_path}/{file_name}").to_dict()
+        except Exception as e:
+            return self.failure_response(msg=str(e))
         return self.success_response(data=res_data)
 
     @action(methods=['POST'], detail=False)
@@ -272,12 +275,10 @@ class TaskViewSets(GenericViewSet):
             if data.get('icon') == 'icon-folder':
                 file_full_path = f"{full_path}/{data.get('name')}"
                 data = os.scandir(file_full_path)
-                allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "m4a", "ogg", "mpc",
-                              "opus", "wma", "dsf", "dff"]
                 for index, entry in enumerate(data, 1):
                     each = entry.name
                     file_type = each.split(".")[-1]
-                    if file_type not in allow_type:
+                    if file_type not in ALLOW_TYPE:
                         continue
                     music_id3_info.append(f"{file_full_path}/{each}")
             else:

@@ -103,8 +103,17 @@ def save_music(f, each, is_raw_thumbnail):
             f.mfile.tags["RELEASETYPE"] = each["album_type"]
         elif isinstance(f.mfile.tags, ID3):
             f.mfile.tags["MusicBrainz Album Type"] = TXXX(encoding=3,
-                                                        desc="MusicBrainz Album Type",
-                                                        text=each["album_type"])
+                                                          desc="MusicBrainz Album Type",
+                                                          text=each["album_type"])
+        else:
+            raise Exception("未知的音乐文件类型")
+    if each.get("language", None):
+        if isinstance(f.mfile.tags, VCFLACDict):
+            f.mfile.tags["LANGUAGE"] = each["language"]
+        elif isinstance(f.mfile.tags, ID3):
+            f.mfile.tags["LANGUAGE"] = TXXX(encoding=3,
+                                            desc="LANGUAGE",
+                                            text=each["language"])
         else:
             raise Exception("未知的音乐文件类型")
     f.save()
@@ -115,4 +124,5 @@ def save_music(f, each, is_raw_thumbnail):
         if not each["filename"].endswith(file_ext):
             each["filename"] = f"{each['filename']}.{file_ext}"
         parent_path = os.path.dirname(each["file_full_path"])
-        os.rename(each["file_full_path"], f"{parent_path}/{each['filename']}")
+        if each["file_full_path"] != f"{parent_path}/{each['filename']}":
+            os.rename(each["file_full_path"], f"{parent_path}/{each['filename']}")
