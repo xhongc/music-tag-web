@@ -60,7 +60,8 @@ services:
 ```
 ps. `/path/to/your/music` 改成你的音乐文件夹路径！
 
-3 访问在127.0.0.1:8001
+3 访问在127.0.0.1:8001/admin 默认账号密码 admin/admin 修改默认密码
+![img_7.png](img_7.png)
 
 # 📷 User Interface
 ![img_5.png](img_5.png)
