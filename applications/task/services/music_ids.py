@@ -10,6 +10,7 @@ from applications.task.utils import detect_language
 
 class MusicIDS:
     def __init__(self, folder):
+        folder = folder.encode('utf-8', 'replace').decode()
         self.file = music_tag.load_file(folder)
         self.path = folder
 
