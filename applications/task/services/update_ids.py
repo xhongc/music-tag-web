@@ -44,9 +44,11 @@ def save_music(f, each, is_raw_thumbnail):
             f["title"] = each["title"]
     if each.get("artist", None):
         if "${" in each["artist"]:
-            f["artist"] = ConstantTemplate(each["artist"]).resolve_data(var_dict)
+            artist = ConstantTemplate(each["artist"]).resolve_data(var_dict)
         else:
-            f["artist"] = each["artist"]
+            artist = each["artist"]
+        artists = artist.split(",")
+        f.set("artist", artists)
     if each.get("album", None):
         if "${" in each["album"]:
             f["album"] = ConstantTemplate(each["album"]).resolve_data(var_dict)

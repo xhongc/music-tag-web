@@ -50,7 +50,7 @@ class NetEaseMusicClient:
             artists = song.get("ar", [])
             album = song.get("al", {})
             if artists:
-                artist = artists[0].get("name", "")
+                artist = ",".join([artist.get("name", "") for artist in artists])
                 artist_id = artists[0].get("id", "")
             else:
                 artist = ""

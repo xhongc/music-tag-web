@@ -208,9 +208,10 @@ class KugouClient:
         json_dict = response.json()
         songs = json_dict.get("data", {}).get("lists")
         for song in songs:
+            artists = song['SingerName'].replace("<em>", "").replace("</em>", "")
+            song["artist"] = ",".join(artists.split("、"))
             song["id"] = song['FileHash']
             song["name"] = song['SongName'].replace("<em>", "").replace("</em>", "")
-            song["artist"] = song['SingerName'].replace("<em>", "").replace("</em>", "")
             song["artist_id"] = song['SingerId']
             song["album"] = song['AlbumName']
             song["album_id"] = song['AlbumID']

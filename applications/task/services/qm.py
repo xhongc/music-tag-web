@@ -232,22 +232,22 @@ class QQMusicApi:
         """
         songs = []  # : list[Songs]
         for i in mlist:
-            singer = i['singer'][0]['name']
+            singer = ",".join([i["name"] for i in i["singer"]])
 
-            id = i["file"]
+            _id = i["file"]
             # 批量下载不需要选择音质 直接开始解析为最高音质 枚举
             code = ""
             format = ""
             qStr = ""
             fsize = 0
-            mid = id['media_mid']
-            if int(id['size_hires']) != 0:
+            mid = _id['media_mid']
+            if int(_id['size_hires']) != 0:
                 # 高解析无损音质
                 code = "RS01"
                 format = "flac"
                 qStr = "高解析无损 Hi-Res"
-                fsize = int(id['size_hires'])
-            elif int(id['size_flac']) != 0:
+                fsize = int(_id['size_hires'])
+            elif int(_id['size_flac']) != 0:
                 isEnc = False  # 这句代码是逆向出来的 暂时无效
                 if (isEnc):
                     code = "F0M0"
@@ -256,13 +256,13 @@ class QQMusicApi:
                     code = "F000"
                     format = "flac"
                 qStr = "无损品质 FLAC"
-                fsize = int(id['size_flac'])
-            elif int(id['size_320mp3']) != 0:
+                fsize = int(_id['size_flac'])
+            elif int(_id['size_320mp3']) != 0:
                 code = "M800"
                 format = "mp3"
                 qStr = "超高品质 320kbps"
-                fsize = int(id['size_320mp3'])
-            elif int(id['size_192ogg']) != 0:
+                fsize = int(_id['size_320mp3'])
+            elif int(_id['size_192ogg']) != 0:
                 isEnc = False  # 这句代码是逆向出来的 暂时无效
                 if (isEnc):
                     code = "O6M0"
@@ -271,8 +271,8 @@ class QQMusicApi:
                     code = "O600"
                     format = "ogg"
                 qStr = "高品质 OGG"
-                fsize = int(id['size_192ogg'])
-            elif int(id['size_128mp3']) != 0:
+                fsize = int(_id['size_192ogg'])
+            elif int(_id['size_128mp3']) != 0:
                 isEnc = False  # 这句代码是逆向出来的 暂时无效
                 if (isEnc):
                     code = "O4M0"
@@ -281,12 +281,12 @@ class QQMusicApi:
                     code = "M500"
                     format = "mp3"
                 qStr = "标准品质 128kbps"
-                fsize = int(id['size_128mp3'])
-            elif int(id['size_96aac']) != 0:
+                fsize = int(_id['size_128mp3'])
+            elif int(_id['size_96aac']) != 0:
                 code = "C400"
                 format = "m4a"
                 qStr = "低品质 96kbps"
-                fsize = int(id['size_96aac'])
+                fsize = int(_id['size_96aac'])
             else:
                 print("这首歌曲好像无法下载,请检查是否有vip权限.")
                 continue
@@ -313,7 +313,7 @@ class QQMusicApi:
                 'id': i['mid'],
                 'size': f"%.2fMB" % (fsize / 1024 / 1024),
                 'name': flacName,
-                'artist': f'{singer}',
+                'artist': singer,
                 'album': albumName,
                 "album_id": i["album"]['mid'],
                 'year': time_publish,
