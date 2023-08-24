@@ -95,7 +95,17 @@ class QQMusicApi:
         d = self.getQQServersCallback(
             "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?g_tk=5381&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&ct=121&cv=0&songmid=" + mid)
         d = d.text
+        self.download_lyric(mid)
         return json.loads(d)
+
+    def download_lyric(self, songid):
+        res = requests.get('https://c.y.qq.com/qqmusic/fcgi-bin/lyric_download.fcg', params=dict(
+            version='15',
+            miniversion='82',
+            lrctype='4',
+            musicid=songid,
+        ))
+        print(res)
 
     @staticmethod
     def getUUID():

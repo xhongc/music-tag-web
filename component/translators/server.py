@@ -296,43 +296,6 @@ class Tse:
     #     return _wrapper
 
 
-class GuestSeverRegion(Tse):
-    def __init__(self):
-        super().__init__()
-        self.get_addr_url = 'https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location'
-        self.get_ip_url = 'https://httpbin.org/ip'
-        self.ip_api_addr_url = 'http://ip-api.com/json'  # must http.
-        self.ip_tb_add_url = 'https://ip.taobao.com/outGetIpInfo'
-        self.default_region = os.environ.get('translators_default_region', None)
-
-    @property
-    def get_server_region(self, if_judge_cn: bool = True) -> str:
-        if self.default_region:
-            sys.stderr.write(f'Using customized region {self.default_region} server backend.\n\n')
-            return ('CN' if self.default_region == 'China' else 'EN') if if_judge_cn else self.default_region
-
-        _headers_fn = lambda url: self.get_headers(url, if_api=False, if_referer_for_host=True)
-        try:
-            try:
-                data = json.loads(requests.get(self.get_addr_url, headers=_headers_fn(self.get_addr_url)).text[9:-2])
-                sys.stderr.write(f'Using region {data.get("stateName")} server backend.\n\n')
-                return data.get('country') if if_judge_cn else data.get("stateName")
-            except requests.exceptions.Timeout:
-                ip_address = requests.get(self.get_ip_url, headers=_headers_fn(self.get_ip_url)).json()['origin']
-                payload = {'ip': ip_address, 'accessKey': 'alibaba-inc'}
-                data = requests.post(url=self.ip_tb_add_url, data=payload,
-                                     headers=_headers_fn(self.ip_tb_add_url)).json().get('data')
-                return data.get('country_id')  # region_id
-
-        except requests.exceptions.ConnectionError:
-            raise TranslatorError('Unable to connect the Internet.\n\n')
-        except:
-            warnings.warn('Unable to find server backend.\n\n')
-            region = input('Please input your server region need to visit:\neg: [Qatar, China, ...]\n\n')
-            sys.stderr.write(f'Using region {region} server backend.\n\n')
-            return 'CN' if region == 'China' else 'EN'
-
-
 class GoogleV1(Tse):
     def __init__(self, server_region='EN'):
         super().__init__()
@@ -5022,7 +4985,7 @@ class Yeekit(Tse):
 class TranslatorsServer:
     def __init__(self):
         self.cpu_cnt = os.cpu_count()
-        self.server_region = GuestSeverRegion().get_server_region
+        self.server_region = 'CN'
         self._alibaba = AlibabaV2()
         self.alibaba = self._alibaba.alibaba_api
         self._apertium = Apertium()
