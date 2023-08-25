@@ -479,7 +479,7 @@
                 multiple
                 show-select-all
                 v-model="sourceList">
-                <bk-option v-for="option in resourceList"
+                <bk-option v-for="option in resourceListBatch"
                     :key="option.id"
                     :id="option.id"
                     :name="option.name">
@@ -597,6 +597,12 @@
                 translationText: '',
                 resourceList: [
                     {id: 'acoustid', name: '指纹识别'},
+                    {id: 'netease', name: '网易云音乐'},
+                    {id: 'migu', name: '咪咕音乐'},
+                    {id: 'qmusic', name: 'QQ音乐'},
+                    {id: 'kugou', name: '酷狗音乐'}
+                ],
+                resourceListBatch: [
                     {id: 'netease', name: '网易云音乐'},
                     {id: 'migu', name: '咪咕音乐'},
                     {id: 'qmusic', name: 'QQ音乐'},
