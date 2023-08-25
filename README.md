@@ -19,6 +19,7 @@ DFF等音频格式。
 - version： 1.1.8 修复不同类型音频文件的专辑类型
 - version： 1.2.0 新增歌曲语言整理文件
 - version： 1.2.2 优化自动打标签匹配算法
+- version： 1.2.3 新增智能刮削标签源，集成多个平台的标签源，按匹配度排序
 
 # 🦀 Show Project
 DEMO 地址账号密码为：admin/admin
