@@ -11,6 +11,7 @@ from django.db import transaction
 
 from applications.music.models import Folder, Track, Album, Genre, Artist, Attachment
 from applications.subsonic.constants import AUDIO_EXTENSIONS_AND_MIMETYPE, COVER_TYPE
+from applications.task.constants import ALLOW_TYPE
 from applications.task.models import TaskRecord, Task
 from applications.task.services.music_ids import MusicIDS
 from applications.task.services.music_resource import MusicResource
@@ -249,14 +250,12 @@ def batch_auto_tag_task(batch, source_list, select_mode):
     folder_list = TaskRecord.objects.filter(batch=batch, icon="icon-folder").all()
     for folder in folder_list:
         data = os.scandir(folder.full_path)
-        allow_type = ["flac", "mp3", "ape", "wav", "aiff", "wv", "tta", "m4a", "ogg", "mpc",
-                      "opus", "wma", "dsf", "dff"]
         bulk_set = []
         for entry in data:
             each = entry.name
             file_type = each.split(".")[-1]
             file_name = ".".join(each.split(".")[:-1])
-            if file_type not in allow_type:
+            if file_type not in ALLOW_TYPE:
                 continue
             bulk_set.append(TaskRecord(**{
                 "batch": batch,

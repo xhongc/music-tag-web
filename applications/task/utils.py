@@ -42,51 +42,42 @@ def match_song(resource, song_path, select_mode):
 
     songs = MusicResource(resource).fetch_id3_by_title(title)
 
-    def is_match_artist(my_artist, u_artist):
-        if not my_artist or not u_artist:
-            return False
-        if my_artist == u_artist or my_artist in u_artist or u_artist in my_artist:
-            return True
+    def match_score(my_value, u_value):
+        try:
+            my_value = my_value.lower()
+            u_value = u_value.lower()
+            if not my_value or not u_value:
+                return 0
+            if my_value == u_value:
+                return 2
+            elif my_value in u_value or u_value in my_value:
+                return 1
+            return 0
+        except Exception:
+            return 0
 
     is_match = False
     song_select = None
+    match_score_map = {
+        "title": 0,
+        "artist": 0,
+        "album": 0,
+    }
     for song in songs:
-        if title == song["name"]:
-            if select_mode == "simple":
+        match_score_map["title"] = match_score(title, song["name"])
+        match_score_map["artist"] = match_score(artist if artist else title, song["artist"])
+        match_score_map["album"] = match_score(album if album else title, song["album"])
+        if sum(match_score_map.values()) >= 3:
+            is_match = True
+            song_select = song
+            break
+        if select_mode == "simple":
+            if match_score_map["title"] == 2:
                 is_match = True
                 song_select = song
                 break
-            else:
-                if is_match_artist(artist, song["artist"]):
-                    is_match = True
-                    song_select = song
-                    break
-                elif is_match_artist(album, song["album"]):
-                    is_match = True
-                    song_select = song
-                    break
-        elif title in song["name"]:
-            if is_match_artist(artist, song["artist"]):
-                is_match = True
-                song_select = song
-                break
-            elif is_match_artist(album, song["album"]):
-                is_match = True
-                song_select = song
-                break
-        elif song["name"] in title:
-            if is_match_artist(artist, song["artist"]):
-                is_match = True
-                song_select = song
-                break
-            elif is_match_artist(album, song["album"]):
-                is_match = True
-                song_select = song
-                break
-        else:
-            continue
     if is_match:
-        print(f"{title}>>>{song_select['name']}")
+        print(f"{title}>>>{song_select['name']}::{match_score_map}")
         song_select["filename"] = file_name
         song_select["file_full_path"] = song_path
         song_select["lyrics"] = MusicResource(resource).fetch_lyric(song_select["id"])

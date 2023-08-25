@@ -31,8 +31,7 @@ class MusicIDS:
         album_name = self.file["album"].value
         album_name = album_name.replace(" ", "")
         if not album_name:
-            album_name = "未知专辑"
-            return album_name
+            return ""
         return self.file["album"].value
 
     @property

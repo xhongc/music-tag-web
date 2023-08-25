@@ -95,7 +95,7 @@ class QQMusicApi:
         d = self.getQQServersCallback(
             "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?g_tk=5381&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&ct=121&cv=0&songmid=" + mid)
         d = d.text
-        self.download_lyric(mid)
+        # self.download_lyric(mid)
         return json.loads(d)
 
     def download_lyric(self, songid):
@@ -123,8 +123,6 @@ class QQMusicApi:
         """
         # base url
         url = "https://u.y.qq.com/cgi-bin/musicu.fcg"
-        # url = "https://u.y.qq.com/cgi-bin/musics.fcg" # 需要加密 懒得动了
-        # base data content from qqmusic pc-client-apps
 
         # 一次获取最多获取30条数据 否则返回空列表
         page_per_num = size
