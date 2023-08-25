@@ -18,6 +18,7 @@ from applications.task.services.music_ids import MusicIDS
 from applications.task.services.music_resource import MusicResource
 from applications.task.services.update_ids import update_music_info
 from applications.task.tasks import full_scan_folder, scan, clear_music, batch_auto_tag_task, tidy_folder_task
+from applications.task.utils import match_score
 from applications.utils.translation import translation_lyc_text
 from component.drf.viewsets import GenericViewSet
 from django_vue_cli.celery_app import app as celery_app
@@ -211,7 +212,7 @@ class TaskViewSets(GenericViewSet):
         resource = validate_data["resource"]
         song_id = validate_data["song_id"]
         try:
-            lyric = MusicResource(resource).fetch_lyric(song_id)
+            lyric = MusicResource(resource).fetch_lyric(song_id) or ""
         except Exception as e:
             lyric = f"未找到歌词 {e}"
         return self.success_response(data=lyric)
@@ -225,6 +226,8 @@ class TaskViewSets(GenericViewSet):
 
         if resource == "acoustid":
             title = full_path
+        elif resource == "smart_tag":
+            title = {"title": title, "full_path": full_path}
         songs = MusicResource(resource).fetch_id3_by_title(title)
         return self.success_response(data=songs)
 

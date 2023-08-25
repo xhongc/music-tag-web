@@ -5,6 +5,7 @@ from applications.task.services.acoust import AcoustidClient
 from applications.task.services.kugou import KugouClient
 from applications.task.services.kuwo import KuwoClient
 from applications.task.services.qm import QQMusicApi
+from applications.task.services.smart_tag_resource import SmartTagClient
 from applications.task.utils import timestamp_to_dt
 from applications.utils.send import send
 
@@ -26,6 +27,8 @@ class MusicResource:
             return KuwoClient()
         elif info == "acoustid":
             return AcoustidClient()
+        elif info == "smart_tag":
+            return SmartTagClient()
         raise Exception("暂不支持该音乐平台")
 
     def fetch_lyric(self, song_id):
@@ -55,7 +58,7 @@ class NetEaseMusicClient:
             else:
                 artist = ""
                 artist_id = ""
-            year = song.get("publishTime", 0)
+            year = song.get("publishTime", "")
             if year:
                 year = timestamp_to_dt(year / 1000, "%Y")
             song["artist"] = artist
@@ -63,7 +66,7 @@ class NetEaseMusicClient:
             song["album"] = album.get("name", "")
             song["album_id"] = album.get("id", "")
             song["album_img"] = album.get("picUrl", {})
-            song["year"] = year
+            song["year"] = year or ""
         return songs
 
 

@@ -30,6 +30,21 @@ def exists_dir(dir_list):
     return False
 
 
+def match_score(my_value, u_value):
+    try:
+        my_value = my_value.lower().replace(" ", "")
+        u_value = u_value.lower().replace(" ", "")
+        if not my_value or not u_value:
+            return 0
+        if my_value == u_value:
+            return 2
+        elif my_value in u_value or u_value in my_value:
+            return 1
+        return 0
+    except Exception:
+        return 0
+
+
 def match_song(resource, song_path, select_mode):
     from applications.task.services.music_resource import MusicResource
 
@@ -41,20 +56,6 @@ def match_song(resource, song_path, select_mode):
     album = file["album"].value or ""
 
     songs = MusicResource(resource).fetch_id3_by_title(title)
-
-    def match_score(my_value, u_value):
-        try:
-            my_value = my_value.lower()
-            u_value = u_value.lower()
-            if not my_value or not u_value:
-                return 0
-            if my_value == u_value:
-                return 2
-            elif my_value in u_value or u_value in my_value:
-                return 1
-            return 0
-        except Exception:
-            return 0
 
     is_match = False
     song_select = None

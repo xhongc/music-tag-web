@@ -309,7 +309,7 @@ class QQMusicApi:
 
             time_publish = i["time_public"]
             if time_publish == '':
-                time_publish = "1970-01-01"
+                time_publish = ""
 
             # 通过检查 将歌曲放入歌曲池展示给用户 未通过检查的歌曲将被放弃并且不再显示
             songs.append({

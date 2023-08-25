@@ -404,10 +404,20 @@
                         <div v-for="(item,index) in SongList" :key="index" style="margin-bottom: 10px;" class="parent">
                             <bk-icon type="arrows-left-shape" @click="copyAll(item)"
                                 style="margin-right: 5px;cursor: pointer;"></bk-icon>
-                            <bk-image fit="contain" :src="item.album_img"
-                                style="width: 64px;cursor: pointer;"
-                                @click="handleCopy('album_img',item.album_img)">
-                            </bk-image>
+                            <div v-if="resource === 'smart_tag'">
+                                <bk-badge class="mr40" :theme="'warning'" :val="item.score" radius="20%">
+                                    <bk-image fit="contain" :src="item.album_img"
+                                        style="width: 64px;cursor: pointer;"
+                                        @click="handleCopy('album_img',item.album_img)">
+                                    </bk-image>
+                                </bk-badge>
+                            </div>
+                            <div v-else>
+                                <bk-image fit="contain" :src="item.album_img"
+                                    style="width: 64px;cursor: pointer;"
+                                    @click="handleCopy('album_img',item.album_img)">
+                                </bk-image>
+                            </div>
                             <div @click="handleCopy('title',item.name)" class="music-item">
                                 {{
                                     item.name
@@ -421,7 +431,7 @@
                                     item.album
                                 }}
                             </div>
-                            <div @click="handleCopy('lyric',item.id)" class="music-item">加载歌词</div>
+                            <div @click="handleCopy('lyric',item)" class="music-item">加载歌词</div>
                             <div @click="handleCopy('year',item.year)" class="music-item">
                                 {{
                                     item.year
@@ -600,7 +610,8 @@
                     {id: 'netease', name: '网易云音乐'},
                     {id: 'migu', name: '咪咕音乐'},
                     {id: 'qmusic', name: 'QQ音乐'},
-                    {id: 'kugou', name: '酷狗音乐'}
+                    {id: 'kugou', name: '酷狗音乐'},
+                    {id: 'smart_tag', name: '智能刮削'}
                 ],
                 resourceListBatch: [
                     {id: 'netease', name: '网易云音乐'},
@@ -803,8 +814,8 @@
             },
             handleCopy(k, v) {
                 if (k === 'lyric') {
-                    this.$api.Task.fetchLyric({'song_id': v, 'resource': this.resource}).then((res) => {
-                        console.log(res)
+                    const resurce = this.resource !== 'smart_tag' ? this.resource : v.resource
+                    this.$api.Task.fetchLyric({'song_id': v.id, 'resource': resurce}).then((res) => {
                         if (res.result) {
                             this.musicInfo['lyrics'] = res.data
                         } else {
@@ -827,7 +838,7 @@
             copyAll(item) {
                 this.handleCopy('title', item.name)
                 this.handleCopy('year', item.year)
-                this.handleCopy('lyric', item.id)
+                this.handleCopy('lyric', item)
                 this.handleCopy('album', item.album)
                 this.handleCopy('artist', item.artist)
                 this.handleCopy('album_img', item.album_img)
@@ -1028,6 +1039,7 @@
     grid-column-gap: 0;
     grid-row-gap: 0;
     place-items: center;
+    margin-bottom: 15px;
 }
 
 .title2 {
