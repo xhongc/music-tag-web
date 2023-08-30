@@ -45,6 +45,9 @@
                         <li class="nav-item" @click="handleUserListClic2k">
                             后台管理
                         </li>
+                        <li class="nav-item" @click="handleUserListClic3k">
+                            使用手册
+                        </li>
                         <li class="nav-item" @click="handleUserListClick">
                             关于作者
                         </li>
@@ -95,6 +98,13 @@
             handleUserListClic2k(e) {
                 const btn = document.createElement('a')
                 btn.setAttribute('href', '/admin/')
+                document.body.appendChild(btn)
+                btn.click()
+                clearStore()
+            },
+            handleUserListClic3k(e) {
+                const btn = document.createElement('a')
+                btn.setAttribute('href', 'https://xiers-organization.gitbook.io/music-tag-web/')
                 document.body.appendChild(btn)
                 btn.click()
                 clearStore()

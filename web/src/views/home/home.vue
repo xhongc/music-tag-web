@@ -395,8 +395,8 @@
                         <div class="parent">
                             <div class="title2">应用</div>
                             <div class="title2">封面</div>
-                            <div class="title2">歌曲名</div>
-                            <div class="title2">歌手</div>
+                            <div class="title2">标题</div>
+                            <div class="title2">艺术家</div>
                             <div class="title2">专辑</div>
                             <div class="title2">歌词</div>
                             <div class="title2">年份</div>

@@ -32,6 +32,7 @@ DEMO 地址账号密码为：admin/admin
 2. docker-compose -f local.yml up
 
 # 💯 How to Use
+[【使用手册】](https://xiers-organization.gitbook.io/music-tag-web/)
 
 镜像已上传至阿里云Docker Registry 操作指南：
 
