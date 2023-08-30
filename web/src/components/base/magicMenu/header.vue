@@ -13,6 +13,7 @@
             <bk-popover theme="light navigation-message" :arrow="false" offset="-150, 5" trigger="mouseenter"
                 :tippy-options="{ 'hideOnClick': false }">
                 <div class="header-mind">
+                    <bk-badge class="" :theme="'danger'" :max="99" :val="msgList.length" :visible="msgList.length > 0">
                     <svg style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
                         viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -20,15 +21,16 @@
                         <path
                             d="M53.8,49.1L50,41.5V28c0-8.4-5.8-15.7-14-17.6V8c0-2.2-1.8-4-4-4s-4,1.8-4,4v2.4c-8.2,1.9-14,9.2-14,17.6v13.5l-3.8,7.6c-0.3,0.6-0.3,1.3,0.1,1.9c0.4,0.6,1,1,1.7,1h40c0.7,0,1.3-0.4,1.7-1C54,50.4,54.1,49.7,53.8,49.1z"></path>
                     </svg>
-                    <span class="header-mind-mark"></span>
+                    </bk-badge>
                 </div>
                 <template slot="content">
                     <div class="monitor-navigation-message">
                         <h5 class="message-title">消息中心</h5>
                         <ul class="message-list">
-                            <li class="message-list-item" v-for="(item,index) in msgList" :key="index">
+                            <li class="message-list-item" v-for="(item,index) in msgList" :key="index"
+                                @click="handleRedirect(item)">
                                 <span class="item-message">{{ item.message }}</span>
-                                <span class="item-date">{{ item.date }}</span>
+                                <span class="item-date">{{ item.created_at }}</span>
                             </li>
                         </ul>
                     </div>
@@ -43,7 +45,7 @@
                 <template slot="content">
                     <ul class="monitor-navigation-admin">
                         <li class="nav-item" @click="handleUserListClic2k">
-                            后台管理
+                            后台管理{{refresh}}
                         </li>
                         <li class="nav-item" @click="handleUserListClic3k">
                             使用手册
@@ -61,6 +63,7 @@
 
 <script>
     import {clearStore} from '../../../common/store.js'
+    import {mapGetters} from 'vuex'
 
     export default {
         data() {
@@ -68,8 +71,7 @@
                 logout_url: 'https://github.com/xhongc/music-tag-web',
                 pageTitle: '测试',
                 userData: {},
-                msgList: [
-                ],
+                msgList: [],
                 user: {
                     list: [
                         '关于作者'
@@ -78,15 +80,27 @@
             }
         },
         computed: {
+            ...mapGetters(['getHasMsg']),
+            refresh() {
+                if (this.getHasMsg) {
+                    this.$store.commit('setHasMsg', false)
+                    this.fetchRecord()
+                }
+            },
             headerTitle() {
                 return this.$route.meta.title
             }
         },
         created() {
             this.loginUser()
+            this.fetchRecord()
         },
         methods: {
             changeTitle() {
+            },
+            handleRedirect(item) {
+                console.log(item.parent_path)
+                this.$store.commit('setFullPath', item.parent_path)
             },
             handleUserListClick(e) {
                 const btn = document.createElement('a')
@@ -121,7 +135,14 @@
             },
             handleBack() {
                 this.$router.go(-1)
-            }
+            },
+            fetchRecord() {
+                this.$api.Task.getRecord({'state': 'failed', 'page_size': 20}).then((res) => {
+                    if (res.result) {
+                        this.msgList = res.data.items
+                    }
+                })
+            },
         }
     }
 </script>

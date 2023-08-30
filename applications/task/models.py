@@ -2,10 +2,14 @@ from django.db import models
 
 
 class Task(models.Model):
+    song_name = models.CharField(max_length=255, default="")
+    artist_name = models.CharField(max_length=255, default="")
+
     full_path = models.CharField(max_length=255)
     state = models.CharField(max_length=255, default="wait")
     parent_path = models.CharField(max_length=255, default="")
     filename = models.CharField(max_length=255, default="")
+    created_at = models.DateTimeField(null=True, auto_now_add=True)
 
 
 class TaskRecord(models.Model):

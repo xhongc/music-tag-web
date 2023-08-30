@@ -36,5 +36,8 @@ export default {
     },
     translationLyc: function(params) {
         return POST(reUrl + '/api/translation_lyc/', params)
+    },
+    getRecord: function(params) {
+        return GET(reUrl + '/api/record/', params)
     }
 }

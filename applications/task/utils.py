@@ -7,6 +7,7 @@ import time
 import music_tag
 
 from applications.task.services.update_ids import save_music
+from component.zhconv.zhconv import convert, issimp
 
 
 def timestamp_to_dt(timestamp, format_type="%Y-%m-%d %H:%M:%S"):
@@ -34,6 +35,10 @@ def match_score(my_value, u_value):
     try:
         my_value = my_value.lower().replace(" ", "")
         u_value = u_value.lower().replace(" ", "")
+        if not issimp(my_value):
+            my_value = convert(my_value, 'zh-cn')
+        if not issimp(u_value):
+            u_value = convert(u_value, 'zh-cn')
         if not my_value or not u_value:
             return 0
         if my_value == u_value:

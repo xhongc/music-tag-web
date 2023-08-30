@@ -75,7 +75,9 @@
                     </div>
                     <div v-for="(item, index) in showFields" :key="'l1' + index">
                         <div class="edit-item" v-if="item === 'filename'">
-                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${filename}'" v-bk-copy="'${filename}'">文件名：</div>
+                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${filename}'" v-bk-copy="'${filename}'">
+                                文件名：
+                            </div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.filename"></bk-input>
                             </div>
@@ -93,7 +95,9 @@
                             </div>
                         </div>
                         <div class="edit-item can-copy" v-else-if="item === 'albumartist'">
-                            <div class="label1" v-bk-tooltips="'变量名:${albumartist}'" v-bk-copy="'${albumartist}'">专辑艺术家：</div>
+                            <div class="label1" v-bk-tooltips="'变量名:${albumartist}'" v-bk-copy="'${albumartist}'">
+                                专辑艺术家：
+                            </div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.albumartist"></bk-input>
                             </div>
@@ -263,14 +267,17 @@
                     </div>
                     <div v-for="(item, index) in showFields" :key="'l2' + index">
                         <div class="edit-item" v-if="item === 'filename'">
-                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${filename}'" v-bk-copy="'${filename}'">文件名：</div>
+                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${filename}'" v-bk-copy="'${filename}'">
+                                文件名：
+                            </div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.filename"
                                     :placeholder="'例如：${title}-${album}'"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'artist'">
-                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${artist}'" v-bk-copy="'${artist}'">艺术家：</div>
+                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${artist}'" v-bk-copy="'${artist}'">艺术家：
+                            </div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.artist"
                                     :placeholder="'具体哪些变量,鼠标悬浮在标题上查看'"></bk-input>
@@ -283,7 +290,9 @@
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'albumartist'">
-                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${albumartist}'" v-bk-copy="'${albumartist}'">专辑艺术家：</div>
+                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${albumartist}'"
+                                v-bk-copy="'${albumartist}'">专辑艺术家：
+                            </div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.albumartist"></bk-input>
                             </div>
@@ -566,6 +575,8 @@
     </div>
 </template>
 <script>
+    import {mapGetters} from 'vuex'
+
     export default {
         data() {
             return {
@@ -600,7 +611,6 @@
                 ],
                 searchWord: '',
                 treeListOne: [],
-                filePath: '/app/media/',
                 fullPath: '',
                 fileName: '',
                 resource: localStorage.getItem('resource') ? localStorage.getItem('resource') : 'netease',
@@ -700,6 +710,27 @@
                 sortedField: localStorage.getItem('sortedField') ? JSON.parse(localStorage.getItem('sortedField')) : []
             }
         },
+        computed: {
+            ...mapGetters(['geFullPath']),
+            filePath: {
+                get() {
+                    if (this.geFullPath) {
+                        console.log(this.geFullPath)
+                        const fullPath = this.geFullPath
+                        this.$store.commit('setFullPath', '')
+                        this.$nextTick(() => {
+                            this.handleSearchFile()
+                        })
+                        return fullPath
+                    } else {
+                        return '/app/media/'
+                    }
+                },
+                set(value) {
+                    this.$store.commit('setFullPath', value)
+                }
+            }
+        },
         created() {
             this.handleSearchFile()
         },
@@ -729,7 +760,7 @@
             },
             backDir() {
                 this.filePath = this.backPath(this.filePath)
-                this.handleSearchFile()
+                // this.handleSearchFile()
             },
             backPath(path) {
                 // 使用正则表达式匹配最后一个斜杠及其后面的内容
@@ -751,7 +782,7 @@
             nodeClickOne(node) {
                 if (node.icon === 'icon-folder') {
                     this.filePath = this.filePath + '/' + node.name
-                    this.handleSearchFile()
+                    // this.handleSearchFile()
                 } else {
                     if (node.children && node.children.length > 0) {
                         return
@@ -907,6 +938,7 @@
                     this.isLoading = false
                     if (res.result) {
                         this.$cwMessage('修改成功', 'success')
+                        this.$store.commit('setHasMsg', true)
                     } else {
                         this.$cwMessage('修改失败', 'error')
                     }
@@ -957,6 +989,7 @@
                                 console.log(res)
                                 if (res.result) {
                                     this.$cwMessage('创建成功', 'success')
+                                    this.$store.commit('setHasMsg', true)
                                 }
                             })
                             return true
@@ -1219,6 +1252,7 @@ button.bk-button-text {
     margin-bottom: 10px;
     align-items: center;
 }
+
 .can-copy {
     cursor: pointer;
 }

@@ -278,7 +278,9 @@ def batch_auto_tag_task(batch, source_list, select_mode):
                 Task.objects.update_or_create(full_path=task.full_path, defaults={
                     "state": task.state,
                     "parent_path": parent_path,
-                    "filename": os.path.basename(task.full_path)
+                    "filename": os.path.basename(task.full_path),
+                    "song_name": task.song_name,
+                    "artist_name": task.artist_name,
                 })
                 break
         if not is_match:
@@ -288,7 +290,9 @@ def batch_auto_tag_task(batch, source_list, select_mode):
             Task.objects.update_or_create(full_path=task.full_path, defaults={
                 "state": task.state,
                 "parent_path": parent_path,
-                "filename": os.path.basename(task.full_path)
+                "filename": os.path.basename(task.full_path),
+                "song_name": task.song_name,
+                "artist_name": task.artist_name,
             })
 
 

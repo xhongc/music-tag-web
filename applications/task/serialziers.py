@@ -1,4 +1,8 @@
+import os.path
+
 from rest_framework import serializers
+
+from applications.task.models import TaskRecord, Task
 
 
 class FileListSerializer(serializers.Serializer):
@@ -61,3 +65,23 @@ class TidyFolderSerializer(serializers.Serializer):
     second_dir = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     file_full_path = serializers.JSONField(required=True)
     select_data = serializers.JSONField(required=True)
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    message = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Task
+        fields = "__all__"
+
+    def get_message(self, obj):
+        return f"【{obj.song_name}】 未找到标签或修改失败！"
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        if os.path.exists(ret["full_path"]):
+            ret["is_exists"] = True
+        else:
+            Task.objects.filter(id=ret["id"]).delete()
+            ret["is_exists"] = False
+        return ret
