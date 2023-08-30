@@ -243,12 +243,12 @@
                     <div style="width: 100%;display: flex;">
                         <bk-button :theme="'success'" :loading="isLoading" @click="handleBatch" class="mr10"
                             style="width: 50%;">
-                            手动批量修改
+                            手动修改
                         </bk-button>
                         <bk-button :theme="'success'" :loading="isLoading"
                             @click="exampleSetting1.primary.visible = true" class="mr10"
                             style="width: 50%;">
-                            自动批量修改
+                            自动修改
                         </bk-button>
                     </div>
                     <div style="width: 100%;display: flex;margin-top: 10px;">
