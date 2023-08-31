@@ -1,3 +1,4 @@
+import base64
 import copy
 import copy
 import os
@@ -13,7 +14,7 @@ from applications.task.filters import TaskFilters
 from applications.task.models import TaskRecord, Task
 from applications.task.serialziers import FileListSerializer, Id3Serializer, UpdateId3Serializer, \
     FetchId3ByTitleSerializer, FetchLlyricSerializer, BatchUpdateId3Serializer, TranslationLycSerializer, \
-    TidyFolderSerializer, TaskSerializer
+    TidyFolderSerializer, TaskSerializer, UploadImageSerializer
 from applications.task.services.music_ids import MusicIDS
 from applications.task.services.music_resource import MusicResource
 from applications.task.services.update_ids import update_music_info
@@ -42,6 +43,8 @@ class TaskViewSets(GenericViewSet):
             return TranslationLycSerializer
         elif self.action == "tidy_folder":
             return TidyFolderSerializer
+        elif self.action == "upload_image":
+            return UploadImageSerializer
         return FileListSerializer
 
     @action(methods=['POST'], detail=False)
@@ -287,6 +290,14 @@ class TaskViewSets(GenericViewSet):
                 music_id3_info.append(f"{full_path}/{data.get('name')}")
         tidy_folder_task(music_id3_info, {"root_path": root_path, "first_dir": first_dir, "second_dir": second_dir})
         return self.success_response()
+
+    @action(methods=['POST'], detail=False)
+    def upload_image(self, request, *args, **kwargs):
+        upload_file = request.FILES.get('upload_file')
+
+        bs64_img = base64.b64encode(upload_file.read()).decode()
+        # bs64_img_str = "data:image/jpeg;base64," + bs64_img
+        return self.success_response(data=bs64_img)
 
     @action(methods=["get"], detail=False)
     def clear_celery(self, request, *args, **kwargs):

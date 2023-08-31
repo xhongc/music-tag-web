@@ -173,16 +173,29 @@
                         </div>
                         <div class="edit-item" v-else-if="item === 'album_img'">
                             <div class="label1">专辑封面：</div>
-                            <div style="width: 70%;display: flex;" v-if="reloadImg">
-                                <div v-if="musicInfo.album_img">
-                                    <bk-image fit="contain" :src="musicInfo.album_img" style="width: 128px;"></bk-image>
-                                </div>
-                                <div v-else>
-                                    <bk-image fit="contain" :src="musicInfo.artwork" style="width: 128px;"></bk-image>
-                                    <div style="color: #63656e;font-size: 12px;">
-                                        ({{ musicInfo.artwork_w }}*{{ musicInfo.artwork_h }})
-                                        {{ musicInfo.artwork_size }}MB
+                            <div style="display: flex;flex-direction: column;">
+                                <div style="width: 70%;display: flex;flex-direction: column;" v-if="reloadImg">
+                                    <div>
+                                        <bk-upload
+                                            :files="files1"
+                                            :theme="'picture'"
+                                            :multiple="false"
+                                            :with-credentials="true"
+                                            :header="uploadHeader"
+                                            :handle-res-code="handleRes"
+                                            :size="{ maxFileSize: 5, maxImgSize: 5 }"
+                                            :url="'http://127.0.0.1:8005/api/upload_image/'"
+                                            name="upload_file"
+                                        ></bk-upload>
                                     </div>
+                                    <div style="color: #63656e;font-size: 12px;display: flex;">
+                                        <div>({{ musicInfo.artwork_w }}*{{ musicInfo.artwork_h }})</div>
+                                        <div>{{ musicInfo.artwork_size }}MB</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex;margin-top: 10px;">
+                                    <div class="label1">保存图片：</div>
+                                    <bk-switcher v-model="musicInfo.is_save_album_cover"></bk-switcher>
                                 </div>
                             </div>
                         </div>
@@ -241,23 +254,26 @@
             <transition name="bk-slide-fade-left">
                 <div style="margin-left: 40px;width: 500px;margin-top: 20px;" v-show="checkedIds.length > 0">
                     <div style="width: 100%;display: flex;">
-                        <bk-button :theme="'success'" :loading="isLoading" @click="handleBatch" class="mr10"
-                            style="width: 50%;">
+                        <bk-button :theme="'primary'" :loading="isLoading" @click="handleBatch" class="mr10"
+                            style="width: 100%;">
                             手动修改
                         </bk-button>
+                    </div>
+                    <div style="width: 100%;display: flex;margin-top: 10px;">
                         <bk-button :theme="'success'" :loading="isLoading"
                             @click="exampleSetting1.primary.visible = true" class="mr10"
                             style="width: 50%;">
                             自动修改
                         </bk-button>
-                    </div>
-                    <div style="width: 100%;display: flex;margin-top: 10px;">
                         <bk-button :theme="'success'" :loading="isLoading"
                             @click="exampleSetting2.primary.visible = true" class="mr10"
                             style="width: 50%;">
                             整理文件夹
                         </bk-button>
                     </div>
+                    <bk-divider>
+                        <div style="color: gray;font-size: 12px;">手动修改参数</div>
+                    </bk-divider>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
                         <div class="label1 can-copy" v-bk-tooltips="'变量名:${title}'" v-bk-copy="'${title}'">标题：</div>
                         <div style="width: 70%;">
@@ -365,14 +381,25 @@
                         </div>
                         <div class="edit-item" v-else-if="item === 'album_img'">
                             <div class="label1">专辑封面：</div>
-                            <div style="width: 70%;">
-                                <div v-if="musicInfoManual.album_img">
-                                    <bk-image fit="contain" :src="musicInfoManual.album_img" style="width: 128px;"
-                                        v-if="reloadImg"></bk-image>
+                            <div style="display: flex;flex-direction: column;">
+                                <div style="width: 70%;display: flex;flex-direction: column;" v-if="reloadImg">
+                                    <div>
+                                        <bk-upload
+                                            :files="files1"
+                                            :theme="'picture'"
+                                            :multiple="false"
+                                            :with-credentials="true"
+                                            :header="uploadHeader"
+                                            :handle-res-code="handleResBatch"
+                                            :size="{ maxFileSize: 5, maxImgSize: 5 }"
+                                            :url="'http://127.0.0.1:8005/api/upload_image/'"
+                                            name="upload_file"
+                                        ></bk-upload>
+                                    </div>
                                 </div>
-                                <div v-if="musicInfoManual.artwork">
-                                    <bk-image fit="contain" :src="musicInfoManual.artwork" style="width: 128px;"
-                                        v-if="!musicInfoManual.album_img"></bk-image>
+                                <div style="display: flex;margin-top: 10px;">
+                                    <div class="label1">保存图片：</div>
+                                    <bk-switcher v-model="musicInfoManual.is_save_album_cover"></bk-switcher>
                                 </div>
                             </div>
                         </div>
@@ -580,6 +607,11 @@
     export default {
         data() {
             return {
+                files1: [],
+                uploadHeader: [
+                    {name: 'X-CSRFToken', value: this.getCookie('django_vue_cli_csrftoken')},
+                    {name: 'AUTHORIZATION', value: this.getCookie('AUTHORIZATION')}
+                ],
                 showFields: localStorage.getItem('showFields') ? JSON.parse(localStorage.getItem('showFields')) : ['filename', 'artist', 'album', 'albumartist', 'genre', 'year', 'lyrics', 'comment', 'album_img'],
                 fieldList: [
                     {id: 'filename', name: '文件名'},
@@ -641,15 +673,18 @@
                 ],
                 baseMusicInfo: {
                     'genre': '流行',
-                    'is_save_lyrics_file': false
+                    'is_save_lyrics_file': false,
+                    'is_save_album_cover': false
                 },
                 musicInfo: {
                     'genre': '流行',
-                    'is_save_lyrics_file': false
+                    'is_save_lyrics_file': false,
+                    'is_save_album_cover': false
                 },
                 musicInfoManual: {
                     'genre': '流行',
-                    'is_save_lyrics_file': false
+                    'is_save_lyrics_file': false,
+                    'is_save_album_cover': false
                 },
                 fadeShowDir: false,
                 fadeShowDetail: false,
@@ -739,7 +774,6 @@
                 // 如果在某些情况下 h 不能自动注入而报错，需将 h 参数写上；一般来说 h 默认是第一参数，但是现在改为第一参数会导致已经使用的用户都需要修改，所以先放在最后。
                 // 如果 h 能自动注入则可以忽略 h 参数，无需写上，否则 h 参数会重复。
                 const titleClass = node.selected ? 'node-title node-selected' : 'node-title ' + node.state
-                console.log(node, titleClass)
                 if (node.title.length > 30) {
                     return <span>
                     <span class={titleClass} domPropsInnerHTML={node.title.slice(0, 30)}
@@ -795,6 +829,14 @@
                         if (res.result) {
                             this.musicInfo = res.data
                             this.musicInfo.is_save_lyrics_file = false
+                            this.musicInfo.is_save_album_cover = false
+                            this.files1 = [
+                                {
+                                    name: 'cover.png',
+                                    status: 'done',
+                                    url: this.musicInfo.artwork
+                                }
+                            ]
                         } else {
                             this.$cwMessage(res.message, 'error')
                         }
@@ -855,12 +897,18 @@
                     })
                 } else if (k === 'album_img') {
                     this.musicInfo[k] = v
+                    this.files1 = [
+                        {
+                            name: 'cover.png',
+                            status: 'done',
+                            url: v
+                        }
+                    ]
                     this.reloadImg = false
                     this.$nextTick(() => {
                         this.reloadImg = true
                     })
                 } else if (k === 'lyric_tran') {
-                    console.log(v)
                     this.musicInfo['lyrics'] = v
                 } else {
                     this.musicInfo[k] = v
@@ -917,6 +965,8 @@
                     if (res.result) {
                         this.treeListOne = res.data
                         this.fadeShowDir = true
+                    } else {
+                        this.$cwMessage(res.message, 'error')
                     }
                 })
             },
@@ -1041,6 +1091,22 @@
                 const obj = JSON.stringify(this.showFields)
                 window.localStorage.setItem('showFields', obj)
                 window.localStorage.setItem('resource', this.resource)
+            },
+            handleRes(response) {
+                if (response.result) {
+                    this.musicInfo.album_img = response.data
+                    return true
+                } else {
+                    return false
+                }
+            },
+            handleResBatch(response) {
+                if (response.result) {
+                    this.musicInfoManual.album_img = response.data
+                    return true
+                } else {
+                    return false
+                }
             }
         }
     }

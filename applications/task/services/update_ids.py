@@ -1,3 +1,4 @@
+import base64
 import os
 
 import music_tag
@@ -83,7 +84,7 @@ def save_music(f, each, is_raw_thumbnail):
         if each.get("lyrics") is not None:
             f.remove_tag("lyrics")
         if each.get("is_save_lyrics_file", False):
-            lyrics_file_path = f"{os.path.dirname(each['file_full_path'])}/{base_filename}.lrc"
+            lyrics_file_path = f"{os.path.dirname(each['file_full_path'])}/cover-{base_filename}.lrc"
             if not os.path.exists(lyrics_file_path):
                 with open(lyrics_file_path, "w", encoding="utf-8") as f_lyc2:
                     f_lyc2.write(f["lyrics"].value)
@@ -91,15 +92,37 @@ def save_music(f, each, is_raw_thumbnail):
         f["comment"] = each["comment"]
     if each.get("album_img", None):
         try:
-            img_data = send().GET(each["album_img"])
-            if img_data.status_code == 200:
-                f['artwork'] = img_data.content
-                if len(img_data.content) / 1024 / 1024 > 5:
+            img_content = None
+            if each["album_img"].startswith("http"):
+                img_data = send().GET(each["album_img"])
+                if img_data.status_code == 200:
+                    img_content = img_data.content
+            else:
+                img_content = base64.b64decode(each["album_img"])
+            if img_content:
+                f['artwork'] = img_content
+                if each.get("is_save_album_cover", False):
+                    format_str = f['artwork'].value.format
+                    album_cover_path = f"{os.path.dirname(each['file_full_path'])}/cover-{f['album']}.{format_str}"
+                    if os.path.exists(album_cover_path):
+                        os.remove(album_cover_path)
+                    if not os.path.exists(album_cover_path):
+                        with open(album_cover_path, "wb") as f_img:
+                            f_img.write(img_content)
+                if len(img_content) / 1024 / 1024 > 5:
                     f['artwork'] = f['artwork'].first.raw_thumbnail([2048, 2048])
                 if is_raw_thumbnail:
                     f['artwork'] = f['artwork'].first.raw_thumbnail([2048, 2048])
-        except Exception:
+        except Exception as e:
+            print(e)
             pass
+    else:
+        if each.get("is_save_album_cover", False):
+            format_str = f['artwork'].value.format
+            album_cover_path = f"{os.path.dirname(each['file_full_path'])}/cover-{f['album']}.{format_str}"
+            if not os.path.exists(album_cover_path):
+                with open(album_cover_path, "wb") as f_img:
+                    f_img.write(f['artwork'].value.raw)
     if each.get("album_type", None):
         if isinstance(f.mfile.tags, VCFLACDict):
             f.mfile.tags["RELEASETYPE"] = each["album_type"]

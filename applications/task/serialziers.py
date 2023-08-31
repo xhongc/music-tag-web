@@ -28,6 +28,7 @@ class MusicId3Serializer(serializers.Serializer):
     year = serializers.CharField(required=True, allow_null=True, allow_blank=True)
     lyrics = serializers.CharField(required=True, allow_null=True, allow_blank=True)
     is_save_lyrics_file = serializers.BooleanField(required=True)
+    is_save_album_cover = serializers.BooleanField(required=True)
     comment = serializers.CharField(required=True, allow_null=True, allow_blank=True)
     album_img = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     filename = serializers.CharField(required=False, allow_null=True, allow_blank=True)
@@ -85,3 +86,7 @@ class TaskSerializer(serializers.ModelSerializer):
             Task.objects.filter(id=ret["id"]).delete()
             ret["is_exists"] = False
         return ret
+
+
+class UploadImageSerializer(serializers.Serializer):
+    upload_file = serializers.ImageField(required=True)
