@@ -81,7 +81,7 @@ ps. `/path/to/your/music` 改成你的音乐文件夹路径！
 如果您觉得 music-tag-web 对你有帮助，可以请作者喝杯咖啡。
 <div>
 <img  src="/WechatIMG377.jpg" width="250" >  &nbsp; 
-<img  src="/WechatIMG378.jpg" width="250">  &nbsp;
+<img  src="/img_8.png" width="250">  &nbsp;
 </div>
 ### 感谢赞助者 🙏
 
