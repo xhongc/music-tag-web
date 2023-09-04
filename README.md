@@ -83,7 +83,7 @@ ps. `/path/to/your/music` 改成你的音乐文件夹路径！
 <img  src="/WechatIMG377.jpg" width="250" >  &nbsp; 
 <img  src="/WechatIMG378.jpg" width="250">  &nbsp;
 </div>
-### 感谢赞助者
+### 感谢赞助者 🙏
 
 - @cnlaok
 - @qinfengge
