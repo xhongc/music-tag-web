@@ -184,7 +184,7 @@
                                             :header="uploadHeader"
                                             :handle-res-code="handleRes"
                                             :size="{ maxFileSize: 5, maxImgSize: 5 }"
-                                            :url="'http://127.0.0.1:8005/api/upload_image/'"
+                                            :url="uploadUrl"
                                             name="upload_file"
                                         ></bk-upload>
                                     </div>
@@ -392,7 +392,7 @@
                                             :header="uploadHeader"
                                             :handle-res-code="handleResBatch"
                                             :size="{ maxFileSize: 5, maxImgSize: 5 }"
-                                            :url="'http://127.0.0.1:8005/api/upload_image/'"
+                                            :url="uploadUrl"
                                             name="upload_file"
                                         ></bk-upload>
                                     </div>
@@ -608,6 +608,7 @@
         data() {
             return {
                 files1: [],
+                uploadUrl: '/api/upload_image/',
                 uploadHeader: [
                     {name: 'X-CSRFToken', value: this.getCookie('django_vue_cli_csrftoken')},
                     {name: 'AUTHORIZATION', value: this.getCookie('AUTHORIZATION')}
