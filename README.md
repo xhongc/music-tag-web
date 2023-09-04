@@ -40,11 +40,11 @@ DEMO 地址账号密码为：admin/admin
 
 ### 从阿里云Docker Registry拉取镜像
 
-1`docker pull registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.2.0`
+1`docker pull xhongc/music_tag_web:1.2.5`
 
 ### dokcer run
 
-2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.2.0`
+2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always xhongc/music_tag_web:1.2.5`
    
 或者 使用portainer stacks部署
    ![img_1.png](img_1.png)
@@ -54,7 +54,7 @@ version: '3'
 
 services:
   music-tag:
-    image: registry.cn-hangzhou.aliyuncs.com/charles0519/music_tag_web:1.2.0
+    image: xhongc/music_tag_web:1.2.5
     container_name: music-tag-web
     ports:
       - "8001:8001"
