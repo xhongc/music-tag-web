@@ -1,5 +1,5 @@
 <template>
-    <div style="display: flex;">
+    <div style="display: flex;flex-wrap: wrap;">
         <div class="file-section">
             <div style="width: 95%;margin-top: 20px;margin-left: 10px;">
                 <div style="display: flex;align-items: center;">
@@ -1186,35 +1186,70 @@
     cursor: pointer;
 }
 
-.file-section {
-    background: #fff;
-    height: calc(100vh - 75px);
-    overflow: scroll;
-    width: 25%;
-    border: 1px solid #173769;
-    margin: 10px 0 10px 10px;
-    border-radius: 20px;
+@media (max-width: 500px) {
+    /* 在屏幕宽度小于400像素时应用的CSS规则 */
+    .file-section {
+        background: #fff;
+        height: calc(100vh - 75px);
+        overflow: scroll;
+        width: 100vh;
+        border: 1px solid #173769;
+        margin: 10px 0 10px 10px;
+        border-radius: 20px;
+    }
+    .edit-section {
+        background: #fff;
+        height: calc(100vh - 75px);
+        overflow: scroll;
+        width: 100vh;
+        border: 1px solid #173769;
+        margin: 10px 10px 10px 10px;
+        border-radius: 20px;
+    }
 
+    .resource-section {
+        background: #fff;
+        height: calc(100vh - 75px);
+        width: 100vh;
+        flex: 1;
+        overflow: scroll;
+        border: 1px solid #173769;
+        margin: 10px 10px 10px 0;
+        border-radius: 20px;
+    }
 }
 
-.edit-section {
-    background: #fff;
-    height: calc(100vh - 75px);
-    overflow: scroll;
-    border: 1px solid #173769;
-    margin: 10px 10px 10px 10px;
-    border-radius: 20px;
-}
+@media (min-width: 400px) {
+    /* 在屏幕宽度大于400像素时应用的CSS规则 */
+    .file-section {
+        background: #fff;
+        height: calc(100vh - 75px);
+        overflow: scroll;
+        min-width: 400px;
+        border: 1px solid #173769;
+        margin: 10px 0 10px 10px;
+        border-radius: 20px;
+    }
 
-.resource-section {
-    background: #fff;
-    height: calc(100vh - 75px);
-    width: 30%;
-    flex: 1;
-    overflow: scroll;
-    border: 1px solid #173769;
-    margin: 10px 10px 10px 0;
-    border-radius: 20px;
+    .edit-section {
+        background: #fff;
+        height: calc(100vh - 75px);
+        overflow: scroll;
+        border: 1px solid #173769;
+        margin: 10px 10px 10px 10px;
+        border-radius: 20px;
+    }
+
+    .resource-section {
+        background: #fff;
+        height: calc(100vh - 75px);
+        min-width: 400px;
+        flex: 1;
+        overflow: scroll;
+        border: 1px solid #173769;
+        margin: 10px 10px 10px 0;
+        border-radius: 20px;
+    }
 }
 
 .bk-form-checkbox {

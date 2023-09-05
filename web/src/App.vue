@@ -39,7 +39,7 @@
     html,
     body {
         height: 100%;
-        min-width: 1280px;
+        //min-width: 1280px;
     }
 
     ::-webkit-scrollbar-thumb:window-inactive {
