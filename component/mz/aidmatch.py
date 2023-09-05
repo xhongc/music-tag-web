@@ -62,5 +62,4 @@ def aidmatch(filename):
         print_('Score: %i%%' % (int(score * 100)))
 
 
-if __name__ == '__main__':
-    aidmatch(sys.argv[1])
+

@@ -34,7 +34,3 @@ def translation_lyc_text(contents):
         print(res)
         return res
 
-
-if __name__ == '__main__':
-    a = translation_lyc_text('スピード')
-    print(a)

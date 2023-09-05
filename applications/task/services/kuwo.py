@@ -78,7 +78,3 @@ class KuwoClient:
         return songs
 
 
-if __name__ == '__main__':
-    kw = KuwoClient()
-    # print(kw.fetch_id3_by_title("我想"))
-    print(kw.fetch_lyric("22822909"))

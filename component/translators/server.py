@@ -5352,3 +5352,6 @@ preaccelerate = tss.preaccelerate
 speedtest = tss.speedtest
 preaccelerate_and_speedtest = tss.preaccelerate_and_speedtest
 # sys.stderr.write(f'Support translators {translators_pool} only.\n')
+
+if __name__ == '__main__':
+    pass

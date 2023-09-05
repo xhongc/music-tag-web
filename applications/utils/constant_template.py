@@ -141,6 +141,3 @@ class ConstantTemplate(object):
             return resolved
 
 
-if __name__ == '__main__':
-    a = ConstantTemplate("变量：${a}，常量：${b}").resolve_data({"a": "123", "b": "456"})
-    print(a)

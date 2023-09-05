@@ -220,6 +220,3 @@ class KugouClient:
         return songs
 
 
-if __name__ == '__main__':
-    kg = KugouClient()
-    kg.fetch_id3_by_title("我想")

@@ -451,5 +451,3 @@ def main():
             print(res)
         ln = sys.stdin.readline()
 
-if __name__ == '__main__':
-    print(convert('我幹什麼不干你事。', 'zh-cn'))

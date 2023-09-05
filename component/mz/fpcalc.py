@@ -315,5 +315,4 @@ def main():
         print('FINGERPRINT=%s' % fp.decode('utf8'))
 
 
-if __name__ == '__main__':
-    main()
+
