@@ -566,7 +566,7 @@ class AudioFile(object):
 
         if not remover:
             if isinstance(tmap.setter, (list, tuple)):
-                remover = [s for s in tmap.setter if isinstance(g, util.string_types)]
+                remover = [s for s in tmap.setter if isinstance(s, util.string_types)]
             if isinstance(tmap.setter, util.string_types):
                 remover = [tmap.setter]
 

@@ -11,12 +11,6 @@ import ctypes.util
 if sys.version_info[0] >= 3:
     BUFFER_TYPES = (memoryview, bytearray,)
     BYTES_TYPE = bytes
-elif sys.version_info[1] >= 7:
-    BUFFER_TYPES = (buffer, memoryview, bytearray,)  # noqa: F821
-    BYTES_TYPE = str
-else:
-    BUFFER_TYPES = (buffer, bytearray,)  # noqa: F821
-    BYTES_TYPE = str
 
 
 # Find the base library and declare prototypes.
@@ -55,7 +49,6 @@ for name in _guess_lib_name():
         break
 else:
     raise ImportError("couldn't find libchromaprint")
-
 
 _libchromaprint.chromaprint_get_version.argtypes = ()
 _libchromaprint.chromaprint_get_version.restype = ctypes.c_char_p
@@ -117,7 +110,6 @@ def _check(res):
 
 
 class Fingerprinter(object):
-
     ALGORITHM_TEST1 = 0
     ALGORITHM_TEST2 = 1
     ALGORITHM_TEST3 = 2
