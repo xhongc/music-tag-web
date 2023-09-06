@@ -1,16 +1,13 @@
 import base64
 import os
 
-import music_tag
-from music_tag import MetadataItem
+from component import music_tag
 from mutagen.flac import VCFLACDict
 from mutagen.id3 import TXXX, ID3
 
 from applications.task.models import Task
 from applications.utils.constant_template import ConstantTemplate
 from applications.utils.send import send
-
-COPYRIGHT = "感谢您的聆听，music-tag-web打上标签。POW~"
 
 
 def update_music_info(music_id3_info, is_raw_thumbnail=False):
@@ -140,7 +137,7 @@ def save_music(f, each, is_raw_thumbnail):
                                             desc="LANGUAGE",
                                             text=each["language"])
         else:
-            raise Exception("未知的音乐文件类型")
+            f.mfile.tags["LANGUAGE"] = each["language"]
     f.save()
     # 重命名文件名称
     if each.get("filename", None):

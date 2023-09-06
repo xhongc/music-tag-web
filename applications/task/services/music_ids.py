@@ -1,7 +1,7 @@
 import base64
 import os
-
-import music_tag
+from ast import literal_eval
+from component import music_tag
 from mutagen.flac import VCFLACDict
 from mutagen.id3 import ID3
 
@@ -132,13 +132,21 @@ class MusicIDS:
             bs64_img = ""
             artwork = self.file['artwork'].values
             if artwork:
-                zip_img = artwork[0].raw_thumbnail([128, 128])
-                bs64_img = base64.b64encode(zip_img).decode()
-                self.artwork_w = artwork[0].width
-                self.artwork_h = artwork[0].height
-                self.artwork_size = round(len(artwork[0].raw) / 1024 / 1024, 2)
+                if isinstance(artwork[0], bytes):
+                    # eval_artwork = literal_eval(artwork[0])
+                    # with open("test.xmp", "wb") as f:
+                    #     f.write(artwork[0])
+                    bs64_img = base64.b64encode(artwork[0]).decode()
+
+                else:
+                    zip_img = artwork[0].raw_thumbnail([128, 128])
+                    bs64_img = base64.b64encode(zip_img).decode()
+                    self.artwork_w = artwork[0].width
+                    self.artwork_h = artwork[0].height
+                    self.artwork_size = round(len(artwork[0].raw) / 1024 / 1024, 2)
             return "data:image/jpeg;base64," + bs64_img
-        except Exception:
+        except Exception as e:
+            print(e)
             return ""
 
     @property

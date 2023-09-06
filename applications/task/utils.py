@@ -4,7 +4,7 @@ import os
 import re
 import time
 
-import music_tag
+from component import music_tag
 
 from applications.task.services.update_ids import save_music
 from component.zhconv.zhconv import convert, issimp

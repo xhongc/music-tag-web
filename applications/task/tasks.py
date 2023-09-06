@@ -5,7 +5,7 @@ import time
 import uuid
 from collections import defaultdict
 
-import music_tag
+from component import music_tag
 from django.conf import settings
 from django.db import transaction
 

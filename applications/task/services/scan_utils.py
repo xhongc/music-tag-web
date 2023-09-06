@@ -1,5 +1,5 @@
 from applications.music.models import Folder, Attachment
-import music_tag
+from component import music_tag
 from django.conf import settings
 import time
 from applications.music.models import Folder, Track, Album, Artist, Genre

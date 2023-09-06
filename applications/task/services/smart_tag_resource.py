@@ -1,7 +1,8 @@
-import music_tag
 
 from applications.task.utils import match_score
 from concurrent.futures import ThreadPoolExecutor
+
+from component import music_tag
 
 
 class SmartTagClient:
