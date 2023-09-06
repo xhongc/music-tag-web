@@ -1,104 +1,112 @@
+import re
+from distutils.core import setup
+
+from Cython.Build import cythonize
 import os
 import shutil
+import tempfile
+import logging
 import sys
-import multiprocessing
-from distutils.core import setup
-from distutils.extension import Extension
 
-NB_COMPILE_JOBS = multiprocessing.cpu_count()
+# set up logging
+logger = logging.getLogger("encrypt-py")
 
-try:
-    from Cython.Distutils import build_ext
-    from Cython.Build import cythonize
-except:
-    print("You don't seem to have Cython installed. Please get a")
-    print("copy from www.cython.org and install it")
-    sys.exit(1)
+format_string = (
+    "%(asctime)s|%(filename)s|%(funcName)s|line:%(lineno)d|%(levelname)s| %(message)s"
+)
+formatter = logging.Formatter(format_string, datefmt="%Y-%m-%dT%H:%M:%S")
+handler = logging.StreamHandler()
+handler.setFormatter(formatter)
+handler.stream = sys.stdout
 
-
-# scan the 'dvedit' directory for extension files, converting
-# them to extension names in dotted notation
-def scandir(dir, files=[]):
-    for file in os.listdir(dir):
-        path = os.path.join(dir, file)
-        if os.path.isfile(path) and path.endswith(".py"):
-            files.append(path.replace(os.path.sep, ".")[:-3])
-        elif os.path.isdir(path):
-            scandir(path, files)
-    return files
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)
 
 
-# generate an Extension object from its dotted name
-def makeExtension(extName):
-    extPath = extName.replace(".", os.path.sep) + ".py"
-    return Extension(
-        extName,
-        [extPath],
-        include_dirs=["."],  # adding the '.' to include_dirs is CRUCIAL!!
-        extra_compile_args=["-O3", "-Wall"],
-        extra_link_args=['-g'],
-        build_dir='build'
-    )
+def walk_file(file_path):
+    if os.path.isdir(file_path):
+        for current_path, sub_folders, files_name in os.walk(file_path):
+            base_name = os.path.basename(current_path)
+            if base_name in ["migrations"]:
+                continue
+            for file in files_name:
+                if file.endswith(".py"):
+                    file_path = os.path.join(current_path, file)
+                    yield file_path
+
+    else:
+        yield file_path
 
 
-def clean(base_path):
-    full_path = os.path.join(base_path, 'yee')
-    for path, dir_list, file_list in os.walk(full_path):
-        if path.find('__pycache__') != -1:
-            shutil.rmtree(path, ignore_errors=True)
-            continue
-        for file_name in file_list:
-            ext = os.path.splitext(file_name)[-1]
-            if ext == '.c':
-                os.remove(os.path.join(path, file_name))
-            elif ext == '.py':
-                os.remove(os.path.join(path, file_name))
-            elif ext == '.map':
-                os.remove(os.path.join(path, file_name))
-            elif ext == '.DS_Store':
-                os.remove(os.path.join(path, file_name))
-    for path, dir_list, file_list in os.walk(os.path.join(base_path, 'dependencies')):
-        if path.find('__pycache__') != -1:
-            shutil.rmtree(path, ignore_errors=True)
-            continue
+def delete_files(files_path):
+    """
+    @summary: 删除文件
+    ---------
+    @param files_path: 文件路径 py 及 c 文件
+    ---------
+    @result:
+    """
+    try:
+        # 删除python文件及c文件
+        for file in files_path:
+            os.remove(file)  # py文件
+            os.remove(file.replace(".py", ".c"))  # c文件
+
+    except Exception as e:
+        pass
 
 
-# get the list of extensions
-extNames = scandir("yee")
-# and build up the set of Extension objects
-extensions = [makeExtension(name) for name in extNames]
+def rename_excrypted_file(output_file_path):
+    files = walk_file(output_file_path)
+    for file in files:
+        if file.endswith(".pyd") or file.endswith(".so"):
+            new_filename = re.sub("(.*)\..*\.(.*)", r"\1.\2", file)
+            os.rename(file, new_filename)
 
 
-# finally, we can pass all this to distutils
-# setup(
-#     name="yee",
-#     packages=["yee"],
-#     ext_modules=extensions,
-#     cmdclass={'build_ext': build_ext},
-# )
-def setup_given_extensions(extensions):
-    setup(
-        name="yee",
-        packages=["yee"],
-        ext_modules=cythonize(extensions),
-        cmdclass={'build_ext': build_ext},
-    )
+class TemporaryDirectory(object):
+    def __enter__(self):
+        self.name = tempfile.mkdtemp()
+        return self.name
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        shutil.rmtree(self.name)
 
 
-def setup_extensions_in_sequential():
-    setup_given_extensions(extensions)
+def encrypt_py(py_files: list):
+    encrypted_py = []
+
+    with TemporaryDirectory() as td:
+        total_count = len(py_files)
+        for i, py_file in enumerate(py_files):
+            try:
+                dir_name = os.path.dirname(py_file)
+                file_name = os.path.basename(py_file)
+
+                # os.chdir(dir_name)
+
+                logger.debug("正在加密 {}/{},  {}".format(i + 1, total_count, file_name))
+
+                setup(
+                    ext_modules=cythonize([py_file], quiet=True, language_level=3),
+                    script_args=["build_ext", "-t", td, "--inplace"],
+                )
+
+                encrypted_py.append(py_file)
+                logger.debug("encrypted success {}".format(file_name))
+
+            except Exception as e:
+                logger.exception("encrypted failed {} , error {}".format(py_file, e))
+                temp_c = py_file.replace(".py", ".c")
+                if os.path.exists(temp_c):
+                    os.remove(temp_c)
+
+        return encrypted_py
 
 
-def setup_extensions_in_parallel():
-    cythonize(extensions, nthreads=NB_COMPILE_JOBS)
-    pool = multiprocessing.Pool(processes=NB_COMPILE_JOBS)
-    pool.map(setup_given_extensions, extensions)
-    pool.close()
-    pool.join()
-
-
-if "build_ext" in sys.argv:
-    setup_extensions_in_parallel()
-else:
-    setup_extensions_in_sequential()
-base_path = os.path.abspath('.')
+if __name__ == '__main__':
+    encode_dir = "/Users/macbookair/coding/music-tag-web/django_vue_cli/"
+    fileSet = walk_file(encode_dir)
+    encrypted_py = encrypt_py(list(fileSet))
+    delete_files(encrypted_py)
+    rename_excrypted_file(encode_dir)
