@@ -14,7 +14,7 @@ class HttpRequest:
         # 全局唯一Session
         self.__session = requests.Session()
 
-    def getHttp(self, url: str, method: int = 0, data: bytes = r'', header: dict = {}) -> requests.Response:
+    def getHttp(self, url: str, method: int = 0, data=b"", header=None) -> requests.Response:
         """
         Http请求-提交二进制流
         Args:
@@ -26,24 +26,30 @@ class HttpRequest:
         Returns:
             requests.Response: 返回的http数据
         """
+        if header is None:
+            header = {}
         if method == 0:
             d = self.__session.get(url, headers=header)
         else:
             d = self.__session.post(url, data, headers=header)
         return d
 
-    def getHttp2Json(self, url: str, method: int = 0, data: dict = {}, header: dict = {}):
+    def getHttp2Json(self, url: str, method: int = 0, data=None, header=None):
         """Http请求-提交json数据
 
         Args:
             url (str): url网址
             method (int): 0 表示Get请求 1 表示用POST请求. 默认值为 0.
-            data (bytes): 提交的json对象数据. 默认值为 {}.
+            data (dict): 提交的json对象数据. 默认值为 {}.
             header (dict): 协议头. 默认值为 {}.
 
         Returns:
             requests.Response: 返回的http数据
         """
+        if header is None:
+            header = {}
+        if data is None:
+            data = {}
         d = json.dumps(data, ensure_ascii=False)
         d = d.encode('utf-8')
         return self.getHttp(url, method, d, header)
@@ -78,7 +84,7 @@ class QQMusicApi:
             "Cookie": self.getCookie(),
         }
 
-    def getQQServersCallback(self, url: str, method: int = 0, data: dict = {}):
+    def getQQServersCallback(self, url: str, method: int = 0, data=None):
         """重新设计了Http接口
 
         参数:
@@ -89,6 +95,8 @@ class QQMusicApi:
         返回:
             requests.Response: 返回的http数据
         """
+        if data is None:
+            data = {}
         return self.QQHttpServer.getHttp2Json(url, method, data, self.getHead())
 
     def getQQMusicMediaLyric(self, mid: str) -> dict:

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+
+rm -f './celerybeat.pid'
+exec celery -A django_vue_cli.celery_app beat -l INFO
