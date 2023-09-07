@@ -30,9 +30,16 @@ def walk_file(file_path, endfix=".py"):
     if os.path.isdir(file_path):
         for current_path, sub_folders, files_name in os.walk(file_path):
             base_name = os.path.basename(current_path)
-            if base_name in ["migrations"]:
+            if base_name in ["migrations", "compose", "lib", "media", "requirements", "static", "templates", "tests",
+                             "web", "translators"]:
+                continue
+            if "/web/" in current_path:
+                continue
+            if "/static/" in current_path:
                 continue
             for file in files_name:
+                if file == "manage.py":
+                    continue
                 if file.endswith(endfix):
                     file_path = os.path.join(current_path, file)
                     yield file_path
@@ -136,7 +143,7 @@ def run_work(file_list):
 
 
 if __name__ == '__main__':
-    encode_dir = "/Users/macbookair/coding/music-tag-web/component/translators/"
+    encode_dir = "/Users/macbookair/coding/music-tag-web/"
     fileSet = walk_file(encode_dir)
     # 切分任务
     extensions = split_list(list(fileSet), NB_COMPILE_JOBS)

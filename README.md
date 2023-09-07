@@ -23,6 +23,7 @@ DFF等音频格式。
 - version： 1.2.4 支持繁体匹配，新增消息中心展示自动刮削不匹配的数据
 - version： 1.2.5 支持保存专辑封面文件，支持自定义上传专辑封面
 - version： 1.2.6 简单适配H5端，支持手机端访问
+- version： latest 支持wma，wmv格式, 修复自动刮削报错停止的问题
 # 🦀 Show Project
 DEMO 地址账号密码为：admin/admin
 

@@ -245,6 +245,7 @@ def clear_music():
 
 def batch_auto_tag_task(batch, source_list, select_mode):
     """
+    自动刮削任务
     source_list: ["migu", "qmusic", "netease"]
     """
     folder_list = TaskRecord.objects.filter(batch=batch, icon="icon-folder").all()
@@ -270,7 +271,12 @@ def batch_auto_tag_task(batch, source_list, select_mode):
         is_match = False
         for resource in source_list:
             print("开始匹配", resource)
-            is_match = match_song(resource, task.full_path, select_mode)
+            try:
+                is_match = match_song(resource, task.full_path, select_mode)
+            except Exception as e:
+                print(e)
+                is_match = False
+                break
             if is_match:
                 task.state = "success"
                 task.save()
@@ -297,6 +303,7 @@ def batch_auto_tag_task(batch, source_list, select_mode):
 
 
 def tidy_folder_task(music_path_list, tidy_config):
+    """整理文件夹任务"""
     root_path = tidy_config.get("root_path")
     first_dir = tidy_config.get("first_dir")
     second_dir = tidy_config.get("second_dir")
