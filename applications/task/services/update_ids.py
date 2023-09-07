@@ -61,12 +61,18 @@ def save_music(f, each, is_raw_thumbnail):
         if "${" in each["discnumber"]:
             f["discnumber"] = ConstantTemplate(each["discnumber"]).resolve_data(var_dict)
         else:
-            f["discnumber"] = each["discnumber"]
+            try:
+                f["discnumber"] = int(each["discnumber"].split("/")[0].strip())
+            except:
+                f["discnumber"] = 0
     if each.get("tracknumber", None):
         if "${" in each["tracknumber"]:
             f["tracknumber"] = ConstantTemplate(each["tracknumber"]).resolve_data(var_dict)
         else:
-            f["tracknumber"] = each["tracknumber"]
+            try:
+                f["tracknumber"] = int(each["tracknumber"].split("/")[0].strip())
+            except:
+                f["tracknumber"] = 0
     if each.get("genre", None):
         f["genre"] = each["genre"]
     if each.get("year", None):
