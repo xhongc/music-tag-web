@@ -23,7 +23,8 @@ DFF等音频格式。
 - version： 1.2.4 支持繁体匹配，新增消息中心展示自动刮削不匹配的数据
 - version： 1.2.5 支持保存专辑封面文件，支持自定义上传专辑封面
 - version： 1.2.6 简单适配H5端，支持手机端访问
-- version： latest 支持wma，wmv格式, 修复自动刮削报错停止的问题
+- 20230907 version： latest 支持wma，wmv格式, 修复自动刮削报错停止的问题
+- 20230908 version： latest 音轨号，光盘号 格式优化
 # 🦀 Show Project
 DEMO 地址账号密码为：admin/admin
 
@@ -41,11 +42,11 @@ DEMO 地址账号密码为：admin/admin
 
 ### 从阿里云Docker Registry拉取镜像
 
-1`docker pull xhongc/music_tag_web:1.2.5`
+1`docker pull xhongc/music_tag_web:1.2.6`
 
 ### dokcer run
 
-2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always xhongc/music_tag_web:1.2.5`
+2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always xhongc/music_tag_web:1.2.6`
    
 或者 使用portainer stacks部署
    ![img_1.png](img_1.png)
@@ -55,7 +56,7 @@ version: '3'
 
 services:
   music-tag:
-    image: xhongc/music_tag_web:1.2.5
+    image: xhongc/music_tag_web:1.2.6
     container_name: music-tag-web
     ports:
       - "8001:8001"
@@ -77,6 +78,10 @@ ps. `/path/to/your/music` 改成你的音乐文件夹路径！
 
 # 💬 Contact me
 各位大佬有什么意见需求，欢迎提出issues，我会满足你的需求，在我的能力范围内。
+issue 没及时看到的，可以加群讨论！
+<div>
+<img  src="/img_9.png" width="250">  &nbsp;
+</div>
 
 # 💸 赞助与支持
 如果您觉得 music-tag-web 对你有帮助，可以请作者喝杯咖啡。
@@ -90,6 +95,7 @@ ps. `/path/to/your/music` 改成你的音乐文件夹路径！
 - @qinfengge
 - @itodouble
 - @BruceSuen720
+- @Hy_
 # 免责声明
 禁止任何形式的商业用途，包括但不仅限于售卖/打赏/获利，不得使用本代码进行任何形式的牟利/贩卖/传播，再次强调仅供个人私下研究学习技术使用，有条件者请支持正版音乐！ 律师函请发给提供这些音乐资源解析服务的网站运营方，本项目仅以纯粹的技术目的去学习研究，如有侵犯到任何人的合法权利，请致信408737515@qq.com，我将在第一时间修改删除相关代码，谢谢！
 

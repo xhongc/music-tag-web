@@ -32,10 +32,18 @@ class MusicResource:
         raise Exception("暂不支持该音乐平台")
 
     def fetch_lyric(self, song_id):
-        return self.resource.fetch_lyric(song_id)
+        try:
+            return self.resource.fetch_lyric(song_id)
+        except Exception as e:
+            print("音乐平台歌词获取失败", e)
+            return ""
 
     def fetch_id3_by_title(self, title):
-        return self.resource.fetch_id3_by_title(title)
+        try:
+            return self.resource.fetch_id3_by_title(title)
+        except Exception as e:
+            print("音乐平台搜索失败", e)
+            return []
 
 
 class NetEaseMusicClient:
@@ -48,7 +56,11 @@ class NetEaseMusicClient:
 
     def fetch_id3_by_title(self, title):
         data = send({'s': title, 'type': '1', 'limit': '10', 'offset': '0'}).POST("weapi/cloudsearch/get/web")
-        songs = data.json().get("result", {}).get("songs", [])
+        try:
+            songs = data.json().get("result", {}).get("songs", [])
+        except Exception as e:
+            print("网易云音乐搜索失败", e, data.text)
+            songs = []
         for song in songs:
             artists = song.get("ar", [])
             album = song.get("al", {})
