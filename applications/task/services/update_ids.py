@@ -24,17 +24,12 @@ def update_music_info(music_id3_info, is_raw_thumbnail=False):
 
 
 def save_music(f, each, is_raw_thumbnail):
+    from applications.task.services.music_ids import MusicIDS
+
     base_filename = ".".join(os.path.basename(f.filename).split(".")[:-1])
     file_ext = os.path.basename(f.filename).split(".")[-1]
-    var_dict = {
-        "title": f["title"].value,
-        "artist": f["artist"].value,
-        "albumartist": f["albumartist"].value,
-        "discnumber": f["discnumber"].value,
-        "tracknumber": f["tracknumber"].value,
-        "album": f["album"].value,
-        "filename": base_filename
-    }
+
+    var_dict = MusicIDS(file=f).var_dict()
     if each.get("title", None):
         if "${" in each["title"]:
             f["title"] = ConstantTemplate(each["title"]).resolve_data(var_dict)
@@ -61,12 +56,18 @@ def save_music(f, each, is_raw_thumbnail):
         if "${" in each["discnumber"]:
             f["discnumber"] = ConstantTemplate(each["discnumber"]).resolve_data(var_dict)
         else:
-            f["discnumber"] = each["discnumber"]
+            try:
+                f["discnumber"] = int(each["discnumber"].split("/")[0].strip())
+            except:
+                f["discnumber"] = 0
     if each.get("tracknumber", None):
         if "${" in each["tracknumber"]:
             f["tracknumber"] = ConstantTemplate(each["tracknumber"]).resolve_data(var_dict)
         else:
-            f["tracknumber"] = each["tracknumber"]
+            try:
+                f["tracknumber"] = int(each["tracknumber"].split("/")[0].strip())
+            except:
+                f["tracknumber"] = 0
     if each.get("genre", None):
         f["genre"] = each["genre"]
     if each.get("year", None):

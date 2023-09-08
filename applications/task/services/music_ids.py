@@ -1,19 +1,23 @@
 import base64
 import os
-from ast import literal_eval
-from component import music_tag
+
 from mutagen.flac import VCFLACDict
 from mutagen.id3 import ID3
 
 from applications.task.utils import detect_language
+from component import music_tag
 
 
 class MusicIDS:
-    def __init__(self, folder):
-        folder = folder.encode('utf-8', 'replace').decode()
-        self.file = music_tag.load_file(folder)
-        self.path = folder
-
+    def __init__(self, folder=None, file=None):
+        if folder:
+            folder = folder.encode('utf-8', 'replace').decode()
+            self.file = music_tag.load_file(folder)
+            self.path = folder
+        elif file:
+            folder = file.filename.encode('utf-8', 'replace').decode()
+            self.file = file
+            self.path = folder
         self.artwork_w = 0
         self.artwork_h = 0
         self.artwork_size = 0
@@ -113,14 +117,14 @@ class MusicIDS:
         try:
             return self.file['tracknumber'].value
         except Exception:
-            return 1
+            return self.file.mfile.tags["tracknumber"][0]
 
     @property
     def disc_number(self):
         try:
             return self.file['discnumber'].value
         except Exception:
-            return 1
+            return self.file.mfile.tags["discnumber"][0]
 
     @property
     def title(self):
@@ -194,4 +198,15 @@ class MusicIDS:
             "filename": self.file_name,
             "albumartist": self.album_artist,
             "language": self.language,
+        }
+
+    def var_dict(self):
+        return {
+            "title": self.title or self.file_name.split(".")[0],
+            "artist": self.artist,
+            "albumartist": self.album_artist,
+            "discnumber": self.disc_number,
+            "tracknumber": self.track_number,
+            "album": self.album,
+            "filename": self.file_name,
         }
