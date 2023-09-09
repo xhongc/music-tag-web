@@ -24,7 +24,7 @@ DFF等音频格式。
 - version： 1.2.5 支持保存专辑封面文件，支持自定义上传专辑封面
 - version： 1.2.6 简单适配H5端，支持手机端访问
 - 20230907 version： latest 支持wma，wmv格式, 修复自动刮削报错停止的问题
-- 20230908 version： latest 音轨号，光盘号 格式优化，优化匹配规则
+- 20230909 version： latest 音轨号，光盘号 格式优化，优化匹配规则
 # 🦀 Show Project
 DEMO 地址账号密码为：admin/admin
 
