@@ -1,5 +1,4 @@
-
-from applications.task.utils import match_score
+from applications.task.utils import match_score, match_artist
 from concurrent.futures import ThreadPoolExecutor
 
 from component import music_tag
@@ -32,8 +31,14 @@ class SmartTagClient:
         for songs in results:
             for song in songs:
                 title_score = match_score(title, song["name"])
-                artist_score = match_score(artist if artist else title, song["artist"])
+                artist_score = match_artist(artist if artist else title, song["artist"])
                 album_score = match_score(album if album else title, song["album"])
+                if artist and artist_score == 0:
+                    artist_score = -2
+                # 标题包含艺术家信息
+                if not artist and artist_score >= 1:
+                    if title_score >= 1:
+                        title_score = 2
                 song["score"] = title_score + artist_score + album_score
                 max_score = max(max_score, song["score"])
                 if title_score == 0:

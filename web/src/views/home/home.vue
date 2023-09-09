@@ -775,9 +775,9 @@
                 // 如果在某些情况下 h 不能自动注入而报错，需将 h 参数写上；一般来说 h 默认是第一参数，但是现在改为第一参数会导致已经使用的用户都需要修改，所以先放在最后。
                 // 如果 h 能自动注入则可以忽略 h 参数，无需写上，否则 h 参数会重复。
                 const titleClass = node.selected ? 'node-title node-selected' : 'node-title ' + node.state
-                if (node.title.length > 30) {
+                if (node.title.length > 25) {
                     return <span>
-                    <span class={titleClass} domPropsInnerHTML={node.title.slice(0, 30)}
+                    <span class={titleClass} domPropsInnerHTML={node.title.slice(0, 25)}
                         onClick={() => {
                             this.nodeClickOne(node)
                         }} v-bk-tooltips={node.title}>
@@ -785,7 +785,7 @@
                     </span>
                 } else {
                     return <span>
-                    <span class={titleClass} domPropsInnerHTML={node.title.slice(0, 30)}
+                    <span class={titleClass} domPropsInnerHTML={node.title.slice(0, 25)}
                         onClick={() => {
                             this.nodeClickOne(node)
                         }}>

@@ -50,6 +50,14 @@ def match_score(my_value, u_value):
         return 0
 
 
+def match_artist(my_value, u_value):
+    if "," in u_value:
+        return match_score(my_value, u_value.split(",")[0].replace(" ", "")) \
+               + match_score(my_value, u_value.split(",")[1].replace(" ", ""))
+    else:
+        return match_score(my_value, u_value)
+
+
 def match_song(resource, song_path, select_mode):
     from applications.task.services.music_resource import MusicResource
 
@@ -71,8 +79,14 @@ def match_song(resource, song_path, select_mode):
     }
     for song in songs:
         match_score_map["title"] = match_score(title, song["name"])
-        match_score_map["artist"] = match_score(artist if artist else title, song["artist"])
+        match_score_map["artist"] = match_artist(artist if artist else title, song["artist"])
         match_score_map["album"] = match_score(album if album else title, song["album"])
+        if artist and match_score_map["artist"] == 0:
+            match_score_map["artist"] = -2
+        # 标题包含艺术家信息
+        if not artist and match_score_map["artist"] >= 1:
+            if match_score_map["title"] >= 1:
+                match_score_map["title"] = 2
         if sum(match_score_map.values()) >= 3:
             is_match = True
             song_select = song
@@ -120,3 +134,7 @@ def detect_language(lyrics):
         return '泰文'
     else:
         return '未知'
+
+
+def parse_discnumber(discnumber):
+    pass
