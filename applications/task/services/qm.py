@@ -304,8 +304,10 @@ class QQMusicApi:
                 qStr = "低品质 96kbps"
                 fsize = int(_id['size_96aac'])
             else:
-                print("这首歌曲好像无法下载,请检查是否有vip权限.")
-                continue
+                code = ""
+                format = ""
+                qStr = ""
+                fsize = 0
 
             albumName = str(i["album"]['title']).strip(" ")
             if albumName == '':
