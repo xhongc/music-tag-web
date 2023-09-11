@@ -23,8 +23,9 @@ DFF等音频格式。
 - version： 1.2.4 支持繁体匹配，新增消息中心展示自动刮削不匹配的数据
 - version： 1.2.5 支持保存专辑封面文件，支持自定义上传专辑封面
 - version： 1.2.6 简单适配H5端，支持手机端访问
-- 20230907 version： latest 支持wma，wmv格式, 修复自动刮削报错停止的问题
-- 20230909 version： latest 音轨号，光盘号 格式优化，优化匹配规则
+- [20230907] version:latest 支持wma，wmv格式, 修复自动刮削报错停止的问题
+- [20230909] version:latest 音轨号，光盘号 格式优化，优化匹配规则
+- [20230911] version:latest 支持无感刮削，对新增的音乐文件后台自动刮削，无感知刮削。修复.ape文件读取报错的问题。
 # 🦀 Show Project
 DEMO 地址账号密码为：admin/admin
 
@@ -42,11 +43,11 @@ DEMO 地址账号密码为：admin/admin
 
 ### 从阿里云Docker Registry拉取镜像
 
-1`docker pull xhongc/music_tag_web:1.2.6`
+1`docker pull xhongc/music_tag_web:latest`
 
 ### dokcer run
 
-2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always xhongc/music_tag_web:1.2.6`
+2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always xhongc/music_tag_web:latest`
    
 或者 使用portainer stacks部署
    ![img_1.png](img_1.png)
@@ -56,7 +57,7 @@ version: '3'
 
 services:
   music-tag:
-    image: xhongc/music_tag_web:1.2.6
+    image: xhongc/music_tag_web:latest
     container_name: music-tag-web
     ports:
       - "8001:8001"
