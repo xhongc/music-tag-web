@@ -26,6 +26,7 @@ DFF等音频格式。
 - [20230907] version:latest 支持wma，wmv格式, 修复自动刮削报错停止的问题
 - [20230909] version:latest 音轨号，光盘号 格式优化，优化匹配规则
 - [20230911] version:latest 支持无感刮削，对新增的音乐文件后台自动刮削，无感知刮削。修复.ape文件读取报错的问题。
+- [20230912] version:latest 新增自定义层数的整理文件，新增根据刮削状态排序，修复大写的音乐后缀名识别不到。
 # 🦀 Show Project
 DEMO 地址账号密码为：admin/admin
 
