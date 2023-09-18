@@ -67,7 +67,7 @@ services:
     ports:
       - "8001:8001"
     volumes:
-      - /path/to/your/music:/app/media:z
+      - /path/to/your/music:/app/media:rw
       - /path/to/your/config:/app/data
     command: /start
     restart: always
