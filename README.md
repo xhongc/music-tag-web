@@ -30,7 +30,7 @@ DFF等音频格式。
 - [20230909] version:latest 音轨号，光盘号 格式优化，优化匹配规则
 - [20230911] version:latest 支持无感刮削，对新增的音乐文件后台自动刮削，无感知刮削。修复.ape文件读取报错的问题。
 - [20230912] version:latest 新增自定义层数的整理文件，新增根据刮削状态排序，修复大写的音乐后缀名识别不到。
-- [20230918] version:latest 修复 bug
+- [20230918] version:latest 修复 bug, 新增数据库挂载映射。
 # 🦀 Show Project
 DEMO 地址账号密码为：admin/admin
 
@@ -52,7 +52,7 @@ DEMO 地址账号密码为：admin/admin
 
 ### dokcer run
 
-2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media --restart=always xhongc/music_tag_web:latest`
+2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest`
    
 或者 使用portainer stacks部署
    ![img_1.png](img_1.png)
@@ -68,6 +68,7 @@ services:
       - "8001:8001"
     volumes:
       - /path/to/your/music:/app/media:z
+      - /path/to/your/config:/app/data
     command: /start
     restart: always
 ```
