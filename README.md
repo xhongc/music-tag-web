@@ -2,7 +2,7 @@
 
 # 🚀 Music Tag Web
 
-『音乐标签』Web版是一款可以编辑歌曲的标题，专辑，艺术家，歌词，封面等信息的应用程序， 支持FLAC, APE, WAV, AIFF, WV, TTA, MP3, M4A, OGG, MPC, OPUS, WMA, DSF,
+『音乐标签』Web版是一款可以编辑歌曲的标题，专辑，艺术家，歌词，封面等信息的音乐标签编辑器程序， 支持FLAC, APE, WAV, AIFF, WV, TTA, MP3, M4A, OGG, MPC, OPUS, WMA, DSF,
 DFF等音频格式。
 <div class="column" align="middle">
   <img src="https://img.shields.io/docker/pulls/xhongc/music_tag_web" alt="docker-pull-count" />
@@ -12,25 +12,24 @@ DFF等音频格式。
 
 为什么开发web版？ 在使用Navidrome时，我的音乐都是在远程服务器上的，本地的Musictag和mp3tag不能满足我的需求， 我需要部署在远程服务器上去需改线上的音乐标签，相当于在使用Navidrome的边车应用。
 
-- 该版本是我自用的小工具，如果你也有这个需求，可以使用。欢迎提出issues，我会满足你的需求，在我的能力范围内。
-- 支持用户自定义上传标签源
 - 支持批量自动修改音乐标签
 - 支持音乐指纹识别，即使没有元数据也可以识别音乐
-- version：1.1.4 支持整理音乐文件，按艺术家，专辑分组
-- version：1.1.5 支持文件排序，按照文件名，文件大小，更新时间排序
-- version: 1.1.7 支持plex专辑类型，新增配置显示/隐藏字段
-- version： 1.1.8 修复不同类型音频文件的专辑类型
-- version： 1.2.0 新增歌曲语言整理文件
-- version： 1.2.2 优化自动打标签匹配算法
-- version： 1.2.3 新增智能刮削标签源，集成多个平台的标签源，按匹配度排序
-- version： 1.2.4 支持繁体匹配，新增消息中心展示自动刮削不匹配的数据
-- version： 1.2.5 支持保存专辑封面文件，支持自定义上传专辑封面
-- version： 1.2.6 简单适配H5端，支持手机端访问
-- [20230907] version:latest 支持wma，wmv格式, 修复自动刮削报错停止的问题
-- [20230909] version:latest 音轨号，光盘号 格式优化，优化匹配规则
-- [20230911] version:latest 支持无感刮削，对新增的音乐文件后台自动刮削，无感知刮削。修复.ape文件读取报错的问题。
-- [20230912] version:latest 新增自定义层数的整理文件，新增根据刮削状态排序，修复大写的音乐后缀名识别不到。
-- [20230918] version:latest 修复 bug, 新增数据库挂载映射。
+- 支持整理音乐文件，按艺术家，专辑分组
+- 支持文件排序，按照文件名，文件大小，更新时间排序
+- 支持plex专辑类型，新增配置显示/隐藏字段
+- 修复不同类型音频文件的专辑类型
+- 新增歌曲语言整理文件
+- 优化自动打标签匹配算法
+- 新增智能刮削标签源，集成多个平台的标签源，按匹配度排序
+- 支持繁体匹配，新增消息中心展示自动刮削不匹配的数据
+- 支持保存专辑封面文件，支持自定义上传专辑封面
+- 简单适配H5端，支持手机端访问
+- 支持wma，wmv格式, 修复自动刮削报错停止的问题
+- 音轨号，光盘号 格式优化，优化匹配规则
+- 对新增的音乐文件后台自动刮削，无感知刮削。修复.ape文件读取报错的问题。
+- 新增自定义层数的整理文件，新增根据刮削状态排序，修复大写的音乐后缀名识别不到。
+- 新增数据库挂载映射。
+
 # 🦀 Show Project
 DEMO 地址账号密码为：admin/admin
 
@@ -44,9 +43,9 @@ DEMO 地址账号密码为：admin/admin
 # 💯 How to Use
 [【使用手册】](https://xiers-organization.gitbook.io/music-tag-web/)
 
-镜像已上传至阿里云Docker Registry 操作指南：
+镜像已上传至Dockerhub 操作指南：
 
-### 从阿里云Docker Registry拉取镜像
+### 从Docker Hub拉取镜像
 
 1`docker pull xhongc/music_tag_web:latest`
 
@@ -72,7 +71,7 @@ services:
     command: /start
     restart: always
 ```
-ps. `/path/to/your/music` 改成你的音乐文件夹路径！
+ps. `/path/to/your/music` 改成你的音乐文件夹路径！`/path/to/your/config` 改为配置文件路径！
 
 3 访问在127.0.0.1:8001/admin 默认账号密码 admin/admin 修改默认密码
 ![img_7.png](img_7.png)
