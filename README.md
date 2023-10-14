@@ -86,7 +86,7 @@ ps. `/path/to/your/music` 改成你的音乐文件夹路径！`/path/to/your/con
 各位大佬有什么意见需求，欢迎提出issues，我会满足你的需求，在我的能力范围内。
 issue 没及时看到的，可以加群讨论！
 <div>
-<img  src="/img_10.png" width="250">  &nbsp;
+<img  src="/img_9.png" width="250">  &nbsp;
 </div>
 ## 发布频道：
 
