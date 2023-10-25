@@ -98,6 +98,9 @@ issue 没及时看到的，可以加群讨论！
 <img  src="/WechatIMG377.jpg" width="250" >  &nbsp; 
 <img  src="/img_8.png" width="250">  &nbsp;
 </div>
+# 🌟 Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=xhongc/music-tag-web&type=Date)](https://star-history.com/#xhongc/music-tag-web&Date)
 
 # 免责声明
 禁止任何形式的商业用途，包括但不仅限于售卖/打赏/获利，不得使用本代码进行任何形式的牟利/贩卖/传播，再次强调仅供个人私下研究学习技术使用，不提供下载音乐本体！ 本项目仅以纯粹的技术目的去学习研究，如有侵犯到任何人的合法权利，请致信408737515@qq.com，我将在第一时间修改删除相关代码，谢谢！
