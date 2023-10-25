@@ -98,6 +98,7 @@ issue 没及时看到的，可以加群讨论！
 <img  src="/WechatIMG377.jpg" width="250" >  &nbsp; 
 <img  src="/img_8.png" width="250">  &nbsp;
 </div>
+
 # 🌟 Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=xhongc/music-tag-web&type=Date)](https://star-history.com/#xhongc/music-tag-web&Date)
