@@ -5,6 +5,7 @@
 『音乐标签』Web版是一款可以编辑歌曲的标题，专辑，艺术家，歌词，封面等信息的音乐标签编辑器程序， 支持FLAC, APE, WAV, AIFF, WV, TTA, MP3, M4A, OGG, MPC, OPUS, WMA, DSF,
 DFF等音频格式。
 <div class="column" align="middle">
+   <img src="https://img.shields.io/github/stars/xhongc/music-tag-web?color=informational&label=Stars">
   <img src="https://img.shields.io/docker/pulls/xhongc/music_tag_web" alt="docker-pull-count" />
 </div>
 
@@ -86,7 +87,7 @@ ps. `/path/to/your/music` 改成你的音乐文件夹路径！`/path/to/your/con
 各位大佬有什么意见需求，欢迎提出issues，我会满足你的需求，在我的能力范围内。
 issue 没及时看到的，可以加群讨论！
 <div>
-<img  src="/img_10.png" width="250">  &nbsp;
+<img  src="/img_9.png" width="250">  &nbsp;
 </div>
 ## 发布频道：
 
