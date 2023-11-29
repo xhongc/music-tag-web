@@ -95,6 +95,9 @@ issue 没及时看到的，可以加群讨论！
 
 # 💸 赞助与支持
 如果您觉得 music-tag-web 对你有帮助，可以请作者喝杯咖啡。
+您的支持是我们更新软件的动力, 谢谢您! (｡･∀･)ﾉﾞ
+
+[➡ 爱发电](https://afdian.net/a/music-tag-web)
 <div>
 <img  src="/WechatIMG377.jpg" width="250" >  &nbsp; 
 <img  src="/img_8.png" width="250">  &nbsp;
