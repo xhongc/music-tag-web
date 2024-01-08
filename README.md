@@ -7,6 +7,7 @@ DFF等音频格式。
 <div class="column" align="middle">
    <img src="https://img.shields.io/github/stars/xhongc/music-tag-web?color=informational&label=Stars">
   <img src="https://img.shields.io/docker/pulls/xhongc/music_tag_web" alt="docker-pull-count" />
+  <img src="https://img.shields.io/badge/platform-amd64/arm64-pink?style=plastic" alt="docker-platform" />
 </div>
 
 # 🎉 Feature
@@ -87,7 +88,7 @@ ps. `/path/to/your/music` 改成你的音乐文件夹路径！`/path/to/your/con
 如有什么意见需求，请先 star 后提出issues，我会满足你的需求，在我的能力范围内。
 issue 没及时看到的，可以加群讨论！
 <div>
-<img  src="/img_9.png" width="250">  &nbsp;
+<img  src="/img_10.png" width="250">  &nbsp;
 </div>
 ## 发布频道：
 
