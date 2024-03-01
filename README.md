@@ -70,7 +70,7 @@ services:
       - /path/to/your/music:/app/media:rw
       - /path/to/your/config:/app/data
     command: /start
-    restart: always
+    restart: unless-stopped
 ```
 ps. `/path/to/your/music` 改成你的音乐文件夹路径！`/path/to/your/config` 改为配置文件路径！
 
