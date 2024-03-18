@@ -43,6 +43,7 @@ DEMO 地址账号密码为：admin/admin
 
 # 💯 How to Use
 [【使用手册】](https://xiers-organization.gitbook.io/music-tag-web/)
+[【使用手册V2】](https://xiers-organization.gitbook.io/music-tag-web-v2/)
 
 镜像已上传至Dockerhub 操作指南：
 
