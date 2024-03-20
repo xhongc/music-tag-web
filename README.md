@@ -43,8 +43,12 @@ DEMO 地址账号密码为：admin/admin
 
 # 💯 How to Use
 [【使用手册】](https://xiers-organization.gitbook.io/music-tag-web/)
+
 [【使用手册V2】](https://xiers-organization.gitbook.io/music-tag-web-v2/)
 
+V2的部署方式 使用手册 V2的方式部署！！！
+
+### - V1部署方式
 镜像已上传至Dockerhub 操作指南：
 
 ### 从Docker Hub拉取镜像
@@ -77,6 +81,34 @@ ps. `/path/to/your/music` 改成你的音乐文件夹路径！`/path/to/your/con
 
 3 访问在127.0.0.1:8001/admin 默认账号密码 admin/admin 修改默认密码
 ![img_7.png](img_7.png)
+
+### - V2部署方式
+### 从Docker Hub拉取镜像
+
+1`docker pull xhongc/music_tag_web:2.0.1`
+
+### dokcer run
+
+2. `docker run -d -p 8002:8002 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:2.0.1`
+
+```yaml
+version: '3'
+
+services:
+  music-tag:
+    image: xhongc/music_tag_web:2.0.1
+    container_name: music-tag-web
+    ports:
+      - "8001:8001"
+    volumes:
+      - /path/to/your/music:/app/media:rw
+      - /path/to/your/config:/app/data
+    restart: unless-stopped
+```
+ps. `/path/to/your/music` 改成你的音乐文件夹路径！`/path/to/your/config` 改为配置文件路径！
+
+3 访问在127.0.0.1:8002/admin 默认账号密码 admin/admin 修改默认密码
+
 
 # 📷 User Interface
 ![img_5.png](img_5.png)
