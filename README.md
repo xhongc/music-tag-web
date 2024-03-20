@@ -99,7 +99,7 @@ services:
     image: xhongc/music_tag_web:2.0.1
     container_name: music-tag-web
     ports:
-      - "8001:8001"
+      - "8002:8002"
     volumes:
       - /path/to/your/music:/app/media:rw
       - /path/to/your/config:/app/data
