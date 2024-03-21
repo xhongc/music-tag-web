@@ -129,6 +129,7 @@ issue 没及时看到的，可以加群讨论！(已经满200人，现在进群�
 
 [MusicTag 交流群](https://t.me/+oTffyBoNALM3Yzll)
 
+QQ群：55893996
 
 # 💸 赞助与支持
 如果您觉得 music-tag-web 对你有帮助，可以请作者喝杯咖啡。
