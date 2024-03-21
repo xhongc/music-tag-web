@@ -114,6 +114,7 @@ class TaskViewSets(GenericViewSet):
             children_data = sorted(children_data, key=lambda x: x.get("update_time"), reverse=True)
         if "size" in sorted_fields:
             children_data = sorted(children_data, key=lambda x: x.get("size"), reverse=True)
+        children_data = sorted(children_data, key=lambda x: 'children' not in x)
         res_data = [
             {
                 "name": file_path_list[-1],
