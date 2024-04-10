@@ -85,18 +85,18 @@ ps. `/path/to/your/music` 改成你的音乐文件夹路径！`/path/to/your/con
 ### - V2部署方式
 ### 从Docker Hub拉取镜像
 
-1`docker pull xhongc/music_tag_web:2.0.1`
+1`docker pull xhongc/music_tag_web:latest`
 
 ### dokcer run
 
-2. `docker run -d -p 8002:8002 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:2.0.1`
+2. `docker run -d -p 8002:8002 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest`
 
 ```yaml
 version: '3'
 
 services:
   music-tag:
-    image: xhongc/music_tag_web:2.0.1
+    image: xhongc/music_tag_web:latest
     container_name: music-tag-web
     ports:
       - "8002:8002"
