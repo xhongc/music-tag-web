@@ -37,9 +37,11 @@ DEMO 地址账号密码为：admin/admin
 [【音乐标签Web｜Music Tag Web】](http://42.193.218.103:8002/#/)
 
 # 🔨 How to Build
-
+```bash
 1. docker-compose -f local.yml build
 2. docker-compose -f local.yml up
+```
+
 
 # 💯 How to Use
 [【使用手册】](https://xiers-organization.gitbook.io/music-tag-web/)
@@ -48,18 +50,19 @@ DEMO 地址账号密码为：admin/admin
 
 V2的部署方式 使用手册 V2的方式部署！！！
 
-### - V1部署方式
+## V1部署方式
 镜像已上传至Dockerhub 操作指南：
 
-### 从Docker Hub拉取镜像
+### 1.从Docker Hub拉取镜像
+```bash
+docker pull xhongc/music_tag_web:latest
+```
 
-1`docker pull xhongc/music_tag_web:latest`
-
-### dokcer run
-
-2. `docker run -d -p 8001:8001 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest`
-   
-或者 使用portainer stacks部署
+### 2. 运行容器镜像
+```bash
+docker run -d -p 8001:8001 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest
+```
+或者 使用portainer Stacks部署（docker compose）
    ![img_1.png](img_1.png)
 
 ```yaml
@@ -77,20 +80,25 @@ services:
     command: /start
     restart: unless-stopped
 ```
+
 ps. `/path/to/your/music` 改成你的音乐文件夹路径！`/path/to/your/config` 改为配置文件路径！
 
 3 访问在127.0.0.1:8001/admin 默认账号密码 admin/admin 修改默认密码
 ![img_7.png](img_7.png)
 
-### - V2部署方式
-### 从Docker Hub拉取镜像
+###  V2部署方式
+> 与 V1部署的区别是容器内端口改为 8002, Docker Compose 部署去掉了 `command: /start` 配置
 
-1`docker pull xhongc/music_tag_web:latest`
+### 1.从Docker Hub拉取镜像
+```bash
+docker pull xhongc/music_tag_web:latest
+```
 
-### dokcer run
-
-2. `docker run -d -p 8002:8002 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest`
-
+### 2. 运行容器镜像
+```bash
+docker run -d -p 8002:8002 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest
+```
+或者：
 ```yaml
 version: '3'
 
