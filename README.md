@@ -86,7 +86,7 @@ ps. `/path/to/your/music` 改成你的音乐文件夹路径！`/path/to/your/con
 3 访问在127.0.0.1:8001/admin 默认账号密码 admin/admin 修改默认密码
 ![img_7.png](img_7.png)
 
-###  V2部署方式
+##  V2部署方式
 > 与 V1部署的区别是容器内端口改为 8002, Docker Compose 部署去掉了 `command: /start` 配置
 
 ### 1.从Docker Hub拉取镜像
