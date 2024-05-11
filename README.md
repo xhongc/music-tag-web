@@ -49,7 +49,7 @@ DEMO 地址账号密码为：admin/admin
 
 [【使用手册V2】](https://xiers-organization.gitbook.io/music-tag-web-v2/)
 
-V2的部署方式 使用手册 V2的方式部署！！！
+V2的部署方式 使用手册 V2的方式部署！！
 
 ## V1部署方式
 镜像已上传至Dockerhub 操作指南：
