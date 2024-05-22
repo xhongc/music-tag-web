@@ -37,7 +37,7 @@ DEMO 地址账号密码为：admin/admin
 
 [【音乐标签Web｜Music Tag Web】](http://42.193.218.103:8002/#/)
 
-# 🔨 How to Build
+# 🔨 How to Build?
 ```bash
 1. docker-compose -f local.yml build
 2. docker-compose -f local.yml up
