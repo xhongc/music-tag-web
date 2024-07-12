@@ -145,10 +145,7 @@ QQ群：55893996
 您的支持是我们更新软件的动力, 谢谢您! (｡･∀･)ﾉﾞ
 
 [➡ 爱发电](https://afdian.net/a/music-tag-web)
-<div>
-<img  src="/WechatIMG377.jpg" width="250" >  &nbsp; 
-<img  src="/img_8.png" width="250">  &nbsp;
-</div>
+
 
 # 🌟 Star History
 
