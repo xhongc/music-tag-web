@@ -146,7 +146,6 @@ QQ群：55893996
 
 [➡ 爱发电](https://afdian.com/a/music-tag-web)
 
-[➡ 爱发电2](https://afdian.net/a/music-tag-web)
 
 
 # 🌟 Star History
