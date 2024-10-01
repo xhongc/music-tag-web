@@ -2,9 +2,6 @@ name: Docker
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "dev_1.0" ]
-
 
 env:
   ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY }}"
