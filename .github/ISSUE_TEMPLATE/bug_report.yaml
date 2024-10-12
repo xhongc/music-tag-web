@@ -2,6 +2,7 @@ name: 🐛 错误报告 | Bug Report
 description: 请详细描述您使用过程中遇到的问题。| Please describe in detail the problems you encountered in the process of using.
 title: "【Bug问题】: "
 labels: ["bug"]
+projects: ["octo-org/1", "octo-org/44"]
 body:
   - type: markdown
     attributes:
