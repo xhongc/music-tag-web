@@ -1,18 +1,18 @@
 name: 🐛 错误报告 | Bug Report
 description: 请详细描述您使用过程中遇到的问题。| Please describe in detail the problems you encountered in the process of using.
-title: "[Bug问题]: "
-labels: ["bug", "triage"]
+title: "【Bug问题】: "
+labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        报告！我发现了一个了不得的 bug ！
+        报告！我发现了一个了不得的 bug
   - type: input
     id: contact
     attributes:
       label: docker镜像版本
-      description: 你当前使用的镜像版本，可在MusicTagWeb 项目系统设置-系统信息中查看。
-      placeholder: 请填写镜像版本，如：2.2.5 或 lastet（更新时间）
+      description: 你当前使用的镜像版本，可在该项目系统设置-系统信息中查看。
+      placeholder: 如：2.2.5 或 lastet(更新时间)
     validations:
       required: true
   - type: dropdown
