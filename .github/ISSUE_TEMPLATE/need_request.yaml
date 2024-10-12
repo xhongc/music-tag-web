@@ -1,5 +1,5 @@
 name: 🚀 功能请求 | Feature Request
-description: 请详细描述您使用过程中遇到的问题。| Please describe in detail the problems you encountered in the process of using.
+description: 请详细描述您期望的功能。 | Please describe in detail the features you expect.
 title: "【功能请求】: "
 labels: ["feature"]
 body:
@@ -10,8 +10,8 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: bug 描述
-      description: 请描述你怎么遇到的 bug和出现什么现象被你认为是bug?
+      label: 功能描述
+      description: 您使用的场景?您期望的结果是怎样的？
       placeholder: 请输入描述!
       value: "1.\n2.\n3"
     validations:

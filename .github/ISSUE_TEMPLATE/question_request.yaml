@@ -1,0 +1,65 @@
+name: 🙋 问题交流 | Question Report
+description: 在文档或讨论中没有回答的使用问题 | Usage question that isn't answered in docs or discussion
+title: "【问题交流】: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        我已经仔细阅读了文档，并且没有找到答案。
+  - type: input
+    id: contact
+    attributes:
+      label: docker镜像版本
+      description: 你当前使用的镜像版本，可在该项目系统设置-系统信息中查看。
+      placeholder: 如：2.2.5 或 lastet(更新时间)
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: MusicTagWeb 版本
+      description: 请选择你使用的版本？
+      options:
+        - V1
+        - V2
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 预期行为
+      description: 本应该这样?
+      placeholder: 请输入描述!
+      value: "1.\n2.\n3"
+    validations:
+      required: true
+
+- type: textarea
+  id: what-happened2
+  attributes:
+    label: 实际行为
+    description: 实际是怎么样?
+    placeholder: 请输入描述!
+    value: "1.\n2.\n3"
+  validations:
+    required: true
+- type: textarea
+  id: what-happened3
+  attributes:
+    label: 原因分析(如果可以)
+    description: 你可以尝试先分析一下原因?
+    placeholder: 请输入描述!
+    value: "1.\n2.\n3"
+  validations:
+    required: false
+- type: textarea
+  id: what-happened4
+  attributes:
+    label: 问题重现步骤
+    description: 你出现的问题如何重现，必要时请提供材料和截图?
+    placeholder: 请输入描述!
+    value: "1.\n2.\n3"
+  validations:
+    required: true
