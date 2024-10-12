@@ -32,7 +32,7 @@ body:
       label: bug 描述
       description: 请描述你怎么遇到的 bug和出现什么现象被你认为是bug?
       placeholder: 请输入描述!
-      value: "A bug happened! xxx"
+      value: ""
     validations:
       required: true
   - type: textarea
