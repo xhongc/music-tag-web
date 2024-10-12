@@ -18,11 +18,11 @@ body:
   - type: dropdown
     id: version
     attributes:
-      label: Version
-      description: What version of our software are you running?
+      label: MusicTagWeb 版本
+      description: 请选择你使用的版本？
       options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
+        - V1
+        - V2
       default: 0
     validations:
       required: true
