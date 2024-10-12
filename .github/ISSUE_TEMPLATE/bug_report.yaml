@@ -16,13 +16,13 @@ body:
     validations:
       required: true
   - type: dropdown
-      id: music-tag-version
+      id: version
       attributes:
-        label: MusicTagWeb版本
-        description: 你使用哪个版本的MusicTagWeb？
+        label: Version
+        description: What version of our software are you running?
         options:
-          - 'V1'
-          - 'V2'
+          - 1.0.2 (Default)
+          - 1.0.3 (Edge)
         default: 0
       validations:
         required: true
