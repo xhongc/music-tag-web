@@ -1,64 +1,45 @@
-name: Bug Report
-description: File a bug report
-title: "[Bug]: "
-labels: ["bug", "triage"]
-projects: ["octo-org/1", "octo-org/44"]
+name: 🐛 错误报告 | Bug Report
+description: 请详细描述您使用过程中遇到的问题。| Please describe in detail the problems you encountered in the process of using.
+title: "【Bug问题】: "
+labels: ["bug"]
 assignees:
-  - octocat
+  - xhongc
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!
+        报告！我发现了一个了不得的 bug ！
   - type: input
     id: contact
     attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
+      label: docker镜像版本
+      description: 你当前使用的镜像版本，可在MusicTagWeb 项目系统设置-系统信息中查看。
+      placeholder: 请填写镜像版本，如：2.2.5 或 lastet（更新时间）
     validations:
-      required: false
+      required: true
+  - type: dropdown
+      id: version
+      attributes:
+        label: MusicTagWeb版本
+        description: 你使用哪个版本的MusicTagWeb？
+        options:
+          - V1
+          - V2
+        default: 0
+      validations:
+        required: true
   - type: textarea
     id: what-happened
     attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
+      label: bug 描述
+      description: 请描述你怎么遇到的 bug，和 bug 的现象?
+      placeholder: 请输入描述!
+      value: "A bug happened! xxx"
     validations:
       required: true
-  - type: dropdown
-    id: version
-    attributes:
-      label: Version
-      description: What version of our software are you running?
-      options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
-      default: 0
-    validations:
-      required: true
-  - type: dropdown
-    id: browsers
-    attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
-      options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
   - type: textarea
     id: logs
     attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      label: 系统日志（可填）
+      description: 请提供系统日志.
       render: shell
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
