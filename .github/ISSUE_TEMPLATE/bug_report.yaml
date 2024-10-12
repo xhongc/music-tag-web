@@ -30,7 +30,7 @@ body:
     id: what-happened
     attributes:
       label: bug 描述
-      description: 请描述你怎么遇到的 bug，和 bug 的现象?
+      description: 请描述你怎么遇到的 bug和出现什么现象被你认为是bug?
       placeholder: 请输入描述!
       value: "A bug happened! xxx"
     validations:
