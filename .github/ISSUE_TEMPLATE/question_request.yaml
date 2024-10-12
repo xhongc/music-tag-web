@@ -36,30 +36,30 @@ body:
     validations:
       required: true
 
-- type: textarea
-  id: what-happened2
-  attributes:
-    label: 实际行为
-    description: 实际是怎么样?
-    placeholder: 请输入描述!
-    value: "1.\n2.\n3"
-  validations:
-    required: true
-- type: textarea
-  id: what-happened3
-  attributes:
-    label: 原因分析(如果可以)
-    description: 你可以尝试先分析一下原因?
-    placeholder: 请输入描述!
-    value: "1.\n2.\n3"
-  validations:
-    required: false
-- type: textarea
-  id: what-happened4
-  attributes:
-    label: 问题重现步骤
-    description: 你出现的问题如何重现，必要时请提供材料和截图?
-    placeholder: 请输入描述!
-    value: "1.\n2.\n3"
-  validations:
-    required: true
+  - type: textarea
+    id: what-happened2
+    attributes:
+      label: 实际行为
+      description: 实际是怎么样?
+      placeholder: 请输入描述!
+      value: "1.\n2.\n3"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened3
+    attributes:
+      label: 原因分析(如果可以)
+      description: 你可以尝试先分析一下原因?
+      placeholder: 请输入描述!
+      value: "1.\n2.\n3"
+    validations:
+      required: false
+  - type: textarea
+    id: what-happened4
+    attributes:
+      label: 问题重现步骤
+      description: 你出现的问题如何重现，必要时请提供材料和截图?
+      placeholder: 请输入描述!
+      value: "1.\n2.\n3"
+    validations:
+      required: true
