@@ -15,20 +15,29 @@ def as_str(value):
     return str(value)
 
 def sanitize_year(year):
+    # Handle None or empty values
+    if year is None:
+        return None
+    if isinstance(year, str) and not year.strip():
+        return None
+
     try:
         if ',' in year:
             year = year.split(',')[0]
             # TODO: warn that we're dropping a 2nd year
     except TypeError:
         pass
-    
+
     try:
         year = int(year)
-    except ValueError:
-        if re.match(r'^[0-9]{4}[-\s][0-9]{2}[-\s][0-9]{2}$', year):
-            year = int(year[:4])
-        elif re.match(r'^[0-9]{2}[-/\s][0-9]{2}[-/\s][0-9]{4}$', year):
-            year = int(year[-4:])
+    except (ValueError, TypeError):
+        if isinstance(year, str):
+            if re.match(r'^[0-9]{4}[-\s][0-9]{2}[-\s][0-9]{2}$', year):
+                year = int(year[:4])
+            elif re.match(r'^[0-9]{2}[-/\s][0-9]{2}[-/\s][0-9]{4}$', year):
+                year = int(year[-4:])
+            else:
+                raise ValueError("Could not extract year from: {0}".format(year))
         else:
             raise ValueError("Could not extract year from: {0}".format(year))
     return year
