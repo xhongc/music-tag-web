@@ -160,7 +160,7 @@ QQ2群：79502786（NAS/Docker影音自建玩家交流）
 # 🌟 Star History
 开源自托管音乐元数据工具项目增长趋势
 
-[![Star History Chart](https://api.star-history.com/svg?repos=xhongc/music-tag-web&type=Date)](https://star-history.com/#xhongc/music-tag-web&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=xhongc/music-tag-web&type=Date)](https://star-history.dera.page/#xhongc/music-tag-web&Date)
 
 <!--
 self-hosted, music tag editor, docker music metadata tool, NAS flac tagger, navidrome sidecar tag editor, jellyfin batch id3 editor, homelab music manager, 自托管音乐标签工具, docker音乐元数据编辑器, 群晖音乐批量改标签, 威联通无损曲库整理, 替代mp3tag网页版, 音乐指纹识别刮削标签, 本地私有曲库管理

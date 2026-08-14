@@ -173,7 +173,7 @@ Your support helps keep updates coming. Thank you.
 
 # 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=xhongc/music-tag-web&type=Date)](https://star-history.com/#xhongc/music-tag-web&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=xhongc/music-tag-web&type=Date)](https://star-history.dera.page/#xhongc/music-tag-web&Date)
 
 # Disclaimer
 
