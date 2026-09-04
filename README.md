@@ -139,7 +139,7 @@ services:
 issue 回复延迟可加入社群交流部署踩坑、曲库整理技巧；也可添加作者微信：charlesnowed（备注：**Music Tag**），拉你进交流群。
 
 <div>
-<img  src="/img0616.jpg" width="250">  &nbsp;
+<img  src="/img0904.jpg" width="250">  &nbsp;
 </div>
 
 ## 官方发布&交流频道：
