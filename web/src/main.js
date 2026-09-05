@@ -30,6 +30,7 @@ import './assets/custom_icon/iconfont.css'
 // import '../static/cw-icon/iconfont.css'
 // import 'echarts/dist/extension/dataTool'
 import VeeValidate, {Validator} from 'vee-validate'
+import i18n from './i18n'
 
 const config = {
     errorBagName: 'veeErrors',
@@ -82,6 +83,7 @@ new Vue({
     el: '#app',
     router,
     store,
+    i18n,
     components: {App},
     data() {
         return {
