@@ -2,12 +2,20 @@ from pathlib import Path
 import sys
 import os
 import datetime
+from django.core.exceptions import ImproperlyConfigured
 
 # lib文件夹中手动导入的第三方库
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(1, os.path.join(os.getcwd(), 'lib'))
 
-SECRET_KEY = 'django-insecure-u5_r=pekio0@zt!y(kgbufuosb9mddu8*qeejkzj@=7uyvb392'
+try:
+    from local_settings import *  # noqa
+except ImportError:
+    pass
+
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", globals().get("SECRET_KEY"))
+if not SECRET_KEY:
+    raise ImproperlyConfigured("DJANGO_SECRET_KEY must be set")
 
 DEBUG = False
 
@@ -169,7 +177,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 SUBSONIC_DEFAULT_TRANSCODING_FORMAT = "mp3"
 SITE_LOGIN = os.getenv("SITE_LOGIN", "true")
-try:
-    from local_settings import *  # noqa
-except ImportError:
-    pass

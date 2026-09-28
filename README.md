@@ -65,9 +65,14 @@ DEMO 地址账号密码为：admin/admin
 docker pull xhongc/music_tag_web:latest
 ```
 
+先生成并保存一个每个部署独有的 Django 密钥，然后将其作为 `DJANGO_SECRET_KEY` 传入容器：
+```bash
+export DJANGO_SECRET_KEY="$(openssl rand -hex 32)"
+```
+
 ### 2. 运行Docker容器镜像（挂载本地NAS音乐目录）
 ```bash
-docker run -d -p 8001:8001 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest
+docker run -d -p 8001:8001 -e DJANGO_SECRET_KEY="$DJANGO_SECRET_KEY" -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest
 ```
 或者 使用 Portainer Stacks 可视化部署 docker compose（NAS用户常用）
    ![img_1.png](img_1.png)
@@ -81,6 +86,8 @@ services:
     container_name: music-tag-web
     ports:
       - "8001:8001"
+    environment:
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:?Set a unique DJANGO_SECRET_KEY}"
     volumes:
       - /path/to/your/music:/app/media:rw
       - /path/to/your/config:/app/data
@@ -102,7 +109,7 @@ docker pull xhongc/music_tag_web:latest
 
 ### 2. 一键运行容器命令
 ```bash
-docker run -d -p 8002:8002 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest
+docker run -d -p 8002:8002 -e DJANGO_SECRET_KEY="$DJANGO_SECRET_KEY" -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest
 ```
 docker-compose.yml 完整配置（Portainer/群晖容器管理器直接复制使用）：
 ```yaml
@@ -114,6 +121,8 @@ services:
     container_name: music-tag-web
     ports:
       - "8002:8002"
+    environment:
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:?Set a unique DJANGO_SECRET_KEY}"
     volumes:
       - /path/to/your/music:/app/media:rw
       - /path/to/your/config:/app/data

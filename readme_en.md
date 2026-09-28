@@ -64,10 +64,15 @@ The image is available on Docker Hub.
 docker pull xhongc/music_tag_web:latest
 ```
 
+Generate and save a unique deployment secret, then pass it as `DJANGO_SECRET_KEY`:
+```bash
+export DJANGO_SECRET_KEY="$(openssl rand -hex 32)"
+```
+
 ### 2. Run container
 
 ```bash
-docker run -d -p 8001:8001 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest
+docker run -d -p 8001:8001 -e DJANGO_SECRET_KEY="$DJANGO_SECRET_KEY" -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest
 ```
 
 Or deploy with Portainer Stacks (docker compose):
@@ -83,6 +88,8 @@ services:
     container_name: music-tag-web
     ports:
       - "8001:8001"
+    environment:
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:?Set a unique DJANGO_SECRET_KEY}"
     volumes:
       - /path/to/your/music:/app/media:rw
       - /path/to/your/config:/app/data
@@ -110,7 +117,7 @@ docker pull xhongc/music_tag_web:latest
 ### 2. Run container
 
 ```bash
-docker run -d -p 8002:8002 -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest
+docker run -d -p 8002:8002 -e DJANGO_SECRET_KEY="$DJANGO_SECRET_KEY" -v /path/to/your/music:/app/media -v /path/to/your/config:/app/data --restart=always xhongc/music_tag_web:latest
 ```
 
 Or:
@@ -124,6 +131,8 @@ services:
     container_name: music-tag-web
     ports:
       - "8002:8002"
+    environment:
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:?Set a unique DJANGO_SECRET_KEY}"
     volumes:
       - /path/to/your/music:/app/media:rw
       - /path/to/your/config:/app/data

@@ -11,6 +11,7 @@ services:
     restart: always
     environment:
       dockerrun: "yes"
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:?Set a unique DJANGO_SECRET_KEY}"
     depends_on:
       - redis
       - db
@@ -22,6 +23,7 @@ services:
     container_name: music_celeryworker
     environment:
       dockerrun: "yes"
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:?Set a unique DJANGO_SECRET_KEY}"
     ports: [ ]
     volumes:
       - D:\:/app/media:z # 配置本地音乐文件夹
@@ -36,6 +38,7 @@ services:
     container_name: music_celerybeat
     environment:
       dockerrun: "yes"
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:?Set a unique DJANGO_SECRET_KEY}"
     ports: [ ]
     depends_on:
       - redis
