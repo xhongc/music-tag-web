@@ -6,13 +6,13 @@
                     <bk-icon type="arrows-left-shape" @click="backDir" style="cursor: pointer;"></bk-icon>
                     <bk-input :clearable="true" v-model="filePath"
                         @enter="handleSearchFile"
-                        :placeholder="'请输入文件夹路径：'"
+                        :placeholder="'Enter folder path:'"
                         behavior="simplicity">
                     </bk-input>
                     <bk-icon type="arrows-down-shape" @click="handleSearchFile" style="cursor: pointer;"></bk-icon>
                 </div>
                 <div style="margin-top: 10px;display: flex;align-items: center;">
-                    <bk-input type="text" v-model="searchWord" placeholder="根据文件名称搜索" @enter="handleSearch"></bk-input>
+                    <bk-input type="text" v-model="searchWord" placeholder="Search by filename" @enter="handleSearch"></bk-input>
                     <div style="margin-left: 10px;margin-right: 5px;">
                         <bk-dropdown-menu :align="'right'">
                             <template slot="dropdown-trigger">
@@ -21,11 +21,11 @@
                             </template>
                             <ul class="bk-dropdown-list" slot="dropdown-content">
                                 <li><a href="javascript:;" @click="changeSorted('name')"
-                                    :class="{ 'isSelected': sortedField.includes('name') }">名称</a></li>
+                                    :class="{ 'isSelected': sortedField.includes('name') }">Name</a></li>
                                 <li><a href="javascript:;" @click="changeSorted('update_time')"
-                                    :class="{ 'isSelected': sortedField.includes('update_time') }">修改时间</a></li>
+                                    :class="{ 'isSelected': sortedField.includes('update_time') }">Modified Time</a></li>
                                 <li><a href="javascript:;" @click="changeSorted('size')"
-                                    :class="{ 'isSelected': sortedField.includes('size') }">大小</a></li>
+                                    :class="{ 'isSelected': sortedField.includes('size') }">Size</a></li>
                             </ul>
                         </bk-dropdown-menu>
                     </div>
@@ -56,14 +56,14 @@
                     <div style="width: 100%;display: flex;align-items: center;">
                         <bk-button :theme="'success'" :loading="isLoading" @click="handleClick" class="mr10"
                             style="width: 87%;">
-                            保存信息
+                            Save Info
                         </bk-button>
                         <div style="margin-left: 6px;cursor: pointer;" @click="exampleSetting3.primary.visible = true">
                             <bk-icon type="cog-shape"></bk-icon>
                         </div>
                     </div>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
-                        <div class="label1 can-copy" v-bk-tooltips="'变量名:${title}'" v-bk-copy="'${title}'">标题：</div>
+                        <div class="label1 can-copy" v-bk-tooltips="'Variable: ${title}'" v-bk-copy="'${title}'">Title:</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfo.title"></bk-input>
                         </div>
@@ -75,35 +75,35 @@
                     </div>
                     <div v-for="(item, index) in showFields" :key="'l1' + index">
                         <div class="edit-item" v-if="item === 'filename'">
-                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${filename}'" v-bk-copy="'${filename}'">
-                                文件名：
+                            <div class="label1 can-copy" v-bk-tooltips="'Variable: ${filename}'" v-bk-copy="'${filename}'">
+                                Filename:
                             </div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.filename"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item can-copy" v-else-if="item === 'artist'">
-                            <div class="label1" v-bk-tooltips="'变量名:${artist}'" v-bk-copy="'${artist}'">艺术家：</div>
+                            <div class="label1" v-bk-tooltips="'Variable: ${artist}'" v-bk-copy="'${artist}'">Artist:</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.artist"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item can-copy" v-else-if="item === 'album'">
-                            <div class="label1" v-bk-tooltips="'变量名:${album}'" v-bk-copy="'${album}'">专辑：</div>
+                            <div class="label1" v-bk-tooltips="'Variable: ${album}'" v-bk-copy="'${album}'">Album:</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.album"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item can-copy" v-else-if="item === 'albumartist'">
-                            <div class="label1" v-bk-tooltips="'变量名:${albumartist}'" v-bk-copy="'${albumartist}'">
-                                专辑艺术家：
+                            <div class="label1" v-bk-tooltips="'Variable: ${albumartist}'" v-bk-copy="'${albumartist}'">
+                                Album Artist:
                             </div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.albumartist"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'genre'">
-                            <div class="label1">风格：</div>
+                            <div class="label1">Genre:</div>
                             <div style="width: 70%;">
                                 <bk-select
                                     :disabled="false"
@@ -111,7 +111,7 @@
                                     style="width: 250px;background: #fff;"
                                     ext-cls="select-custom"
                                     ext-popover-cls="select-popover-custom"
-                                    :placeholder="'请选择歌曲风格'"
+                                    :placeholder="'Select genre'"
                                     searchable>
                                     <bk-option v-for="option in genreList"
                                         :key="option.id"
@@ -122,7 +122,7 @@
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'language'">
-                            <div class="label1">语言：</div>
+                            <div class="label1">Language:</div>
                             <div style="width: 70%;">
                                 <bk-select
                                     :disabled="false"
@@ -130,7 +130,7 @@
                                     style="width: 250px;background: #fff;"
                                     ext-cls="select-custom"
                                     ext-popover-cls="select-popover-custom"
-                                    :placeholder="'请选择歌曲语言'"
+                                    :placeholder="'Select language'"
                                     searchable>
                                     <bk-option v-for="option in languageList"
                                         :key="option.id"
@@ -141,7 +141,7 @@
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'year'">
-                            <div class="label1">年份：</div>
+                            <div class="label1">Year:</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.year"></bk-input>
                             </div>
@@ -149,7 +149,7 @@
                         <div style="display: flex;margin-bottom: 10px;flex-direction: column;"
                             v-else-if="item === 'lyrics'">
                             <div style="display: flex;">
-                                <div class="label1">歌词：</div>
+                                <div class="label1">Lyrics:</div>
                                 <div style="width: 70%;">
                                     <bk-input :clearable="true" v-model="musicInfo.lyrics" type="textarea" :rows="15">
                                     </bk-input>
@@ -161,18 +161,18 @@
                                 </div>
                             </div>
                             <div style="display: flex;margin-top: 10px;">
-                                <div class="label1">保存歌词：</div>
+                                <div class="label1">Save Lyrics:</div>
                                 <bk-switcher v-model="musicInfo.is_save_lyrics_file"></bk-switcher>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'comment'">
-                            <div class="label1">描述：</div>
+                            <div class="label1">Comment:</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.comment" type="textarea"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'album_img'">
-                            <div class="label1">专辑封面：</div>
+                            <div class="label1">Album Cover:</div>
                             <div style="display: flex;flex-direction: column;">
                                 <div style="width: 70%;display: flex;flex-direction: column;" v-if="reloadImg">
                                     <div>
@@ -194,43 +194,43 @@
                                     </div>
                                 </div>
                                 <div style="display: flex;margin-top: 10px;">
-                                    <div class="label1">保存图片：</div>
+                                    <div class="label1">Save Image:</div>
                                     <bk-switcher v-model="musicInfo.is_save_album_cover"></bk-switcher>
                                 </div>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'discnumber'">
-                            <div class="label1">光盘编号：</div>
+                            <div class="label1">Disc Number:</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.discnumber"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'tracknumber'">
-                            <div class="label1">音轨号：</div>
+                            <div class="label1">Track Number:</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfo.tracknumber"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'duration'">
-                            <div class="label1">时长：</div>
+                            <div class="label1">Duration:</div>
                             <div style="width: 70%;color: #63656e;font-size: 14px;">
                                 {{ musicInfo.duration }} s
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'bit_rate'">
-                            <div class="label1">比特率：</div>
+                            <div class="label1">Bit Rate:</div>
                             <div style="width: 70%;color: #63656e;font-size: 14px;">
                                 {{ musicInfo.bit_rate }} kbps
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'size'">
-                            <div class="label1">文件大小：</div>
+                            <div class="label1">File Size:</div>
                             <div style="width: 70%;color: #63656e;font-size: 14px;">
                                 {{ musicInfo.size }} MB
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'album_type'">
-                            <div class="label1">专辑类型：</div>
+                            <div class="label1">Album Type:</div>
                             <div style="width: 70%;">
                                 <bk-select
                                     :disabled="false"
@@ -238,7 +238,7 @@
                                     style="width: 250px;background: #fff;"
                                     ext-cls="select-custom"
                                     ext-popover-cls="select-popover-custom"
-                                    :placeholder="'请选择专辑类型'"
+                                    :placeholder="'Select album type'"
                                     searchable>
                                     <bk-option v-for="option in albumTypeList"
                                         :key="option.id"
@@ -256,65 +256,65 @@
                     <div style="width: 100%;display: flex;">
                         <bk-button :theme="'primary'" :loading="isLoading" @click="handleBatch" class="mr10"
                             style="width: 100%;">
-                            手动修改
+                            Manual Modify
                         </bk-button>
                     </div>
                     <div style="width: 100%;display: flex;margin-top: 10px;">
                         <bk-button :theme="'success'" :loading="isLoading"
                             @click="exampleSetting1.primary.visible = true" class="mr10"
                             style="width: 50%;">
-                            自动修改
+                            Auto Modify
                         </bk-button>
                         <bk-button :theme="'success'" :loading="isLoading"
                             @click="exampleSetting2.primary.visible = true" class="mr10"
                             style="width: 50%;">
-                            整理文件夹
+                            Organize Folder
                         </bk-button>
                     </div>
                     <bk-divider>
-                        <div style="color: gray;font-size: 12px;">手动修改参数</div>
+                        <div style="color: gray;font-size: 12px;">Manual Modify Parameters</div>
                     </bk-divider>
                     <div style="display: flex;margin-bottom: 10px;align-items: center;margin-top: 10px;">
-                        <div class="label1 can-copy" v-bk-tooltips="'变量名:${title}'" v-bk-copy="'${title}'">标题：</div>
+                        <div class="label1 can-copy" v-bk-tooltips="'Variable: ${title}'" v-bk-copy="'${title}'">Title:</div>
                         <div style="width: 70%;">
                             <bk-input :clearable="true" v-model="musicInfoManual.title"
-                                :placeholder="'支持变量批量修改'"></bk-input>
+                                :placeholder="'Supports batch variable modification'"></bk-input>
                         </div>
                     </div>
                     <div v-for="(item, index) in showFields" :key="'l2' + index">
                         <div class="edit-item" v-if="item === 'filename'">
-                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${filename}'" v-bk-copy="'${filename}'">
-                                文件名：
+                            <div class="label1 can-copy" v-bk-tooltips="'Variable: ${filename}'" v-bk-copy="'${filename}'">
+                                Filename:
                             </div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.filename"
-                                    :placeholder="'例如：${title}-${album}'"></bk-input>
+                                    :placeholder="'Example: ${title}-${album}'"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'artist'">
-                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${artist}'" v-bk-copy="'${artist}'">艺术家：
+                            <div class="label1 can-copy" v-bk-tooltips="'Variable: ${artist}'" v-bk-copy="'${artist}'">Artist:
                             </div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.artist"
-                                    :placeholder="'具体哪些变量,鼠标悬浮在标题上查看'"></bk-input>
+                                    :placeholder="'Hover over title to see available variables'"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'album'">
-                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${album}'" v-bk-copy="'${album}'">专辑：</div>
+                            <div class="label1 can-copy" v-bk-tooltips="'Variable: ${album}'" v-bk-copy="'${album}'">Album:</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.album"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'albumartist'">
-                            <div class="label1 can-copy" v-bk-tooltips="'变量名:${albumartist}'"
-                                v-bk-copy="'${albumartist}'">专辑艺术家：
+                            <div class="label1 can-copy" v-bk-tooltips="'Variable: ${albumartist}'"
+                                v-bk-copy="'${albumartist}'">Album Artist:
                             </div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.albumartist"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'genre'">
-                            <div class="label1">风格：</div>
+                            <div class="label1">Genre:</div>
                             <div style="width: 70%;">
                                 <bk-select
                                     :disabled="false"
@@ -322,7 +322,7 @@
                                     style="width: 250px;background: #fff;"
                                     ext-cls="select-custom"
                                     ext-popover-cls="select-popover-custom"
-                                    :placeholder="'请选择歌曲风格'"
+                                    :placeholder="'Select genre'"
                                     searchable>
                                     <bk-option v-for="option in genreList"
                                         :key="option.id"
@@ -333,7 +333,7 @@
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'language'">
-                            <div class="label1">语言：</div>
+                            <div class="label1">Language:</div>
                             <div style="width: 70%;">
                                 <bk-select
                                     :disabled="false"
@@ -341,7 +341,7 @@
                                     style="width: 250px;background: #fff;"
                                     ext-cls="select-custom"
                                     ext-popover-cls="select-popover-custom"
-                                    :placeholder="'请选择歌曲语言'"
+                                    :placeholder="'Select language'"
                                     searchable>
                                     <bk-option v-for="option in languageList"
                                         :key="option.id"
@@ -352,7 +352,7 @@
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'year'">
-                            <div class="label1">年份：</div>
+                            <div class="label1">Year:</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.year"></bk-input>
                             </div>
@@ -360,7 +360,7 @@
                         <div style="display: flex;margin-bottom: 10px;flex-direction: column;"
                             v-else-if="item === 'lyrics'">
                             <div style="display: flex;">
-                                <div class="label1">歌词：</div>
+                                <div class="label1">Lyrics:</div>
                                 <div style="width: 70%;">
                                     <bk-input :clearable="true" v-model="musicInfoManual.lyrics" type="textarea"
                                         :rows="15"
@@ -368,19 +368,19 @@
                                 </div>
                             </div>
                             <div style="display: flex;margin-top: 10px;">
-                                <div class="label1">保存歌词：</div>
+                                <div class="label1">Save Lyrics:</div>
                                 <bk-switcher v-model="musicInfoManual.is_save_lyrics_file"></bk-switcher>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'comment'">
-                            <div class="label1">描述：</div>
+                            <div class="label1">Comment:</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.comment"
                                     type="textarea"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'album_img'">
-                            <div class="label1">专辑封面：</div>
+                            <div class="label1">Album Cover:</div>
                             <div style="display: flex;flex-direction: column;">
                                 <div style="width: 70%;display: flex;flex-direction: column;" v-if="reloadImg">
                                     <div>
@@ -398,19 +398,19 @@
                                     </div>
                                 </div>
                                 <div style="display: flex;margin-top: 10px;">
-                                    <div class="label1">保存图片：</div>
+                                    <div class="label1">Save Image:</div>
                                     <bk-switcher v-model="musicInfoManual.is_save_album_cover"></bk-switcher>
                                 </div>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'discnumber'">
-                            <div class="label1" v-bk-tooltips="'变量名:${discnumber}'">光盘编号：</div>
+                            <div class="label1" v-bk-tooltips="'Variable: ${discnumber}'">Disc Number:</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.discnumber"></bk-input>
                             </div>
                         </div>
                         <div class="edit-item" v-else-if="item === 'tracknumber'">
-                            <div class="label1" v-bk-tooltips="'变量名:${tracknumber}'">音轨号：</div>
+                            <div class="label1" v-bk-tooltips="'Variable: ${tracknumber}'">Track Number:</div>
                             <div style="width: 70%;">
                                 <bk-input :clearable="true" v-model="musicInfoManual.tracknumber"></bk-input>
                             </div>
@@ -425,17 +425,17 @@
                     style="display: flex;flex-direction: column;margin-top: 20px;flex: 1;margin-right: 20px;margin-left: 20px;"
                     v-show="fadeShowDetail">
                     <div v-if="SongList.length === 0">
-                        <span style="margin-left: 30%;margin-top: 30%;">暂无歌曲信息</span>
+                        <span style="margin-left: 30%;margin-top: 30%;">No song information available</span>
                     </div>
                     <div v-else>
                         <div class="parent">
-                            <div class="title2">应用</div>
-                            <div class="title2">封面</div>
-                            <div class="title2">标题</div>
-                            <div class="title2">艺术家</div>
-                            <div class="title2">专辑</div>
-                            <div class="title2">歌词</div>
-                            <div class="title2">年份</div>
+                            <div class="title2">Apply</div>
+                            <div class="title2">Cover</div>
+                            <div class="title2">Title</div>
+                            <div class="title2">Artist</div>
+                            <div class="title2">Album</div>
+                            <div class="title2">Lyrics</div>
+                            <div class="title2">Year</div>
                         </div>
                         <div v-for="(item,index) in SongList" :key="index" style="margin-bottom: 10px;" class="parent">
                             <bk-icon type="arrows-left-shape" @click="copyAll(item)"
@@ -467,7 +467,7 @@
                                     item.album
                                 }}
                             </div>
-                            <div @click="handleCopy('lyric',item)" class="music-item">加载歌词</div>
+                            <div @click="handleCopy('lyric',item)" class="music-item">Load Lyrics</div>
                             <div @click="handleCopy('year',item.year)" class="music-item">
                                 {{
                                     item.year
@@ -508,18 +508,18 @@
             :mask-close="false"
             @confirm="handleBatchAuto"
             :header-position="exampleSetting1.primary.headerPosition"
-            title="自动批量修改">
-            <p>宽松模式: 只根据标题匹配元数据, 可能存在同名或翻唱歌曲。</p>
-            <p>严格模式: 根据标题和歌手或标题和专辑匹配元数据, 准确性更高。</p>
+            title="Auto Batch Modify">
+            <p>Loose mode: Match metadata only by title, may include covers or remixes.</p>
+            <p>Strict mode: Match metadata by title and artist, or title and album, more accurate.</p>
             <bk-radio-group v-model="selectAutoMode">
                 <bk-radio-button value="simple">
-                    宽松模式
+                    Loose Mode
                 </bk-radio-button>
                 <bk-radio-button value="hard">
-                    严格模式
+                    Strict Mode
                 </bk-radio-button>
             </bk-radio-group>
-            <div>音乐源顺序</div>
+            <div>Music Source Order</div>
             <bk-select style="width: 250px;"
                 searchable
                 multiple
@@ -537,14 +537,14 @@
             :mask-close="false"
             @confirm="handleTidy"
             :header-position="exampleSetting2.primary.headerPosition"
-            title="整理文件夹">
-            <p>整理文件夹，按一级目录，二级目录选定的信息分类</p>
-            <div>整理后的根目录</div>
+            title="Organize Folder">
+            <p>Organize folder by selected information for first and second level directories</p>
+            <div>Root directory after organization</div>
             <div class="input-demo">
                 <bk-input v-model="tidyFormData.root_path">
                 </bk-input>
             </div>
-            <div>一级目录</div>
+            <div>First level directory</div>
             <bk-select style="width: 250px;"
                 :clearable="false"
                 v-model="tidyFormData.first_dir">
@@ -554,7 +554,7 @@
                     :name="option.name">
                 </bk-option>
             </bk-select>
-            <div>二级目录</div>
+            <div>Second level directory</div>
             <bk-select style="width: 250px;"
                 v-model="tidyFormData.second_dir">
                 <bk-option v-for="option in tidyList"
@@ -569,9 +569,9 @@
             :mask-close="false"
             @confirm="handleSettings"
             :header-position="exampleSetting3.primary.headerPosition"
-            title="配置">
-            <p>选择你的配置，浏览器会保存你的默认值</p>
-            <div>标签来源</div>
+            title="Settings">
+            <p>Select your settings, browser will save your defaults</p>
+            <div>Tag Source</div>
             <bk-select
                 :disabled="false"
                 :clearable="false"
@@ -585,7 +585,7 @@
                     :name="option.name">
                 </bk-option>
             </bk-select>
-            <div>展示的字段以及顺序</div>
+            <div>Display Fields and Order</div>
             <bk-select style="width: 350px;margin-top: 10px;"
                 searchable
                 :clearable="false"
@@ -615,32 +615,32 @@
                 ],
                 showFields: localStorage.getItem('showFields') ? JSON.parse(localStorage.getItem('showFields')) : ['filename', 'artist', 'album', 'albumartist', 'genre', 'year', 'lyrics', 'comment', 'album_img'],
                 fieldList: [
-                    {id: 'filename', name: '文件名'},
-                    {id: 'artist', name: '艺术家'},
-                    {id: 'album', name: '专辑'},
-                    {id: 'album_type', name: '专辑类型'},
-                    {id: 'albumartist', name: '专辑艺术家'},
-                    {id: 'discnumber', name: '光盘编号'},
-                    {id: 'tracknumber', name: '音轨号'},
-                    {id: 'genre', name: '风格'},
-                    {id: 'year', name: '年份'},
-                    {id: 'lyrics', name: '歌词'},
-                    {id: 'comment', name: '描述'},
-                    {id: 'album_img', name: '专辑封面'},
-                    {id: 'duration', name: '时长'},
-                    {id: 'size', name: '文件大小'},
-                    {id: 'bit_rate', name: '比特率'},
-                    {id: 'language', name: '语言'}
+                    {id: 'filename', name: 'Filename'},
+                    {id: 'artist', name: 'Artist'},
+                    {id: 'album', name: 'Album'},
+                    {id: 'album_type', name: 'Album Type'},
+                    {id: 'albumartist', name: 'Album Artist'},
+                    {id: 'discnumber', name: 'Disc Number'},
+                    {id: 'tracknumber', name: 'Track Number'},
+                    {id: 'genre', name: 'Genre'},
+                    {id: 'year', name: 'Year'},
+                    {id: 'lyrics', name: 'Lyrics'},
+                    {id: 'comment', name: 'Comment'},
+                    {id: 'album_img', name: 'Album Cover'},
+                    {id: 'duration', name: 'Duration'},
+                    {id: 'size', name: 'File Size'},
+                    {id: 'bit_rate', name: 'Bit Rate'},
+                    {id: 'language', name: 'Language'}
                 ],
                 albumTypeList: [
-                    {id: 'album;compilation', name: '合集'},
-                    {id: 'album;live', name: '现场'},
-                    {id: 'album;remix', name: '混音'},
-                    {id: 'album;soundtrack', name: '原声'},
-                    {id: 'album;demo', name: '演示'},
-                    {id: 'album;album', name: '普通'},
+                    {id: 'album;compilation', name: 'Compilation'},
+                    {id: 'album;live', name: 'Live'},
+                    {id: 'album;remix', name: 'Remix'},
+                    {id: 'album;soundtrack', name: 'Soundtrack'},
+                    {id: 'album;demo', name: 'Demo'},
+                    {id: 'album;album', name: 'Album'},
                     {id: 'ep', name: 'EP'},
-                    {id: 'single', name: '单曲'}
+                    {id: 'single', name: 'Single'}
                 ],
                 searchWord: '',
                 treeListOne: [],
@@ -649,41 +649,41 @@
                 resource: localStorage.getItem('resource') ? localStorage.getItem('resource') : 'netease',
                 translationText: '',
                 resourceList: [
-                    {id: 'acoustid', name: '指纹识别'},
-                    {id: 'netease', name: '网易云音乐'},
-                    {id: 'migu', name: '咪咕音乐'},
-                    {id: 'qmusic', name: 'QQ音乐'},
-                    {id: 'kugou', name: '酷狗音乐'},
-                    {id: 'smart_tag', name: '智能刮削'}
+                    {id: 'acoustid', name: 'Fingerprint Recognition'},
+                    {id: 'netease', name: 'Netease Music'},
+                    {id: 'migu', name: 'Migu Music'},
+                    {id: 'qmusic', name: 'QQ Music'},
+                    {id: 'kugou', name: 'Kugou Music'},
+                    {id: 'smart_tag', name: 'Smart Tag'}
                 ],
                 resourceListBatch: [
-                    {id: 'netease', name: '网易云音乐'},
-                    {id: 'migu', name: '咪咕音乐'},
-                    {id: 'qmusic', name: 'QQ音乐'},
-                    {id: 'kugou', name: '酷狗音乐'}
+                    {id: 'netease', name: 'Netease Music'},
+                    {id: 'migu', name: 'Migu Music'},
+                    {id: 'qmusic', name: 'QQ Music'},
+                    {id: 'kugou', name: 'Kugou Music'}
                 ],
                 tidyList: [
-                    {id: 'title', name: '标题'},
-                    {id: 'artist', name: '艺术家'},
-                    {id: 'album', name: '专辑'},
-                    {id: 'albumartist', name: '专辑艺术家'},
-                    {id: 'album_type', name: '专辑类型'},
-                    {id: 'genre', name: '风格'},
-                    {id: 'language', name: '语言'},
-                    {id: 'comment', name: '描述'}
+                    {id: 'title', name: 'Title'},
+                    {id: 'artist', name: 'Artist'},
+                    {id: 'album', name: 'Album'},
+                    {id: 'albumartist', name: 'Album Artist'},
+                    {id: 'album_type', name: 'Album Type'},
+                    {id: 'genre', name: 'Genre'},
+                    {id: 'language', name: 'Language'},
+                    {id: 'comment', name: 'Comment'}
                 ],
                 baseMusicInfo: {
-                    'genre': '流行',
+                    'genre': 'Pop',
                     'is_save_lyrics_file': false,
                     'is_save_album_cover': false
                 },
                 musicInfo: {
-                    'genre': '流行',
+                    'genre': 'Pop',
                     'is_save_lyrics_file': false,
                     'is_save_album_cover': false
                 },
                 musicInfoManual: {
-                    'genre': '流行',
+                    'genre': 'Pop',
                     'is_save_lyrics_file': false,
                     'is_save_album_cover': false
                 },
@@ -694,27 +694,27 @@
                 SongList: [],
                 reloadImg: true,
                 genreList: [
-                    {'id': '流行', name: '流行'},
-                    {'id': '摇滚', name: '摇滚'},
-                    {'id': '说唱', name: '说唱'},
-                    {'id': '民谣', name: '民谣'},
-                    {'id': '电子', name: '电子'},
-                    {'id': '爵士', name: '爵士'},
-                    {'id': '纯音乐', name: '纯音乐'},
-                    {'id': '金属', name: '金属'},
-                    {'id': '世界音乐', name: '世界音乐'},
-                    {'id': '新世纪', name: '新世纪'},
-                    {'id': '古典', name: '古典'},
-                    {'id': '独立', name: '独立'},
-                    {'id': '氛围音乐', name: '氛围音乐'}
+                    {'id': 'Pop', name: 'Pop'},
+                    {'id': 'Rock', name: 'Rock'},
+                    {'id': 'Rap', name: 'Rap'},
+                    {'id': 'Folk', name: 'Folk'},
+                    {'id': 'Electronic', name: 'Electronic'},
+                    {'id': 'Jazz', name: 'Jazz'},
+                    {'id': 'Instrumental', name: 'Instrumental'},
+                    {'id': 'Metal', name: 'Metal'},
+                    {'id': 'World Music', name: 'World Music'},
+                    {'id': 'New Age', name: 'New Age'},
+                    {'id': 'Classical', name: 'Classical'},
+                    {'id': 'Indie', name: 'Indie'},
+                    {'id': 'Ambient', name: 'Ambient'}
                 ],
                 languageList: [
-                    {'id': '中文', name: '中文'},
-                    {'id': '英文', name: '英文'},
-                    {'id': '日文', name: '日文'},
-                    {'id': '韩文', name: '韩文'},
-                    {'id': '泰文', name: '泰文'},
-                    {'id': '未知', name: '未知'}
+                    {'id': 'Chinese', name: 'Chinese'},
+                    {'id': 'English', name: 'English'},
+                    {'id': 'Japanese', name: 'Japanese'},
+                    {'id': 'Korean', name: 'Korean'},
+                    {'id': 'Thai', name: 'Thai'},
+                    {'id': 'Unknown', name: 'Unknown'}
                 ],
                 checkedIds: [],
                 checkedData: [],
@@ -772,8 +772,7 @@
         },
         methods: {
             tpl(node, ctx) {
-                // 如果在某些情况下 h 不能自动注入而报错，需将 h 参数写上；一般来说 h 默认是第一参数，但是现在改为第一参数会导致已经使用的用户都需要修改，所以先放在最后。
-                // 如果 h 能自动注入则可以忽略 h 参数，无需写上，否则 h 参数会重复。
+                // If h is not auto-injected, it will be the first parameter, but currently it's at the end to avoid breaking existing usage.
                 const titleClass = node.selected ? 'node-title node-selected' : 'node-title ' + node.state
                 if (node.title.length > 25) {
                     return <span>
@@ -795,29 +794,21 @@
             },
             backDir() {
                 this.filePath = this.backPath(this.filePath)
-                // this.handleSearchFile()
             },
             backPath(path) {
-                // 使用正则表达式匹配最后一个斜杠及其后面的内容
                 const regex = /\/([^\/]+)\/?$/
                 const match = regex.exec(path)
 
-                // 如果匹配到了最后一个斜杠及其后面的内容
                 if (match) {
-                    // 截取掉最后一个斜杠及其后面的内容
                     const parentPath = path.slice(0, match.index)
-
-                    // 返回回退后的路径
                     return parentPath
                 }
 
-                // 如果没有匹配到最后一个斜杠及其后面的内容，则返回原始路径
                 return path
             },
             nodeClickOne(node) {
                 if (node.icon === 'icon-folder') {
                     this.filePath = this.filePath + '/' + node.name
-                    // this.handleSearchFile()
                 } else {
                     if (node.children && node.children.length > 0) {
                         return
@@ -844,7 +835,6 @@
                     })
                 }
             },
-            // checkbox
             nodeCheckTwo(node, checked) {
                 console.log(node, checked)
                 if (checked) {
@@ -893,7 +883,7 @@
                         if (res.result) {
                             this.musicInfo['lyrics'] = res.data
                         } else {
-                            this.$cwMessage('未找到歌词', 'error')
+                            this.$cwMessage('Lyrics not found', 'error')
                         }
                     })
                 } else if (k === 'album_img') {
@@ -925,11 +915,10 @@
             },
             nodeExpandedOne(node, expanded) {
             },
-            // 查询网易云接口
             toggleLock(mode) {
                 if (mode === 'title') {
                     if (!this.musicInfo.title) {
-                        this.$cwMessage('标题不能为空', 'error')
+                        this.$cwMessage('Title cannot be empty', 'error')
                         return
                     }
                     this.showTranslation = false
@@ -946,7 +935,7 @@
             },
             translation() {
                 if (!this.musicInfo.lyrics) {
-                    this.$cwMessage('歌词不能为空', 'error')
+                    this.$cwMessage('Lyrics cannot be empty', 'error')
                 }
                 this.fadeShowDetail = false
                 this.showTranslation = true
@@ -957,7 +946,6 @@
                     this.translationText = res.data
                 })
             },
-            // 文件目录
             handleSearchFile() {
                 this.fadeShowDir = false
                 this.checkedData = []
@@ -971,13 +959,11 @@
                     }
                 })
             },
-            // 过滤搜索
             handleSearch() {
                 this.$refs.tree1.searchNode(this.searchWord)
                 const searchResult = this.$refs.tree1.getSearchResult()
                 this.isEmpty = searchResult.isEmpty
             },
-            // 保存音乐信息
             handleClick() {
                 console.log(this.musicInfo)
                 const params = [{
@@ -988,16 +974,16 @@
                 this.$api.Task.updateId3({'music_id3_info': params}).then((res) => {
                     this.isLoading = false
                     if (res.result) {
-                        this.$cwMessage('修改成功', 'success')
+                        this.$cwMessage('Save successful', 'success')
                         this.$store.commit('setHasMsg', true)
                     } else {
-                        this.$cwMessage('修改失败', 'error')
+                        this.$cwMessage('Save failed', 'error')
                     }
                 })
             },
             handleBatch() {
                 this.$bkInfo({
-                    title: '确认要批量修改？',
+                    title: 'Confirm batch modification?',
                     confirmLoading: true,
                     confirmFn: () => {
                         try {
@@ -1011,7 +997,7 @@
                                 this.isLoading = false
                                 console.log(res)
                                 if (res.result) {
-                                    this.$cwMessage('修改成功', 'success')
+                                    this.$cwMessage('Save successful', 'success')
                                 }
                             })
                             return true
@@ -1024,7 +1010,7 @@
             },
             handleBatchAuto() {
                 this.$bkInfo({
-                    title: '确认要批量修改？',
+                    title: 'Confirm batch modification?',
                     confirmLoading: true,
                     confirmFn: () => {
                         try {
@@ -1039,7 +1025,7 @@
                                 this.isLoading = false
                                 console.log(res)
                                 if (res.result) {
-                                    this.$cwMessage('创建成功', 'success')
+                                    this.$cwMessage('Batch processing created successfully', 'success')
                                     this.$store.commit('setHasMsg', true)
                                 }
                             })
@@ -1053,7 +1039,7 @@
             },
             handleTidy() {
                 this.$bkInfo({
-                    title: '确认要整理文件夹？',
+                    title: 'Confirm folder organization?',
                     confirmLoading: true,
                     confirmFn: () => {
                         try {
@@ -1064,10 +1050,10 @@
                                 this.isLoading = false
                                 console.log(res)
                                 if (res.result) {
-                                    this.$cwMessage('创建成功', 'success')
+                                    this.$cwMessage('Folder organization completed', 'success')
                                     this.handleSearchFile()
                                 } else {
-                                    this.$cwMessage('创建失败', 'error')
+                                    this.$cwMessage('Folder organization failed', 'error')
                                 }
                             })
                             return true
@@ -1187,7 +1173,6 @@
 }
 
 @media (max-width: 500px) {
-    /* 在屏幕宽度小于400像素时应用的CSS规则 */
     .file-section {
         background: #fff;
         height: calc(100vh - 75px);
@@ -1220,7 +1205,6 @@
 }
 
 @media (min-width: 400px) {
-    /* 在屏幕宽度大于400像素时应用的CSS规则 */
     .file-section {
         background: #fff;
         height: calc(100vh - 75px);

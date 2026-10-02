@@ -4,17 +4,21 @@
         <div v-else style="height: 100%;">
             <login></login>
         </div>
+        <LanguageSwitcher />
     </div>
 </template>
 
 <script>
     import magicMenu from '@/components/base/magicMenu'
     import Login from '@/views/user/login'
+    import LanguageSwitcher from '@/components/LanguageSwitcher'
+
     export default {
         name: 'app',
         components: {
             magicMenu,
-            Login
+            Login,
+            LanguageSwitcher
         },
         data() {
             return {
