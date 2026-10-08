@@ -1,5 +1,4 @@
 xhongc/music_tag_agent:latest
 xhongc/music_tag_web:latest
 xhongc/music_tag_web:beta
---platform=linux/amd64 mysql:8.4.0
---platform=linux/amd64 sleepnap/beidou-server-all:v1.10
+--platform=linux/arm64 python:3.11-slim-bookworm
