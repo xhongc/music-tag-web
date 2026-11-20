@@ -148,7 +148,7 @@ services:
 issue 回复延迟可加入社群交流部署踩坑、曲库整理技巧；也可添加作者微信：charlesnowed（备注：**Music Tag**），拉你进交流群。
 
 <div>
-<img  src="/img0904.jpg" width="250">  &nbsp;
+<img  src="/img1127.jpg" width="250">  &nbsp;
 </div>
 
 ## 官方发布&交流频道：
@@ -159,6 +159,8 @@ issue 回复延迟可加入社群交流部署踩坑、曲库整理技巧；也�
 QQ1群：55893996 （已满）
 
 QQ2群：79502786（NAS/Docker影音自建玩家交流）
+
+QQ3群：787852379（NAS/Docker影音自建玩家交流）
 
 # 💸 赞助与支持
 如果这款 self-hosted Docker 音乐标签工具帮你整理好了NAS无损曲库、解决Navidrome标签混乱问题，可以请作者喝杯咖啡。
