@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    # volumes:           # COMENTA ESTAS LÍNEAS
+    #   - .:/app
+    #   - /app/node_modules
+    environment:
+      - NODE_ENV=development
